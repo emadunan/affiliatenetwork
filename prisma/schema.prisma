@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  UserMeta      UserMeta?
+}
+
+model UserMeta {
+  id          String  @id @default(cuid())
+  firstName   String
+  lastName    String
+  country     String
+  city        String
+  phoneNumber String
+  whatsNumber String
+  companyName String?
+  websiteLink String?
+
+  ws_webSiteName String?
+  ws_appCategory String?
+
+  mb_search  String?
+  mb_social  String?
+  mb_native  String?
+  mb_display String?
+  mb_video   String?
+  mb_others  String?
+
+  sm_facebook  String?
+  sm_twitter   String?
+  sm_instagram String?
+  sm_tiktok    String?
+  sm_snapchat  String?
+  sm_pinterest String?
+  sm_youtube   String?
+  sm_linkedin  String?
+  sm_whatsapp  String?
+  sm_telegram  String?
+
+  privilege  String   @default("publisher") @db.VarChar(10)
+  last_login DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
