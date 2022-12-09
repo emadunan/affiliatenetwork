@@ -17,7 +17,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import router from 'next/router';
 import Link from 'next/link';
 
-const pages = ['Coupons', 'Performance'];
+const pages = ['Coupons', 'Performance', 'Users'];
 const settings = ['Profile', 'Logout'];
 
 interface NavClickEvent extends React.MouseEvent<HTMLElement> {
@@ -46,6 +46,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const { data: session, status } = useSession();
+  console.log(session);
+
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -66,6 +68,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
     switch (event.target.innerText) {
       case "Coupons":
         router.push("/coupons");
+        break;
+
+      case "Users":
+        router.push("/users");
         break;
 
       case "Performance":
@@ -165,15 +171,39 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             <Link href={"/"}>Affiliate Net!</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            <Button
+              onClick={handleClickNavItem}
+              sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+            >
+              Home
+            </Button>
+            {status === "authenticated" && (
               <Button
-                key={page}
                 onClick={handleClickNavItem}
                 sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
               >
-                {page}
+                Coupons
               </Button>
-            ))}
+            )}
+
+            {session?.user.privilege === "publisher" && (
+              <Button
+                onClick={handleClickNavItem}
+                sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+              >
+                Performance
+              </Button>
+            )}
+
+            {session?.user.privilege === "admin" && (
+              <Button
+                onClick={handleClickNavItem}
+                sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+              >
+                Users
+              </Button>
+            )}
+
           </Box>
 
           {status === "authenticated" ? (<Box sx={{ flexGrow: 0 }}>
@@ -210,7 +240,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                 variant="contained"
                 startIcon={<LoginIcon />}
                 sx={{ fontSize: "1.2rem", paddingY: "2px" }}
-                onClick={() => signIn()}
+                onClick={() => signIn(undefined, { callbackUrl: '/coupons' })}
               >
                 Login
               </Button>

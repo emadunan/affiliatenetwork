@@ -21,12 +21,60 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import TelegramIcon from '@mui/icons-material/Telegram';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const steps = ['Basic Info', 'Traffic Sources', 'Create Profile'];
 
 export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+
+  // Input refs
+  const firstNameInputRef = React.useRef<HTMLInputElement | null>(null)
+  const lastNameInputRef = React.useRef<HTMLInputElement | null>(null)
+  const countryInputRef = React.useRef<HTMLInputElement | null>(null)
+  const cityInputRef = React.useRef<HTMLInputElement | null>(null)
+  const phoneNumberInputRef = React.useRef<HTMLInputElement | null>(null)
+  const whatsNumberInputRef = React.useRef<HTMLInputElement | null>(null)
+  const companyNameInputRef = React.useRef<HTMLInputElement | null>(null)
+  const websiteLinkInputRef = React.useRef<HTMLInputElement | null>(null)
+
+  const ws_webSiteNameInputRef = React.useRef(null)
+  const ws_appCategoryInputRef = React.useRef(null)
+
+  const mb_searchInputRef = React.useRef(null)
+  const mb_socialInputRef = React.useRef(null)
+  const mb_nativeInputRef = React.useRef(null)
+  const mb_displayInputRef = React.useRef(null)
+  const mb_videoInputRef = React.useRef(null)
+  const mb_othersInputRef = React.useRef(null)
+
+  const sm_facebookInputRef = React.useRef(null)
+  const sm_twitterInputRef = React.useRef(null)
+  const sm_instagramInputRef = React.useRef(null)
+  const sm_tiktokInputRef = React.useRef(null)
+  const sm_snapchatInputRef = React.useRef(null)
+  const sm_pinterestInputRef = React.useRef(null)
+  const sm_youtubeInputRef = React.useRef(null)
+  const sm_linkedinInputRef = React.useRef(null)
+  const sm_whatsappInputRef = React.useRef(null)
+  const sm_telegramInputRef = React.useRef(null)
+
+  function onConfirmRegister() {
+    const newUser = {
+      firstName: firstNameInputRef.current?.value,
+      lastName: lastNameInputRef.current?.value,
+      country: countryInputRef.current?.value,
+      city: cityInputRef.current?.value,
+      phoneNumber: phoneNumberInputRef.current?.value,
+      whatsNumber: whatsNumberInputRef.current?.value,
+      companyName: companyNameInputRef.current?.value,
+      websiteLink: websiteLinkInputRef.current?.value,
+    }
+
+    console.log(newUser);
+    
+  }
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -108,21 +156,21 @@ export default function HorizontalLinearStepper() {
           <Box component="div">
             {/* STEP #0 */}
             <Box component="div" sx={{ display: `${activeStep === 0 ? "flex" : "none"}`, flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
-                <TextField id="standard-basic" label="First Name" variant="standard" sx={{ m: 2 }} />
-                <TextField id="standard-basic" label="Last Name" variant="standard" sx={{ m: 2 }} />
+              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                <TextField id="standard-basic" label="First Name" variant="standard" sx={{ m: 2 }} inputRef={firstNameInputRef} />
+                <TextField id="standard-basic" label="Last Name" variant="standard" sx={{ m: 2 }} inputRef={lastNameInputRef} />
               </Box>
-              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
-                <TextField id="standard-basic" label="Country" variant="standard" sx={{ m: 2 }} />
-                <TextField id="standard-basic" label="City" variant="standard" sx={{ m: 2 }} />
+              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                <TextField id="standard-basic" label="Country" variant="standard" sx={{ m: 2 }} inputRef={countryInputRef} />
+                <TextField id="standard-basic" label="City" variant="standard" sx={{ m: 2 }} inputRef={cityInputRef} />
               </Box>
-              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
-                <TextField id="standard-basic" label="Phone Number" variant="standard" sx={{ m: 2 }} />
-                <TextField id="standard-basic" label="Whats Number" variant="standard" sx={{ m: 2 }} />
+              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                <TextField id="standard-basic" label="Phone Number" variant="standard" sx={{ m: 2 }} inputRef={phoneNumberInputRef} />
+                <TextField id="standard-basic" label="Whats Number" variant="standard" sx={{ m: 2 }} inputRef={whatsNumberInputRef} />
               </Box>
-              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap"}}>
-                <TextField id="standard-basic" label="Company Name" variant="standard" sx={{ m: 2 }} />
-                <TextField id="standard-basic" label="Website Link" variant="standard" sx={{ m: 2 }} />
+              <Box component="div" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                <TextField id="standard-basic" label="Company Name" variant="standard" sx={{ m: 2 }} inputRef={companyNameInputRef} />
+                <TextField id="standard-basic" label="Website Link" variant="standard" sx={{ m: 2 }} inputRef={websiteLinkInputRef} />
               </Box>
             </Box>
             {/* STEP #1 */}
@@ -211,6 +259,13 @@ export default function HorizontalLinearStepper() {
                     <TextField id="outlined-basic" label="Telegram username" variant="outlined" sx={{ m: 1 }} InputProps={{
                       startAdornment: (<InputAdornment position="start"><TelegramIcon /></InputAdornment>)
                     }} />
+                    <TextField id="outlined-basic" label="Snapchat username" variant="outlined" sx={{ m: 1 }} InputProps={{
+                      startAdornment: (<InputAdornment position="start"><RemoveIcon /></InputAdornment>)
+                    }} />
+                    <TextField id="outlined-basic" label="Tiktok username" variant="outlined" sx={{ m: 1 }} InputProps={{
+                      startAdornment: (<InputAdornment position="start"><div className='w-6'></div></InputAdornment>)
+                    }} />
+
                   </Box>
                 </AccordionDetails>
               </Accordion>
@@ -218,7 +273,7 @@ export default function HorizontalLinearStepper() {
             {/* STEP #1 */}
             <Box component="div" sx={{ display: `${activeStep === 2 ? "flex" : "none"}`, flexDirection: "column", alignItems: "center", margin: "2rem" }}>
               <Typography sx={{ my: "1rem" }}>Thanks for registering with us, To finish registeration click Confirm!</Typography>
-              <Button variant="outlined">confirm</Button>
+              <Button variant="outlined" onClick={onConfirmRegister}>confirm</Button>
             </Box>
             {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
           </Box>
