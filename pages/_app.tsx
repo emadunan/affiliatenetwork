@@ -1,11 +1,11 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
 import Layout from "../components/sit-layout/layout";
 import RtlProvider from "../components/sit-layout/rtl-provider";
 import { ThemeProvider } from "@mui/material";
-import { createTheme } from '@mui/material';
+import { createTheme } from "@mui/material";
 import { arEG } from "@mui/material/locale";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 
 const theme = createTheme(
   {
@@ -27,14 +27,17 @@ const theme = createTheme(
   arEG
 );
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <SessionProvider session={session}>
-        <ThemeProvider theme={theme}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

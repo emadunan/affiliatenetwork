@@ -16,11 +16,13 @@ const Layout: FC<LayoutProps> = (props) => {
       <Container>
         <SiteTitle className="h-20" />
         <SiteHeader className="sticky top-0 z-10" />
-        <Box component="div" className={`mt-4`}>{props.children}</Box>
+        <Box component="div" className={`mt-4`}>
+          {props.children}
+        </Box>
       </Container>
       <SiteFooter className="bg-primary text-secondary mt-auto" />
     </div>
   );
-}
+};
 
 export default Layout;

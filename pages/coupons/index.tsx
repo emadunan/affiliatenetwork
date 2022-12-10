@@ -7,21 +7,33 @@ const Coupons: FC = () => {
 
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    if (["publisher", "admin"].includes(session?.user.privilege as string)) router.replace("/users/register");
+  const {
+    user: { privilege },
+  } = session || { user: { privilege: undefined } };
 
-    fetch("/api/campaigns").then(response => {
-      if (!response.ok) return console.log(response);
-      return response.json();
-    }).then(data => console.log(data)
-    )
-  }, []);
+  useEffect(() => {
+    if (session) {
+      if (["admin", "publisher"].includes(privilege as string)) {
+        fetch("/api/campaigns")
+          .then((response) => {
+            if (!response.ok) return console.log(response);
+            return response.json();
+          })
+          .then((data) => console.log(data));
+      } else {
+        router.replace("/users/register");
+      }
+    }
+  }, [session, privilege]);
 
   return (
     <div>
-      Coupons Page
+      {status === "loading" && <div>Loading ...</div>}
+      {["publisher", "admin"].includes(privilege as string) && (
+        <div>Coupons</div>
+      )}
     </div>
   );
-}
+};
 
 export default Coupons;

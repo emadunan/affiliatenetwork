@@ -12,7 +12,7 @@ const SiteTitle: FC<SiteTitleProps> = (props) => {
 
   return (
     <section className={`${props.className} relative`}>
-      <h1 className="text-4xl text-primary absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] ">
+      <h1 className="text-4xl text-primary text-center absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] ">
         Affiliate Network
       </h1>
 

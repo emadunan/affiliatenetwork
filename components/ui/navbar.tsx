@@ -1,24 +1,24 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import LoginIcon from '@mui/icons-material/Login';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import LoginIcon from "@mui/icons-material/Login";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { signIn, signOut, useSession } from "next-auth/react";
-import router from 'next/router';
-import Link from 'next/link';
+import router from "next/router";
+import Link from "next/link";
 
-const pages = ['Coupons', 'Performance', 'Users'];
-const settings = ['Profile', 'Logout'];
+const pages = ["Coupons", "Performance", "Users"];
+const settings = ["Profile", "Logout"];
 
 interface NavClickEvent extends React.MouseEvent<HTMLElement> {
   target: {
@@ -42,12 +42,15 @@ interface ResponsiveAppBarProps {
 }
 
 const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const { data: session, status } = useSession();
   console.log(session);
-
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -87,7 +90,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
   const handleClickActionItem = (event: NavClickEvent) => {
     switch (event.target.innerText) {
       case "Logout":
-        signOut();
+        signOut({ callbackUrl: "/" });
         break;
 
       default:
@@ -100,24 +103,26 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <MonetizationOnIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <MonetizationOnIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h4"
             noWrap
             component="div"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'harmattanB',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "harmattanB",
               fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             <Link href={"/"}>Affiliate</Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -132,64 +137,111 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {/* {pages.map((page) => (
                 <MenuItem key={page} onClick={handleClickNavItem}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+              <MenuItem onClick={handleClickNavItem}>
+                <Typography textAlign="center">Home</Typography>
+              </MenuItem>
+              {status === "authenticated" && (
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Coupons</Typography>
+                </MenuItem>
+              )}
+
+              {["admin", "publisher"].includes(
+                session?.user.privilege as string
+              ) && (
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Performance</Typography>
+                </MenuItem>
+              )}
+
+              {session?.user.privilege === "admin" && (
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Users</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
-          <MonetizationOnIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <MonetizationOnIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h4"
             noWrap
             component="div"
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'harmattanB',
+              fontFamily: "harmattanB",
               fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
-            <Link href={"/"}>Affiliate Net!</Link>
+            <Link href={"/"}>Affiliate</Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               onClick={handleClickNavItem}
-              sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+              sx={{
+                my: 1,
+                color: "white",
+                display: "block",
+                fontFamily: "harmattanB",
+                fontSize: "1.5rem",
+                textTransform: "capitalize",
+              }}
             >
               Home
             </Button>
             {status === "authenticated" && (
               <Button
                 onClick={handleClickNavItem}
-                sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
               >
                 Coupons
               </Button>
             )}
 
-            {session?.user.privilege === "publisher" && (
+            {["admin", "publisher"].includes(
+              session?.user.privilege as string
+            ) && (
               <Button
                 onClick={handleClickNavItem}
-                sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
               >
                 Performance
               </Button>
@@ -198,56 +250,64 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {session?.user.privilege === "admin" && (
               <Button
                 onClick={handleClickNavItem}
-                sx={{ my: 1, color: 'white', display: 'block', fontFamily: "harmattanB", fontSize: "1.5rem", textTransform: "capitalize" }}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
               >
                 Users
               </Button>
             )}
-
           </Box>
 
-          {status === "authenticated" ? (<Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleClickActionItem}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>) : (
+          {status === "authenticated" ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleClickActionItem}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
             <Box sx={{ flexGrow: 0 }}>
               <Button
                 variant="contained"
                 startIcon={<LoginIcon />}
-                sx={{ fontSize: "1.2rem", paddingY: "2px" }}
-                onClick={() => signIn(undefined, { callbackUrl: '/coupons' })}
+                onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
               >
                 Login
               </Button>
-            </Box>)}
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;
