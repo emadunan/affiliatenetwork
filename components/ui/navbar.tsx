@@ -17,7 +17,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import Link from "next/link";
 
-const pages = ["Coupons", "Performance", "Users"];
 const settings = ["Profile", "Logout"];
 
 interface NavClickEvent extends React.MouseEvent<HTMLElement> {
@@ -73,12 +72,16 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
         router.push("/coupons");
         break;
 
+      case "Performance":
+        router.push("/performance");
+        break;
+
       case "Users":
         router.push("/users");
         break;
 
-      case "Performance":
-        router.push("/performance");
+      case "Visitors":
+        router.push("/users/visitors");
         break;
 
       default:
@@ -168,15 +171,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                <MenuItem onClick={handleClickNavItem}>
-                  <Typography textAlign="center">Performance</Typography>
-                </MenuItem>
-              )}
+                  <MenuItem onClick={handleClickNavItem}>
+                    <Typography textAlign="center">Performance</Typography>
+                  </MenuItem>
+                )}
 
               {session?.user.privilege === "admin" && (
-                <MenuItem onClick={handleClickNavItem}>
-                  <Typography textAlign="center">Users</Typography>
-                </MenuItem>
+                <React.Fragment>
+                  <MenuItem onClick={handleClickNavItem}>
+                    <Typography textAlign="center">Users</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleClickNavItem}>
+                    <Typography textAlign="center">Visitors</Typography>
+                  </MenuItem>
+                </React.Fragment>
               )}
             </Menu>
           </Box>
@@ -232,23 +240,24 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Performance
-              </Button>
-            )}
+                <Button
+                  onClick={handleClickNavItem}
+                  sx={{
+                    my: 1,
+                    color: "white",
+                    display: "block",
+                    fontFamily: "harmattanB",
+                    fontSize: "1.5rem",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Performance
+                </Button>
+              )}
 
             {session?.user.privilege === "admin" && (
-              <Button
+              <React.Fragment>
+                <Button
                 onClick={handleClickNavItem}
                 sx={{
                   my: 1,
@@ -261,6 +270,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               >
                 Users
               </Button>
+              <Button
+                onClick={handleClickNavItem}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                Visitors
+              </Button>
+              </React.Fragment>
             )}
           </Box>
 

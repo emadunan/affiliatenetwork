@@ -7,14 +7,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { UserWithMeta } from '@prisma/client/scalar';
-import { Avatar, IconButton } from '@mui/material';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import { Avatar } from '@mui/material';
 
-interface UsersTableProps {
+interface VisitorsTableProps {
   users: UserWithMeta[];
 }
 
-const UsersTable: React.FC<UsersTableProps> = (props) => {
+const VisitorsTable: React.FC<VisitorsTableProps> = (props) => {
 
   return (
     <TableContainer component={Paper}>
@@ -24,11 +23,7 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
             <TableCell>#</TableCell>
             <TableCell></TableCell>
             <TableCell>E-Mail</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>City</TableCell>
-            <TableCell>Last Visit</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell>Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -42,15 +37,7 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
               </TableCell>
               <TableCell><Avatar alt={row.UserMeta?.firstName} src={row.image as string}/></TableCell>
               <TableCell>{row.email}</TableCell>
-              <TableCell>{row.UserMeta?.firstName}</TableCell>
-              <TableCell>{row.UserMeta?.lastName}</TableCell>
-              <TableCell>{row.UserMeta?.city}</TableCell>
-              <TableCell>{row.UserMeta?.last_login.toString()}</TableCell>
-              <TableCell align="right">
-                <IconButton aria-label="delete">
-                  <ManageAccountsIcon />
-                </IconButton>
-              </TableCell>
+              <TableCell>{row.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -59,4 +46,4 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
   );
 }
 
-export default UsersTable;
+export default VisitorsTable;
