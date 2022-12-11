@@ -154,11 +154,6 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {/* {pages.map((page) => (
-                <MenuItem key={page} onClick={handleClickNavItem}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))} */}
               <MenuItem onClick={handleClickNavItem}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
@@ -171,20 +166,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                  <MenuItem onClick={handleClickNavItem}>
-                    <Typography textAlign="center">Performance</Typography>
-                  </MenuItem>
-                )}
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Performance</Typography>
+                </MenuItem>
+              )}
 
               {session?.user.privilege === "admin" && (
-                <React.Fragment>
-                  <MenuItem onClick={handleClickNavItem}>
-                    <Typography textAlign="center">Users</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleClickNavItem}>
-                    <Typography textAlign="center">Visitors</Typography>
-                  </MenuItem>
-                </React.Fragment>
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Users</Typography>
+                </MenuItem>
+              )}
+              {session?.user.privilege === "admin" && (
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Visitors</Typography>
+                </MenuItem>
               )}
             </Menu>
           </Box>
@@ -240,24 +235,23 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-                <Button
-                  onClick={handleClickNavItem}
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "harmattanB",
-                    fontSize: "1.5rem",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Performance
-                </Button>
-              )}
+              <Button
+                onClick={handleClickNavItem}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                Performance
+              </Button>
+            )}
 
             {session?.user.privilege === "admin" && (
-              <React.Fragment>
-                <Button
+              <Button
                 onClick={handleClickNavItem}
                 sx={{
                   my: 1,
@@ -270,6 +264,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               >
                 Users
               </Button>
+            )}
+            {session?.user.privilege === "admin" && (
               <Button
                 onClick={handleClickNavItem}
                 sx={{
@@ -283,7 +279,6 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               >
                 Visitors
               </Button>
-              </React.Fragment>
             )}
           </Box>
 

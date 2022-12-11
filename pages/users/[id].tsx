@@ -1,29 +1,124 @@
-import { Avatar, Box, Divider } from "@mui/material";
 import { FC } from "react";
+import useSWR from "swr";
+import { Avatar, Box, Divider } from "@mui/material";
+import { useRouter } from "next/router";
+import { UserWithMeta } from "@prisma/client/scalar";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const User: FC = () => {
+  const {
+    query: { id },
+  } = useRouter();
+
+  const { data: user, error } = useSWR<UserWithMeta>(
+    `/api/users/${id}`,
+    fetcher
+  );
+
   return (
     <div>
       <div>
-        <Divider>
-          <Avatar sx={{ width: 99, height: 99 }}
-            alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Divider sx={{ my: 4 }}>
+          <Avatar
+            sx={{ width: 99, height: 99 }}
+            alt={user?.email || ""}
+            src={user?.image as string}
+          />
         </Divider>
-        <Box component="h3" className="underline">Basic Information</Box>
-        <Box component="div" className="flex flex-wrap">
-          <p className="mx-4 my-2">E-Mail: emadunan@gmail.com</p>
-          <p className="mx-4 my-2">First Name: Emad</p>
-          <p className="mx-4 my-2">Last Name: Younan</p>
-          <p className="mx-4 my-2">country: Egypt</p>
-          <p className="mx-4 my-2">City: Cairo</p>
-          <p className="mx-4 my-2">phoneNumber: +201003379933</p>
-          <p className="mx-4 my-2">whatsNumber: +201003379933</p>
-          <p className="mx-4 my-2">companyName: Complex Development</p>
-          <p className="mx-4 my-2">websiteLink: https://emadunan.com</p>
+        <Box component="div" className="flex flex-wrap justify-around">
+          <p className="mx-4 my-2">{`E-Mail: ${user?.email}`}</p>
+          <p className="mx-4 my-2">{`First Name: ${user?.userMeta?.firstName}`}</p>
+          <p className="mx-4 my-2">{`Last Name: ${user?.userMeta?.lastName}`}</p>
+          <p className="mx-4 my-2">{`Country: ${user?.userMeta?.country}`}</p>
+          <p className="mx-4 my-2">{`City: ${user?.userMeta?.city}`}</p>
+          <p className="mx-4 my-2">{`Phone Number: ${user?.userMeta?.phoneNumber}`}</p>
+          <p className="mx-4 my-2">{`Whats Number: ${user?.userMeta?.whatsNumber}`}</p>
+          <p className="mx-4 my-2">{`Company Name: ${
+            user?.userMeta?.companyName || "NOT-PROVIDED"
+          }`}</p>
+          <p className="mx-4 my-2">{`Website Link: ${
+            user?.userMeta?.websiteLink || "NOT-PROVIDED"
+          }`}</p>
+        </Box>
+        <Box component="div" sx={{ my: 4 }}>
+          <Divider>
+            <Box component="h4">Website</Box>
+          </Divider>
+          <Box component="div" className="flex flex-wrap justify-around">
+            <p className="mx-4 my-2">{`Website Name: ${
+              user?.userMeta?.ws_webSiteName || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`App Category: ${
+              user?.userMeta?.ws_appCategory || "NOT-PROVIDED"
+            }`}</p>
+          </Box>
+        </Box>
+        <Box component="div" sx={{ my: 4 }}>
+          <Divider>
+            <Box component="h4">Media Buying</Box>
+          </Divider>
+          <Box component="div" className="flex flex-wrap justify-around">
+            <p className="mx-4 my-2">{`Search: ${
+              user?.userMeta?.mb_search || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Social: ${
+              user?.userMeta?.mb_social || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Native: ${
+              user?.userMeta?.mb_native || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Display: ${
+              user?.userMeta?.mb_display || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Video: ${
+              user?.userMeta?.mb_video || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Others: ${
+              user?.userMeta?.mb_others || "NOT-PROVIDED"
+            }`}</p>
+          </Box>
+        </Box>
+        <Box component="div" sx={{ my: 4 }}>
+          <Divider>
+            <Box component="h4">Social</Box>
+          </Divider>
+          <Box component="div" className="flex flex-wrap justify-around">
+            <p className="mx-4 my-2">{`Facebook: ${
+              user?.userMeta?.sm_facebook || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Twitter: ${
+              user?.userMeta?.sm_twitter || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Instagram: ${
+              user?.userMeta?.sm_instagram || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Pinterest: ${
+              user?.userMeta?.sm_pinterest || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Youtube: ${
+              user?.userMeta?.sm_youtube || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Linkedin: ${
+              user?.userMeta?.sm_linkedin || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Whatsapp: ${
+              user?.userMeta?.sm_whatsapp || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Telegram: ${
+              user?.userMeta?.sm_telegram || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Snapchat: ${
+              user?.userMeta?.sm_snapchat || "NOT-PROVIDED"
+            }`}</p>
+            <p className="mx-4 my-2">{`Tiktok: ${
+              user?.userMeta?.sm_tiktok || "NOT-PROVIDED"
+            }`}</p>
+          </Box>
         </Box>
       </div>
     </div>
   );
-}
+};
 
 export default User;

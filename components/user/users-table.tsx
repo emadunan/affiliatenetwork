@@ -1,21 +1,22 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { UserWithMeta } from '@prisma/client/scalar';
-import { Avatar, IconButton } from '@mui/material';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { UserWithMeta } from "@prisma/client/scalar";
+import { Avatar, IconButton } from "@mui/material";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { useRouter } from "next/router";
 
 interface UsersTableProps {
   users: UserWithMeta[];
 }
 
 const UsersTable: React.FC<UsersTableProps> = (props) => {
-
+  const router = useRouter();
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -35,19 +36,31 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
           {props.users.map((row, idx) => (
             <TableRow
               key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {idx + 1}
               </TableCell>
-              <TableCell><Avatar alt={row.UserMeta?.firstName} src={row.image as string}/></TableCell>
+              <TableCell>
+                <Avatar
+                  alt={row.userMeta?.firstName}
+                  src={row.image as string}
+                />
+              </TableCell>
               <TableCell>{row.email}</TableCell>
-              <TableCell>{row.UserMeta?.firstName}</TableCell>
-              <TableCell>{row.UserMeta?.lastName}</TableCell>
-              <TableCell>{row.UserMeta?.city}</TableCell>
-              <TableCell>{row.UserMeta?.last_login.toString()}</TableCell>
+              <TableCell>{row.userMeta?.firstName}</TableCell>
+              <TableCell>{row.userMeta?.lastName}</TableCell>
+              <TableCell>{row.userMeta?.city}</TableCell>
+              <TableCell>{`${new Date(
+                row.userMeta?.last_login!
+              ).toLocaleDateString()} | ${new Date(
+                row.userMeta?.last_login!
+              ).toLocaleTimeString()}`}</TableCell>
               <TableCell align="right">
-                <IconButton aria-label="delete">
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => router.push(`/users/${row.id}`)}
+                >
                   <ManageAccountsIcon />
                 </IconButton>
               </TableCell>
@@ -57,6 +70,6 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
       </Table>
     </TableContainer>
   );
-}
+};
 
 export default UsersTable;

@@ -14,11 +14,15 @@ const Users: FC = () => {
       .then((users) => setUsers(users));
   }, []);
 
-  return <div>
-    {(users && users?.length > 0) && (
-      <VisitorsTable users={users.filter(user => !user.UserMeta?.privilege)} />
-    )}
-  </div>;
+  return (
+    <div>
+      {users && users?.length > 0 && (
+        <VisitorsTable
+          users={users.filter((user) => !user.userMeta?.privilege)}
+        />
+      )}
+    </div>
+  );
 };
 
 export default Users;

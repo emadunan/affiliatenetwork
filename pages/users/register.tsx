@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { FC } from "react";
 
-import LinearStepper from "../../components/ui/h-linear-stepper";
+import LinearStepper from "../../components/ui/register-form";
 
 const Register: FC = () => {
   return (

@@ -31,12 +31,12 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { UserMeta } from "@prisma/client";
 
 const steps = ["Basic Info", "Traffic Sources", "Create Profile"];
 
-export default function HorizontalLinearStepper() {
+const RegisterForm: React.FC = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
@@ -165,8 +165,11 @@ export default function HorizontalLinearStepper() {
         body: JSON.stringify(newUser),
       })
         .then((response) => response.json())
-        .then((data) => console.log(data));
-      router.replace("/coupons");
+        .then((data) => {
+          console.log(data);
+          router.push("/coupons");
+        })
+        .then();
     }
   }
 
@@ -714,4 +717,6 @@ export default function HorizontalLinearStepper() {
       )}
     </Box>
   );
-}
+};
+
+export default RegisterForm;
