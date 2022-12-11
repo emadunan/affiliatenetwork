@@ -31,11 +31,11 @@ const Coupons: FC = () => {
               const transformedItems = items.flatMap((item: any) =>
                 item.coupons.map((coupon: any) => ({
                   couponId: `${item.id}-${coupon.coupon}`,
-                  campaignId: item.id,
-                  campaignName: item.name,
-                  campaignCategory: item.category,
                   coupon_code: coupon.coupon,
                   coupon_ad_set: coupon.ad_set,
+                  coupon_countries: coupon.countries,
+                  campaignName: item.name,
+                  campaignCategory: item.category,
                   coupon_network: "boostiny",
                   coupon_source: "api",
                 }))

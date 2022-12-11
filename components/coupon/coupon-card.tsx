@@ -13,17 +13,17 @@ interface CouponCardProps {
 const CouponCard: React.FC<CouponCardProps> = (props) => {
   const {
     couponId,
-    campaignId,
     campaignName,
     campaignCategory,
     coupon_code,
     coupon_ad_set,
+    coupon_countries,
     coupon_network,
     coupon_source,
   } = props.coupon;
 
   return (
-    <Card sx={{ width: 200, textAlign: "center", margin: 2 }}>
+    <Card sx={{ width: 200, minHeight: 250 , textAlign: "center", margin: 2 }}>
       <CardContent>
         <Typography color="text.secondary" gutterBottom>
           {campaignName}
@@ -38,7 +38,7 @@ const CouponCard: React.FC<CouponCardProps> = (props) => {
           {coupon_ad_set}
         </Box>
         <Typography variant="body1" sx={{ m: 1 }}>
-          Beshoy 10%, Nadia 50%
+          {(coupon_countries) && coupon_countries.map((country: string) => (<span>{country}, </span>))}
         </Typography>
       </CardContent>
       <CardActions className="flex items-center justify-between">
