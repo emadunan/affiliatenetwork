@@ -1,15 +1,18 @@
 import { FC } from "react";
 import useSWR from "swr";
-import { Avatar, Box, Divider } from "@mui/material";
+import { Avatar, Box, Button, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import { UserWithMeta } from "@prisma/client/scalar";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const User: FC = () => {
+  const router = useRouter();
   const {
     query: { id },
-  } = useRouter();
+  } = router;
 
   const { data: user, error } = useSWR<UserWithMeta>(
     `/api/users/${id}`,
@@ -19,15 +22,35 @@ const User: FC = () => {
   return (
     <div>
       <div>
-        <Divider sx={{ my: 4 }}>
+        <Divider sx={{ mt: 4 }}>
           <Avatar
             sx={{ width: 99, height: 99 }}
             alt={user?.email || ""}
             src={user?.image as string}
           />
         </Divider>
+        <Box component="div" className="flex justify-between">
+          <p className="mx-4 my-2">{`E-mail: ${user?.email}`}</p>
+          <Box component="div">
+            <Button
+              variant="outlined"
+              color="info"
+              startIcon={<EditIcon />}
+              className="mx-1"
+              onClick={() => router.push(`/users/${id}/edit`)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              className="mx-1"
+            >
+              Delete
+            </Button>
+          </Box>
+        </Box>
         <Box component="div" className="flex flex-wrap justify-around">
-          <p className="mx-4 my-2">{`E-Mail: ${user?.email}`}</p>
           <p className="mx-4 my-2">{`First Name: ${user?.userMeta?.firstName}`}</p>
           <p className="mx-4 my-2">{`Last Name: ${user?.userMeta?.lastName}`}</p>
           <p className="mx-4 my-2">{`Country: ${user?.userMeta?.country}`}</p>

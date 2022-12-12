@@ -23,7 +23,7 @@ const CouponCard: React.FC<CouponCardProps> = (props) => {
   } = props.coupon;
 
   return (
-    <Card sx={{ width: 200, minHeight: 250 , textAlign: "center", margin: 2 }}>
+    <Card sx={{ width: 200, minHeight: 250, textAlign: "center", margin: 2 }}>
       <CardContent>
         <Typography color="text.secondary" gutterBottom>
           {campaignName}
@@ -38,7 +38,10 @@ const CouponCard: React.FC<CouponCardProps> = (props) => {
           {coupon_ad_set}
         </Box>
         <Typography variant="body1" sx={{ m: 1 }}>
-          {(coupon_countries) && coupon_countries.map((country: string) => (<span>{country}, </span>))}
+          {coupon_countries &&
+            coupon_countries.map((country: string) => (
+              <span key={country}>{country}, </span>
+            ))}
         </Typography>
       </CardContent>
       <CardActions className="flex items-center justify-between">

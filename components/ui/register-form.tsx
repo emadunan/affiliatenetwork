@@ -54,7 +54,7 @@ const RegisterForm: React.FC = () => {
     setWs_appCategory(e.target.value);
   };
 
-  // Input refs
+  // Input states
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [country, setCountry] = React.useState("");
@@ -86,6 +86,7 @@ const RegisterForm: React.FC = () => {
     setWhatsNumber(event.target.value);
   }
 
+  // Input refs
   const companyNameInputRef = React.useRef<HTMLInputElement | null>(null);
   const websiteLinkInputRef = React.useRef<HTMLInputElement | null>(null);
 

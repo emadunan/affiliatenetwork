@@ -49,7 +49,6 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
   );
 
   const { data: session, status } = useSession();
-  console.log(session);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -92,6 +91,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
 
   const handleClickActionItem = (event: NavClickEvent) => {
     switch (event.target.innerText) {
+      case "Profile":
+        router.push(`/users/${session?.user.userId}`);
+        break;
+
       case "Logout":
         signOut({ callbackUrl: "/" });
         break;

@@ -1,4 +1,4 @@
-import { UserMeta } from "@prisma/client";
+import { User, UserMeta } from "@prisma/client";
 import { UserWithMeta } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
@@ -28,5 +28,40 @@ export async function getOneUser(id: string): Promise<UserWithMeta | null> {
       userMeta: true,
     }
   });
+}
+
+export async function delOneUser(id: string): Promise<User> {
+  await db.userMeta.delete({
+    where: {
+      userId: id,
+    }
+  });
+
+  await db.account.deleteMany({
+    where: {
+      userId: id,
+    }
+  });
+
+  return await db.user.delete({
+    where: {
+      id,
+    }
+  });
+}
+
+export async function modOneUser(user: UserWithMeta) {
+  return await db.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      userMeta: {
+        update: {
+          city: "",
+        }
+      }
+    }
+  })
 }
 
