@@ -115,6 +115,54 @@ const EditUser: FC = () => {
     setWs_appCategory(user?.userMeta?.ws_appCategory || "");
   }, [user]);
 
+  async function updateProfileHandler() {
+    const userData = {
+      userMeta: {
+        firstName,
+        lastName,
+        country,
+        city,
+        phoneNumber,
+        whatsNumber,
+        companyName: companyNameInputRef.current?.value,
+        websiteLink: websiteLinkInputRef.current?.value,
+        ws_webSiteName: ws_webSiteNameInputRef.current?.value,
+        ws_appCategory,
+        mb_search: mb_searchInputRef.current?.value,
+        mb_social: mb_socialInputRef.current?.value,
+        mb_native: mb_nativeInputRef.current?.value,
+        mb_display: mb_displayInputRef.current?.value,
+        mb_video: mb_videoInputRef.current?.value,
+        mb_others: mb_othersInputRef.current?.value,
+        sm_facebook: sm_facebookInputRef.current?.value,
+        sm_twitter: sm_twitterInputRef.current?.value,
+        sm_instagram: sm_instagramInputRef.current?.value,
+        sm_pinterest: sm_pinterestInputRef.current?.value,
+        sm_youtube: sm_youtubeInputRef.current?.value,
+        sm_linkedin: sm_linkedinInputRef.current?.value,
+        sm_whatsapp: sm_whatsappInputRef.current?.value,
+        sm_telegram: sm_telegramInputRef.current?.value,
+        sm_snapchat: sm_snapchatInputRef.current?.value,
+        sm_tiktok: sm_snapchatInputRef.current?.value,
+      }
+    };
+
+    const response = await fetch(`/api/users/${user?.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userData)
+    });
+
+    if (!response.ok) console.error(response.statusText);
+    
+    const updatedUser = await response.json();
+
+    console.log(updatedUser);
+    
+  }
+
   return (
     <div>
       {user && (
@@ -142,59 +190,72 @@ const EditUser: FC = () => {
               color="primary"
               startIcon={<SaveIcon />}
               className="mx-1"
+              onClick={updateProfileHandler}
             >
               Save
             </Button>
           </Box>
           <Box component="div" className="flex flex-wrap justify-around">
-            <TextField
-              id="standard-basic"
-              label="First Name"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={firstName}
-              onChange={handleFirstNameChange}
-            />
-            <TextField
-              id="standard-basic"
-              label="Last Name"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={lastName}
-              onChange={handleLastNameChange}
-            />
-            <TextField
-              id="standard-basic"
-              label="Country"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={country}
-              onChange={handleCountryChange}
-            />
-            <TextField
-              id="standard-basic"
-              label="City"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={city}
-              onChange={handleCityChange}
-            />
-            <TextField
-              id="standard-basic"
-              label="Phone Number"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-            />
-            <TextField
-              id="standard-basic"
-              label="Whats Number"
-              variant="standard"
-              sx={{ m: 2 }}
-              value={whatsNumber}
-              onChange={handleWhatsNumberChange}
-            />
+            {firstName && (
+              <TextField
+                id="standard-basic"
+                label="First Name"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={firstName}
+                onChange={handleFirstNameChange}
+              />
+            )}
+            {lastName && (
+              <TextField
+                id="standard-basic"
+                label="Last Name"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={lastName}
+                onChange={handleLastNameChange}
+              />
+            )}
+            {country && (
+              <TextField
+                id="standard-basic"
+                label="Country"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={country}
+                onChange={handleCountryChange}
+              />
+            )}
+            {city && (
+              <TextField
+                id="standard-basic"
+                label="City"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={city}
+                onChange={handleCityChange}
+              />
+            )}
+            {phoneNumber && (
+              <TextField
+                id="standard-basic"
+                label="Phone Number"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+              />
+            )}
+            {whatsNumber && (
+              <TextField
+                id="standard-basic"
+                label="Whats Number"
+                variant="standard"
+                sx={{ m: 2 }}
+                value={whatsNumber}
+                onChange={handleWhatsNumberChange}
+              />
+            )}
             <TextField
               id="standard-basic"
               label="Company Name"
@@ -227,44 +288,46 @@ const EditUser: FC = () => {
                 inputRef={ws_webSiteNameInputRef}
                 defaultValue={user.userMeta?.ws_webSiteName}
               />
-              <FormControl sx={{ my: 2 }}>
-                <FormLabel id="demo-row-radio-buttons-group-label">
-                  Category
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  value={ws_appCategory}
-                  onChange={handleAppCategoryChange}
-                >
-                  <FormControlLabel
-                    value="coupon"
-                    control={<Radio />}
-                    label="Coupon"
-                  />
-                  <FormControlLabel
-                    value="cashback"
-                    control={<Radio />}
-                    label="Cashback"
-                  />
-                  <FormControlLabel
-                    value="price-comparison"
-                    control={<Radio />}
-                    label="Price Comparison"
-                  />
-                  <FormControlLabel
-                    value="content"
-                    control={<Radio />}
-                    label="Content"
-                  />
-                  <FormControlLabel
-                    value="others"
-                    control={<Radio />}
-                    label="Others"
-                  />
-                </RadioGroup>
-              </FormControl>
+              {ws_appCategory && (
+                <FormControl sx={{ my: 2 }}>
+                  <FormLabel id="demo-row-radio-buttons-group-label">
+                    Category
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={ws_appCategory}
+                    onChange={handleAppCategoryChange}
+                  >
+                    <FormControlLabel
+                      value="coupon"
+                      control={<Radio />}
+                      label="Coupon"
+                    />
+                    <FormControlLabel
+                      value="cashback"
+                      control={<Radio />}
+                      label="Cashback"
+                    />
+                    <FormControlLabel
+                      value="price-comparison"
+                      control={<Radio />}
+                      label="Price Comparison"
+                    />
+                    <FormControlLabel
+                      value="content"
+                      control={<Radio />}
+                      label="Content"
+                    />
+                    <FormControlLabel
+                      value="others"
+                      control={<Radio />}
+                      label="Others"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              )}
             </Box>
           </Box>
           <Box component="div" sx={{ my: 4 }}>

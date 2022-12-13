@@ -50,16 +50,18 @@ export async function delOneUser(id: string): Promise<User> {
   });
 }
 
-export async function modOneUser(user: UserWithMeta) {
+export async function modOneUser(user: Partial<UserWithMeta>, id: string) {
+  const { userMeta } = user;
+
+  if (!userMeta) throw new Error("Profile can't be modified without data");
+  
   return await db.user.update({
     where: {
-      id: user.id
+      id,
     },
     data: {
       userMeta: {
-        update: {
-          city: "",
-        }
+        update: userMeta
       }
     }
   })
