@@ -143,7 +143,7 @@ const EditUser: FC = () => {
         sm_whatsapp: sm_whatsappInputRef.current?.value,
         sm_telegram: sm_telegramInputRef.current?.value,
         sm_snapchat: sm_snapchatInputRef.current?.value,
-        sm_tiktok: sm_snapchatInputRef.current?.value,
+        sm_tiktok: sm_tiktokInputRef.current?.value,
       }
     };
 
@@ -159,7 +159,7 @@ const EditUser: FC = () => {
     
     const updatedUser = await response.json();
 
-    console.log(updatedUser);
+    router.back();
     
   }
 
