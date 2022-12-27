@@ -10,10 +10,6 @@ export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
   adapter: PrismaAdapter(db),
   providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -26,6 +22,12 @@ export const authOptions: AuthOptions = {
   debug: true,
   secret: "d6bbcfb356bfcd217331983b911cabe3a8ce70289d330f06e988033cf1430695",
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
     async session({ session, token, user }) {
       session.user.userId = user.id;
 
