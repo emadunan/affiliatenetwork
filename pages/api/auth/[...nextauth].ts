@@ -1,5 +1,4 @@
 import NextAuth, { AuthOptions } from "next-auth";
-import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
@@ -35,9 +34,9 @@ export const authOptions: AuthOptions = {
         where: { userId: user.id },
       });
 
-      if (currUser) {
-        session.user.privilege = currUser.privilege;
-      }
+      // if (currUser) {
+      //   session.user.privilege = currUser.privilege;
+      // }
 
       return session;
     },
