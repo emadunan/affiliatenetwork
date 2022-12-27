@@ -19,6 +19,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   debug: true,
+  secret: "d6bbcfb356bfcd217331983b911cabe3a8ce70289d330f06e988033cf1430695",
   callbacks: {
     async session({ session, token, user }) {
       session.user.userId = user.id;
