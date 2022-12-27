@@ -20,27 +20,27 @@ export const authOptions: AuthOptions = {
   ],
   debug: true,
   secret: "d6bbcfb356bfcd217331983b911cabe3a8ce70289d330f06e988033cf1430695",
-  callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl;
-    },
-    async session({ session, token, user }) {
-      session.user.userId = user.id;
+  // callbacks: {
+  //   async signIn({ user, account, profile, email, credentials }) {
+  //     return true;
+  //   },
+  //   async redirect({ url, baseUrl }) {
+  //     return baseUrl;
+  //   },
+  //   async session({ session, token, user }) {
+  //     session.user.userId = user.id;
 
-      const currUser = await db.userMeta.findFirst({
-        where: { userId: user.id },
-      });
+  //     const currUser = await db.userMeta.findFirst({
+  //       where: { userId: user.id },
+  //     });
 
-      // if (currUser) {
-      //   session.user.privilege = currUser.privilege;
-      // }
+  //     if (currUser) {
+  //       session.user.privilege = currUser.privilege;
+  //     }
 
-      return session;
-    },
-  },
+  //     return session;
+  //   },
+  // },
 };
 
 export default NextAuth(authOptions);
