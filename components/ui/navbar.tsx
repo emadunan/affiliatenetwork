@@ -289,7 +289,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {session.user.image && <Avatar alt="Remy Sharp" src={session.user.image} />}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -320,8 +320,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               <Button
                 variant="contained"
                 startIcon={<LoginIcon />}
-                // onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
-                onClick={() => signIn()}
+                onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
               >
                 Login
               </Button>
