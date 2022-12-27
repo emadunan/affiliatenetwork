@@ -320,7 +320,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               <Button
                 variant="contained"
                 startIcon={<LoginIcon />}
-                onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
+                // onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
+                onClick={() => signIn()}
               >
                 Login
               </Button>
