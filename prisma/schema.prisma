@@ -49,6 +49,13 @@ model User {
   coupons       UserCoupons[]
 }
 
+model Campaign {
+  id       String @id
+  title    String
+  category String
+  desc     String?
+}
+
 model Coupon {
   id               String        @id @default(cuid())
   code             String

@@ -20,12 +20,14 @@ const Coupons: FC = () => {
 
       if (session) {
         if (["admin", "publisher"].includes(privilege as string)) {
-          fetch("/api/campaigns")
+          fetch("/api/boostiny/campaigns")
             .then((response) => {
               if (!response.ok) return console.log(response);
               return response.json();
             })
             .then((data) => {
+              console.log(data);
+              
               const items = data.payload.data;
               console.log(items);
               const transformedItems = items.flatMap((item: any) =>

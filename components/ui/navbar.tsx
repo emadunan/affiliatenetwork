@@ -83,6 +83,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
         router.push("/users/visitors");
         break;
 
+        case "Manage":
+          router.push("/manage");
+          break;
+
       default:
         router.push("/");
         break;
@@ -281,6 +285,21 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                 }}
               >
                 Visitors
+              </Button>
+            )}
+            {session?.user.privilege === "admin" && (
+              <Button
+                onClick={handleClickNavItem}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                Manage
               </Button>
             )}
           </Box>
