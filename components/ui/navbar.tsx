@@ -308,7 +308,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {session.user.image && <Avatar alt="Remy Sharp" src={session.user.image} />}
+                  {session.user.image && <Avatar alt={session.user.name as string} src={session.user.image} />}
                 </IconButton>
               </Tooltip>
               <Menu

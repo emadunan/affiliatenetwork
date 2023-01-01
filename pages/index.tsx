@@ -45,6 +45,16 @@ const Home: FC = () => {
             Register Now
           </Button>
         )}
+        {session?.user.privilege === "publisher" && (
+          <Button
+            className="bg-[#BE3F3F]"
+            variant="contained"
+            endIcon={<AppRegistrationIcon />}
+            onClick={() => router.replace("/campaigns")}
+          >
+            Register Now
+          </Button>
+        )}
       </div>
     </div>
   );
