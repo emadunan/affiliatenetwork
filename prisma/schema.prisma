@@ -50,10 +50,12 @@ model User {
 }
 
 model Campaign {
-  id       String @id
-  title    String
-  category String
-  desc     String?
+  id         String  @id
+  title      String
+  title_c    String
+  category   String
+  category_c String
+  desc       String?
 }
 
 model Coupon {

@@ -64,7 +64,9 @@ export default async function handler(
     const cleanedCampaigns = allCampaigns.map((campaign: any): Campaign => ({
       id: campaign.id.toString(),
       title: campaign.name,
+      title_c: campaign.name.toLowerCase(),
       category: campaign.category,
+      category_c: campaign.category.toLowerCase(),
       desc: campaign.campaign_description.description,
     }));
 
