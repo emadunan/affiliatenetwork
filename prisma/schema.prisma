@@ -38,24 +38,36 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   userMeta      UserMeta?
-  coupons       UserCoupons[]
+  userCampaigns UserCampaigns[]
+  userCoupons   UserCoupons[]
 }
 
 model Campaign {
-  id         String  @id
-  title      String
-  title_c    String
-  category   String
-  category_c String
-  desc       String?
+  id            String          @id
+  title         String
+  title_c       String
+  category      String
+  category_c    String
+  desc          String?
+  userCampaigns UserCampaigns[]
+}
+
+model UserCampaigns {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  campaignId String
+  status     String
+
+  @@id([userId, campaignId])
 }
 
 model Coupon {
@@ -66,7 +78,7 @@ model Coupon {
   source           String
   campaignName     String
   campaignCategory String
-  users            UserCoupons[]
+  userCoupons      UserCoupons[]
 }
 
 model UserCoupons {

@@ -5,8 +5,8 @@ import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material";
 import { arEG } from "@mui/material/locale";
 import { SessionProvider } from "next-auth/react";
-import { store } from '../store'
-import { Provider } from 'react-redux'
+import { store } from "../store";
+import { Provider } from "react-redux";
 
 const theme = createTheme(
   {

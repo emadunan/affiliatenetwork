@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { signIn, useSession } from "next-auth/react";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 
 const Home: FC = () => {
   const { data: session, status } = useSession();
@@ -49,10 +50,10 @@ const Home: FC = () => {
           <Button
             className="bg-[#BE3F3F]"
             variant="contained"
-            endIcon={<AppRegistrationIcon />}
+            endIcon={<RequestQuoteIcon />}
             onClick={() => router.replace("/campaigns")}
           >
-            Register Now
+            Make a Request Now
           </Button>
         )}
       </div>

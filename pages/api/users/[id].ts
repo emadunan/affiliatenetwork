@@ -3,7 +3,7 @@ import { getOneUser, modOneUser } from "../../../handlers/users";
 import { UserWithMeta } from "@prisma/client/scalar";
 import { User } from "@prisma/client";
 
-type Data = string | User |UserWithMeta;
+type Data = string | User | UserWithMeta;
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,14 +33,12 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     try {
-
       const userId = req.query.id;
       const userData: Partial<UserWithMeta> = req.body;
 
       const user = await modOneUser(userData, userId as string);
 
       res.status(200).json(user);
-      
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(400).json(error.message);

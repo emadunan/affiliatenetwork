@@ -18,11 +18,14 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { page } = req.query;
-    const response = await fetch(`${boostinyApiUrl}/publisher/campaigns?page=${page || 1}`, {
-      headers: {
-        Authorization: boostinyApiKey,
-      },
-    });
+    const response = await fetch(
+      `${boostinyApiUrl}/publisher/campaigns?page=${page || 1}`,
+      {
+        headers: {
+          Authorization: boostinyApiKey,
+        },
+      }
+    );
 
     if (!response.ok)
       return res.status(400).json("Couldn't fetch campaigns data!");
@@ -34,41 +37,50 @@ export default async function handler(
     let allCampaigns: any[];
 
     const { page } = req.query;
-    const response = await fetch(`${boostinyApiUrl}/publisher/campaigns?page=${page || 1}`, {
-      headers: {
-        Authorization: boostinyApiKey,
-      },
-    });
+    const response = await fetch(
+      `${boostinyApiUrl}/publisher/campaigns?page=${page || 1}`,
+      {
+        headers: {
+          Authorization: boostinyApiKey,
+        },
+      }
+    );
 
-    if (!response.ok)
-      return res.status(400).json(response.statusText);
+    if (!response.ok) return res.status(400).json(response.statusText);
 
     const result = await response.json();
 
     allCampaigns = result.payload.data;
 
-    const pages = Math.ceil(result.payload.pagination.total / result.payload.pagination.perPage);
+    const pages = Math.ceil(
+      result.payload.pagination.total / result.payload.pagination.perPage
+    );
 
     for (let i = 2; i <= pages; i++) {
-      const response = await fetch(`${boostinyApiUrl}/publisher/campaigns?page=${i || 1}`, {
-        headers: {
-          Authorization: boostinyApiKey,
-        },
-      });
+      const response = await fetch(
+        `${boostinyApiUrl}/publisher/campaigns?page=${i || 1}`,
+        {
+          headers: {
+            Authorization: boostinyApiKey,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error(response.statusText);
       const result = await response.json();
       allCampaigns = [...allCampaigns, ...result.payload.data];
     }
 
-    const cleanedCampaigns = allCampaigns.map((campaign: any): Campaign => ({
-      id: campaign.id.toString(),
-      title: campaign.name,
-      title_c: campaign.name.toLowerCase(),
-      category: campaign.category,
-      category_c: campaign.category.toLowerCase(),
-      desc: campaign.campaign_description.description,
-    }));
+    const cleanedCampaigns = allCampaigns.map(
+      (campaign: any): Campaign => ({
+        id: campaign.id.toString(),
+        title: campaign.name,
+        title_c: campaign.name.toLowerCase(),
+        category: campaign.category,
+        category_c: campaign.category.toLowerCase(),
+        desc: campaign.campaign_description.description,
+      })
+    );
 
     await updateCampaignsData(cleanedCampaigns);
 

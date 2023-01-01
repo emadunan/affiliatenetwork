@@ -83,9 +83,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
         router.push("/users/visitors");
         break;
 
-        case "Manage":
-          router.push("/manage");
-          break;
+      case "Manage":
+        router.push("/manage");
+        break;
 
       default:
         router.push("/");
@@ -308,7 +308,12 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  {session.user.image && <Avatar alt={session.user.name as string} src={session.user.image} />}
+                  {session.user.image && (
+                    <Avatar
+                      alt={session.user.name as string}
+                      src={session.user.image}
+                    />
+                  )}
                 </IconButton>
               </Tooltip>
               <Menu

@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID as string,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
-    })
+    }),
   ],
   debug: true,
   secret: "d6bbcfb356bfcd217331983b911cabe3a8ce70289d330f06e988033cf1430695",

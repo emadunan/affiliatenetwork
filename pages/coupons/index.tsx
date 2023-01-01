@@ -27,7 +27,7 @@ const Coupons: FC = () => {
             })
             .then((data) => {
               console.log(data);
-              
+
               const items = data.payload.data;
               console.log(items);
               const transformedItems = items.flatMap((item: any) =>

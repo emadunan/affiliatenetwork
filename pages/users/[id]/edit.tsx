@@ -144,23 +144,22 @@ const EditUser: FC = () => {
         sm_telegram: sm_telegramInputRef.current?.value,
         sm_snapchat: sm_snapchatInputRef.current?.value,
         sm_tiktok: sm_tiktokInputRef.current?.value,
-      }
+      },
     };
 
     const response = await fetch(`/api/users/${user?.id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(userData),
     });
 
     if (!response.ok) console.error(response.statusText);
-    
+
     const updatedUser = await response.json();
 
     router.back();
-    
   }
 
   return (
