@@ -67,8 +67,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
 
   const handleClickNavItem = (event: NavClickEvent) => {
     switch (event.target.innerText) {
-      case "Coupons":
-        router.push("/coupons");
+      case "Campaigns":
+        router.push("/campaigns");
         break;
 
       case "Performance":
@@ -166,7 +166,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               </MenuItem>
               {status === "authenticated" && (
                 <MenuItem onClick={handleClickNavItem}>
-                  <Typography textAlign="center">Coupons</Typography>
+                  <Typography textAlign="center">Campaigns</Typography>
                 </MenuItem>
               )}
 
@@ -235,7 +235,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                   textTransform: "capitalize",
                 }}
               >
-                Coupons
+                Campaigns
               </Button>
             )}
 
@@ -344,7 +344,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               <Button
                 variant="contained"
                 startIcon={<LoginIcon />}
-                onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
+                onClick={() => signIn(undefined, { callbackUrl: "/campaigns" })}
               >
                 Login
               </Button>

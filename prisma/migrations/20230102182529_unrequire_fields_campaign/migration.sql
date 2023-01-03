@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Campaign" ALTER COLUMN "category" DROP NOT NULL,
+ALTER COLUMN "category_c" DROP NOT NULL,
+ALTER COLUMN "campaign_manager" DROP NOT NULL,
+ALTER COLUMN "logo" DROP NOT NULL;

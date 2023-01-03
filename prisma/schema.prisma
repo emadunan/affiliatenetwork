@@ -51,13 +51,32 @@ model User {
 }
 
 model Campaign {
-  id            String          @id
-  title         String
-  title_c       String
-  category      String
-  category_c    String
-  desc          String?
+  id                 String  @id @default(cuid())
+  network_id         String
+  network_name       String
+  logo               String?
+  campaign_type      String
+  title              String
+  title_c            String
+  category           String?
+  category_c         String?
+  campaign_manager   String?
+  desc_description   String?
+  desc_promotion     String?
+  desc_dos_and_donts String?
+  desc_creatives     String?
+  desc_website_url   String?
+
   userCampaigns UserCampaigns[]
+}
+
+model Coupon {
+  id              String        @id @default(cuid())
+  coupon          String
+  start_date      String
+  account_manager String
+  ad_set          String
+  userCoupons     UserCoupons[]
 }
 
 model UserCampaigns {
@@ -68,17 +87,6 @@ model UserCampaigns {
   status     String
 
   @@id([userId, campaignId])
-}
-
-model Coupon {
-  id               String        @id @default(cuid())
-  code             String
-  ad_set           String
-  network          String
-  source           String
-  campaignName     String
-  campaignCategory String
-  userCoupons      UserCoupons[]
 }
 
 model UserCoupons {

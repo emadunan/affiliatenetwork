@@ -71,18 +71,28 @@ export default async function handler(
       allCampaigns = [...allCampaigns, ...result.payload.data];
     }
 
-    const cleanedCampaigns = allCampaigns.map(
-      (campaign: any): Campaign => ({
-        id: campaign.id.toString(),
-        title: campaign.name,
-        title_c: campaign.name.toLowerCase(),
-        category: campaign.category,
-        category_c: campaign.category.toLowerCase(),
-        desc: campaign.campaign_description.description,
-      })
+    const transformedCampaigns = allCampaigns.map(
+      (campaign: any): Partial<Campaign> => {
+        return {
+          network_id: campaign.id.toString(),
+          network_name: "boostiny",
+          logo: campaign.advertiser.logo,
+          campaign_type: campaign.campaign_type,
+          campaign_manager: campaign.campaign_manager,
+          title: campaign.name,
+          title_c: campaign.name.toLowerCase(),
+          category: campaign.category,
+          category_c: campaign.category.toLowerCase(),
+          desc_description: campaign.campaign_description.description,
+          desc_creatives: campaign.campaign_description.creatives,
+          desc_promotion: campaign.campaign_description.promotion,
+          desc_dos_and_donts: campaign.campaign_description.dos_and_donts,
+          desc_website_url: campaign.campaign_description.website_url,
+        };
+      }
     );
 
-    await updateCampaignsData(cleanedCampaigns);
+    await updateCampaignsData(transformedCampaigns);
 
     res.status(200).json("Boostiny campaigns have been updated sucessfully");
   }
