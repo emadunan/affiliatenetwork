@@ -22,7 +22,7 @@ const Manage: FC = () => {
     <Box component="div" className="flex items-center justify-center">
       <Box component="div" className="flex">
         <Typography variant="h6" component="h6">
-          Update Boostiny's Campaigns
+          Update Boostiny&apos;s Campaigns
         </Typography>
         <Button
           variant="outlined"
