@@ -36,8 +36,12 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             <TableCell align="center">Logo</TableCell>
             <TableCell align="center">Name</TableCell>
             <TableCell align="center">Manager</TableCell>
-            {session?.user.privilege === "admin" && <TableCell align="center">Network</TableCell>}
-            {session?.user.privilege === "admin" && <TableCell align="center">Category</TableCell>}
+            {session?.user.privilege === "admin" && (
+              <TableCell align="center">Network</TableCell>
+            )}
+            {session?.user.privilege === "admin" && (
+              <TableCell align="center">Category</TableCell>
+            )}
             <TableCell align="center">Type</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -52,32 +56,34 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                 {idx + 1}
               </TableCell>
               <TableCell align="center">
-                <Avatar alt={row.title} src={row.logo || ''} />
+                <Avatar alt={row.title} src={row.logo || ""} />
               </TableCell>
               <TableCell align="center">{row.title}</TableCell>
-              {session?.user.privilege === "admin" && <TableCell align="center">{row.campaign_manager}</TableCell>}
-              {session?.user.privilege === "admin" && <TableCell align="center">{row.network_name}</TableCell>}
+              {session?.user.privilege === "admin" && (
+                <TableCell align="center">{row.campaign_manager}</TableCell>
+              )}
+              {session?.user.privilege === "admin" && (
+                <TableCell align="center">{row.network_name}</TableCell>
+              )}
               <TableCell align="center">{row.category}</TableCell>
               <TableCell align="center">{row.campaign_type}</TableCell>
-              {
-                session?.user.privilege === "publisher" && (
-                  <TableCell align="right">
-                    {row.userCampaigns?.length &&
-                      row.userCampaigns.find(
-                        (item) => item.userId === session?.user.userId
-                      ) ? (
-                      "Pendding"
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        onClick={(_e) => handleMakeRequest(row.id)}
-                      >
-                        Make a Request
-                      </Button>
-                    )}
-                  </TableCell>
-                )
-              }
+              {session?.user.privilege === "publisher" && (
+                <TableCell align="right">
+                  {row.userCampaigns?.length &&
+                  row.userCampaigns.find(
+                    (item) => item.userId === session?.user.userId
+                  ) ? (
+                    "Pendding"
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      onClick={(_e) => handleMakeRequest(row.id)}
+                    >
+                      Make a Request
+                    </Button>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

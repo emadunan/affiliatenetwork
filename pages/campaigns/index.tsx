@@ -17,7 +17,7 @@ const Campaigns: FC = () => {
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     const text = event.target.value.toLowerCase();
     const filteredResult = campaigns?.filter(
-      (item) => item.title_c.includes(text) || item.category_c.includes(text)
+      (item) => item.title_c.includes(text) || item.category_c?.includes(text)
     );
     setFilteredCampaigns(filteredResult);
   };
