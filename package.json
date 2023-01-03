@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:f": "next lint --fix"
+    "lint:f": "next lint --fix",
+    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -20,6 +21,7 @@
     "@types/node": "18.11.11",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
+    "dotenv-cli": "^6.0.0",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "next": "13.0.6",
