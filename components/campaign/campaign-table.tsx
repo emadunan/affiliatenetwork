@@ -28,7 +28,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
   };
 
   if (!session?.user.privilege) {
-    return "Please register that you can start make requests or if you have just registered refresh the page!"
+    return <div>"Please register that you can start make requests or if you have just registered refresh the page!"</div>
   }
 
   return (
