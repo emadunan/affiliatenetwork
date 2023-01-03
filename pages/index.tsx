@@ -31,7 +31,7 @@ const Home: FC = () => {
             className="bg-[#BE3F3F]"
             variant="contained"
             startIcon={<LoginIcon />}
-            onClick={() => signIn(undefined, { callbackUrl: "/coupons" })}
+            onClick={() => signIn(undefined, { callbackUrl: "/campaigns" })}
           >
             Login Now
           </Button>

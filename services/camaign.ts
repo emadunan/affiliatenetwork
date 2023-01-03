@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CampaignWithUser } from '@prisma/client/scalar';
+import { CampaignWithUser, UserWithCampaigns } from '@prisma/client/scalar';
 
 // Define a service using a base URL and expected endpoints
 export const campaignApi = createApi({
@@ -11,8 +11,9 @@ export const campaignApi = createApi({
       query: () => `/`,
       providesTags: ["Requested"]
     }),
-    getUserCampaigns: builder.query<any, string>({
-      query: (id) => `/${id}`
+    getUserCampaigns: builder.query<UserWithCampaigns, string|undefined>({
+      query: (id) => `/${id}`,
+      providesTags: ["Requested"]
     }),
     makeCampaignRequest: builder.mutation<void, { userId: string | undefined, campaignId: string }>({
       query: (payload) => ({
@@ -30,4 +31,4 @@ export const campaignApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllCampaignsQuery, useMakeCampaignRequestMutation } = campaignApi;
+export const { useGetAllCampaignsQuery, useMakeCampaignRequestMutation, useGetUserCampaignsQuery } = campaignApi;

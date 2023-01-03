@@ -1,9 +1,9 @@
 import { User, UserMeta } from "@prisma/client";
-import { UserWithMeta } from "@prisma/client/scalar";
+import { UserWithCampaigns, UserWithMeta } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
 export async function addUserMeta(userData: UserMeta) {
-  return await db.userMeta.create({data: userData});
+  return await db.userMeta.create({ data: userData });
 }
 
 export async function getAllUsers() {
@@ -26,6 +26,21 @@ export async function getOneUser(id: string): Promise<UserWithMeta | null> {
     },
     include: {
       userMeta: true,
+    }
+  });
+}
+
+export async function getOneUserWithCampaigns(id: string): Promise<UserWithCampaigns | null> {
+  return await db.user.findFirst({
+    where: {
+      id
+    },
+    include: {
+      userCampaigns: {
+        include: {
+          campaign: true,
+        }
+      }
     }
   });
 }
@@ -54,7 +69,7 @@ export async function modOneUser(user: Partial<UserWithMeta>, id: string) {
   const { userMeta } = user;
 
   if (!userMeta) throw new Error("Profile can't be modified without data");
-  
+
   return await db.user.update({
     where: {
       id,

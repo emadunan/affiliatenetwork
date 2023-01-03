@@ -168,7 +168,7 @@ const RegisterForm: React.FC = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          router.push("/coupons");
+          router.push("/campaigns");
         })
         .then();
     }

@@ -29,6 +29,6 @@ declare module "@prisma/client/scalar" {
       }
     }
   });
-  export type UserWithCampaigns = Prisma.CampaignGetPayload<typeof userWithCampaigns>;
+  export type UserWithCampaigns = Prisma.UserGetPayload<typeof userWithCampaigns>;
 
 }

@@ -6,10 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { CampaignWithUser } from "@prisma/client/scalar";
-import { useMakeCampaignRequestMutation } from "../../services/camaign";
+import { useGetUserCampaignsQuery, useMakeCampaignRequestMutation } from "../../services/camaign";
 
 interface CampaignTableProps {
   campaigns: CampaignWithUser[];
@@ -18,7 +18,7 @@ interface CampaignTableProps {
 const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
   const { data: session } = useSession();
 
-  console.log(campaigns);
+  const { data: userWithcampaigns, isLoading } = useGetUserCampaignsQuery(session?.user.userId);
 
   const [setCampaignRequest, response] = useMakeCampaignRequestMutation();
 
@@ -26,6 +26,10 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
     const userId = session?.user.userId;
     setCampaignRequest({ userId, campaignId });
   };
+
+  if (!session?.user.privilege) {
+    return "Please register that you can start make requests or if you have just registered refresh the page!"
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -35,13 +39,13 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             <TableCell align="left">#</TableCell>
             <TableCell align="center">Logo</TableCell>
             <TableCell align="center">Name</TableCell>
-            <TableCell align="center">Manager</TableCell>
+            {session?.user.privilege === "admin" && (
+              <TableCell align="center">Manager</TableCell>
+            )}
             {session?.user.privilege === "admin" && (
               <TableCell align="center">Network</TableCell>
             )}
-            {session?.user.privilege === "admin" && (
-              <TableCell align="center">Category</TableCell>
-            )}
+            <TableCell align="center">Category</TableCell>
             <TableCell align="center">Type</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -68,16 +72,17 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               <TableCell align="center">{row.category}</TableCell>
               <TableCell align="center">{row.campaign_type}</TableCell>
               {session?.user.privilege === "publisher" && (
-                <TableCell align="right">
+                <TableCell align="center">
                   {row.userCampaigns?.length &&
-                  row.userCampaigns.find(
-                    (item) => item.userId === session?.user.userId
-                  ) ? (
-                    "Pendding"
+                    row.userCampaigns.find(
+                      (item) => item.userId === session?.user.userId
+                    ) ? (
+                    <Typography component="span" color="#BE3F3F">Pendding</Typography>
                   ) : (
                     <Button
                       variant="outlined"
                       onClick={(_e) => handleMakeRequest(row.id)}
+                      disabled={userWithcampaigns?.userCampaigns.length! > 2}
                     >
                       Make a Request
                     </Button>

@@ -26,8 +26,8 @@ const Manage: FC = () => {
         </Typography>
         <Button
           variant="outlined"
-          className="mx-6"
           onClick={onBoostinyCampaignUpdate}
+          sx={{mx: "1rem"}}
         >
           Update
         </Button>
