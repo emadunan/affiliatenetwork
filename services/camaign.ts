@@ -15,6 +15,10 @@ export const campaignApi = createApi({
       query: (id) => `/${id}`,
       providesTags: ["Requested"]
     }),
+    getUsersCampaignsReq: builder.query<any, void>({
+      query: () => `/requests`,
+      providesTags: ["Requested"],
+    }),
     makeCampaignRequest: builder.mutation<void, { userId: string | undefined, campaignId: string }>({
       query: (payload) => ({
         url: `/`,

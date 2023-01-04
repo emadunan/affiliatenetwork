@@ -27,7 +27,7 @@ const Manage: FC = () => {
         <Button
           variant="outlined"
           onClick={onBoostinyCampaignUpdate}
-          sx={{mx: "1rem"}}
+          sx={{ mx: "1rem" }}
         >
           Update
         </Button>

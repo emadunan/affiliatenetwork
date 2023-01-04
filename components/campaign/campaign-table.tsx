@@ -6,10 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Typography, Box } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { CampaignWithUser } from "@prisma/client/scalar";
-import { useGetUserCampaignsQuery, useMakeCampaignRequestMutation } from "../../services/camaign";
+import {
+  useGetUserCampaignsQuery,
+  useMakeCampaignRequestMutation,
+} from "../../services/camaign";
 
 interface CampaignTableProps {
   campaigns: CampaignWithUser[];
@@ -18,7 +21,9 @@ interface CampaignTableProps {
 const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
   const { data: session } = useSession();
 
-  const { data: userWithcampaigns, isLoading } = useGetUserCampaignsQuery(session?.user.userId);
+  const { data: userWithcampaigns, isLoading } = useGetUserCampaignsQuery(
+    session?.user.userId
+  );
 
   const [setCampaignRequest, response] = useMakeCampaignRequestMutation();
 
@@ -27,8 +32,46 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
     setCampaignRequest({ userId, campaignId });
   };
 
+  // Evaluate campaign against the current user request state and return the appropriate element
+  const getReqStatus = (userCampaigns: any[], campaignId: string) => {
+    const userCampaignsLen = userCampaigns.length;
+    const userCampaignReq: any = userCampaigns.find((item) => {
+      return (
+        item.userId === session?.user.userId &&
+        (item.status === "pending" || item.status === "assigned")
+      );
+    });
+
+    if (userCampaignsLen && userCampaignReq) {
+      return userCampaignReq.status === "pending" ? (
+        <Box component="span" color="#BE3F3F">
+          Pending
+        </Box>
+      ) : (
+        <Box component="span" color="#357a38">
+          Assigned
+        </Box>
+      );
+    } else {
+      return (
+        <Button
+          variant="outlined"
+          onClick={(_e) => handleMakeRequest(campaignId)}
+          disabled={userWithcampaigns?.userCampaigns.length! > 2}
+        >
+          Make a Request
+        </Button>
+      );
+    }
+  };
+
   if (!session?.user.privilege) {
-    return <div>Please register that you can start make requests or if you have just registered refresh the page!</div>
+    return (
+      <div>
+        Please register that you can start make requests or if you have just
+        registered refresh the page!
+      </div>
+    );
   }
 
   return (
@@ -73,11 +116,14 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               <TableCell align="center">{row.campaign_type}</TableCell>
               {session?.user.privilege === "publisher" && (
                 <TableCell align="center">
-                  {row.userCampaigns?.length &&
+                  {/* {row.userCampaigns?.length && 
                     row.userCampaigns.find(
-                      (item) => item.userId === session?.user.userId
+                      (item) => {
+                        console.log(item);
+                        return (item.userId === session?.user.userId) && (item.status === "pending")
+                      }
                     ) ? (
-                    <Typography component="span" color="#BE3F3F">Pendding</Typography>
+                    <Typography component="span" color="#BE3F3F">Pending</Typography>
                   ) : (
                     <Button
                       variant="outlined"
@@ -86,7 +132,8 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                     >
                       Make a Request
                     </Button>
-                  )}
+                  )} */}
+                  {getReqStatus(row.userCampaigns, row.id)}
                 </TableCell>
               )}
             </TableRow>

@@ -5,7 +5,6 @@ import CampaignTable from "../../components/campaign/campaign-table";
 import { useGetAllCampaignsQuery } from "../../services/camaign";
 
 const Campaigns: FC = () => {
-
   const { data: campaigns, isLoading } = useGetAllCampaignsQuery();
 
   const [filteredCampaigns, setFilteredCampaigns] =

@@ -39,6 +39,31 @@ export async function getOneUserWithCampaigns(id: string): Promise<UserWithCampa
       userCampaigns: {
         include: {
           campaign: true,
+        },
+        where: {
+          status: "pending",
+        }
+      }
+    }
+  });
+}
+
+export async function getUsersWithCampaigns() {
+  return await db.user.findMany({
+    include: {
+      userCampaigns: {
+        include: {
+          campaign: true
+        },
+        where: {
+          status: "pending"
+        }
+      }
+    },
+    where: {
+      userCampaigns: {
+        some: {
+          status: "pending"
         }
       }
     }
