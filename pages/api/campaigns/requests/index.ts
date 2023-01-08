@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { ERROR_FALLBACK_MESSAGE } from "../../../../constants";
 import { getUsersWithCampaigns } from "../../../../handlers/users";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json(error.message);
       }
 
-      res.status(400).json("Unexpected Error have happened ⚠️");
+      res.status(400).json(ERROR_FALLBACK_MESSAGE);
     }
   }
 }

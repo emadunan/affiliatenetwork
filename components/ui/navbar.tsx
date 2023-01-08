@@ -13,9 +13,21 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LoginIcon from "@mui/icons-material/Login";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
 import { signIn, signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import Link from "next/link";
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
 const settings = ["Profile", "Logout"];
 
@@ -173,10 +185,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                <MenuItem onClick={handleClickNavItem}>
-                  <Typography textAlign="center">Performance</Typography>
-                </MenuItem>
-              )}
+                  <MenuItem onClick={handleClickNavItem}>
+                    <Typography textAlign="center">Performance</Typography>
+                  </MenuItem>
+                )}
 
               {session?.user.privilege === "admin" && (
                 <MenuItem onClick={handleClickNavItem}>
@@ -242,20 +254,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Performance
-              </Button>
-            )}
+                <Button
+                  onClick={handleClickNavItem}
+                  sx={{
+                    my: 1,
+                    color: "white",
+                    display: "block",
+                    fontFamily: "harmattanB",
+                    fontSize: "1.5rem",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Performance
+                </Button>
+              )}
 
             {session?.user.privilege === "admin" && (
               <Button
@@ -306,6 +318,13 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
 
           {status === "authenticated" ? (
             <Box sx={{ flexGrow: 0 }}>
+
+              <IconButton aria-label="notification" sx={{mr: 2}} onClick={() => router.push("/admin/requests")}>
+                <StyledBadge badgeContent={3} color="secondary">
+                  <NotificationsIcon />
+                </StyledBadge>
+              </IconButton>
+
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {session.user.image && (

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getOneUser, modOneUser } from "../../../handlers/users";
 import { UserWithMeta } from "@prisma/client/scalar";
 import { User } from "@prisma/client";
+import { ERROR_FALLBACK_MESSAGE } from "../../../constants";
 
 type Data = string | User | UserWithMeta;
 
@@ -22,14 +23,12 @@ export default async function handler(
       res.status(404).json("User not found");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
 
-      res
+      return res
         .status(400)
-        .json(
-          "Unexpected Error have occured, please contact the system administrator on +201551562910."
-        );
+        .json(ERROR_FALLBACK_MESSAGE);
     }
   } else if (req.method === "PUT") {
     try {
@@ -41,14 +40,10 @@ export default async function handler(
       res.status(200).json(user);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
 
-      res
-        .status(400)
-        .json(
-          "Unexpected Error have occured, please contact the system administrator on +201551562910."
-        );
+      return res.status(400).json(ERROR_FALLBACK_MESSAGE);
     }
   }
 }

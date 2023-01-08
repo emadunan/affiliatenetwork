@@ -1,0 +1,1 @@
+export const ERROR_FALLBACK_MESSAGE = "Unexpected Error have happened ⚠️, Call +201551562910!";
