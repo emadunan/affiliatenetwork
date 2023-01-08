@@ -19,8 +19,6 @@ export default async function handler(
       return res.status(400).json(error.message);
     }
 
-    return res
-      .status(400)
-      .json(ERROR_FALLBACK_MESSAGE);
+    return res.status(400).json(ERROR_FALLBACK_MESSAGE);
   }
 }

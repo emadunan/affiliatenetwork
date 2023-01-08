@@ -154,6 +154,7 @@ const RegisterForm: React.FC = () => {
         sm_whatsapp: sm_whatsappInputRef.current?.value || null,
         sm_telegram: sm_telegramInputRef.current?.value || null,
         privilege: "publisher",
+        reqNumber: 3,
         last_login: new Date(),
         userId: session?.user.userId,
       };
