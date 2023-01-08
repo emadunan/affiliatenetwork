@@ -8,33 +8,33 @@ import {
   Typography,
 } from "@mui/material";
 
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 import { FC } from "react";
 
 interface UserRequestProps {
-  user?: any;
-  campaignId?: number;
+  username?: string;
+  userImage?: string;
+  userCampaigns?: any;
 }
 
-const CampaignsEx = ["noon", "active", "puma"]
+const UserRequest: FC<UserRequestProps> = (props) => {
+  console.log(props.userCampaigns);
 
-const UserRequest: FC<UserRequestProps> = () => {
   return (
     <Card sx={{ minWidth: 200, marginTop: 8, overflow: "visible" }}>
       <Avatar
         sx={{ width: 56, height: 56 }}
-        alt="Remy Sharp"
-        src="/static/images/avatar/1.jpg"
+        alt={props.username}
+        src={props.userImage}
         className="m-auto -translate-y-6"
       />
       <CardContent className="-mt-14">
-        <Typography>Remy Sharp</Typography>
+        <Typography>{props.username}</Typography>
         <Box component="div" className="flex items-center">
           <FormControl>
             {/* <FormLabel id="demo-row-radio-buttons-group-label">Campaigns</FormLabel> */}
@@ -43,8 +43,8 @@ const UserRequest: FC<UserRequestProps> = () => {
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
             >
-              {CampaignsEx.map(c => (
-                <FormControlLabel value={c} control={<Radio />} label={c} />
+              {props.userCampaigns.map((c: any) => (
+                <FormControlLabel key={c.campaignId} value={c.campaignId} control={<Radio />} label={c.campaign.title} />
               ))}
             </RadioGroup>
           </FormControl>

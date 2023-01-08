@@ -35,4 +35,9 @@ export const campaignApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllCampaignsQuery, useMakeCampaignRequestMutation, useGetUserCampaignsQuery } = campaignApi;
+export const {
+  useGetAllCampaignsQuery,
+  useMakeCampaignRequestMutation,
+  useGetUserCampaignsQuery,
+  useGetUsersCampaignsReqQuery
+} = campaignApi;
