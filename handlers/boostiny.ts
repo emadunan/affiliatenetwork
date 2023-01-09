@@ -1,7 +1,7 @@
 import db from "../lib/prismadb";
+import { cloneDeep } from "lodash";
 
 export const updateCampaignsData = async (campaignsArr: any[]) => {
-  // console.log(campaignsArr[0].coupons);
   
   // Get all boostiny's capaigns
   const campaignsToDel = await db.campaign.findMany({
@@ -27,7 +27,7 @@ export const updateCampaignsData = async (campaignsArr: any[]) => {
   });
 
   // Create new boostiny campaigns based on the results returned from API
-  const campaignsArrCopy = [...campaignsArr]
+  const campaignsArrCopy = cloneDeep(campaignsArr);
   
   campaignsArr.forEach(campaign => {
     delete campaign.coupons;
@@ -39,12 +39,24 @@ export const updateCampaignsData = async (campaignsArr: any[]) => {
   });
 
   // Create coupons returned from API and assign them to their appropraite campaigns
-  return campaignsArr.forEach(campaign => {
-    console.log(campaign);
+  campaignsArrCopy.forEach(async (campaign) => {
     
-    db.campaign.update({
+    for (const coupon of campaign.coupons) {
+      if (!coupon.countries) {
+        coupon.countries = [];
+      }
+    }
+    
+    const camp = await db.campaign.findFirst({
       where: {
-        id: campaign.id as string
+        network_id: campaign.network_id,
+        network_name: "boostiny",
+      }
+    })
+    
+    await db.campaign.update({
+      where: {
+        id: camp?.id,
       },
       data: {
         coupons: {
@@ -52,10 +64,7 @@ export const updateCampaignsData = async (campaignsArr: any[]) => {
             data: campaign.coupons,
           }
         }
-      },
-      include: {
-        coupons: true,
       }
-    })
+    });
   });
 };

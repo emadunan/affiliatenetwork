@@ -2,9 +2,7 @@ import { User, UserMeta } from "@prisma/client";
 import { UserWithCampaigns, UserWithMeta } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
-export async function addUserMeta(userData: UserMeta) {
-  console.log(userData);
-  
+export async function addUserMeta(userData: UserMeta) { 
   return await db.userMeta.create({ data: userData });
 }
 
@@ -55,7 +53,11 @@ export async function getUsersWithCampaigns() {
     include: {
       userCampaigns: {
         include: {
-          campaign: true
+          campaign: {
+            include: {
+              coupons: true,
+            }
+          }
         },
         where: {
           status: "pending"

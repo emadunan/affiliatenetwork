@@ -74,6 +74,7 @@ model Campaign {
 model Coupon {
   id              String        @id @default(cuid())
   coupon          String
+  countries       String[]
   start_date      String
   account_manager String
   ad_set          String

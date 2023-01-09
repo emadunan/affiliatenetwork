@@ -14,8 +14,6 @@ const Manage: FC = () => {
     const result = await response.json();
 
     setBoostinyUpdateSpinner(false);
-
-    console.log(result);
   };
 
   return (

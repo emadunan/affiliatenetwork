@@ -26,10 +26,7 @@ const Coupons: FC = () => {
               return response.json();
             })
             .then((data) => {
-              console.log(data);
-
               const items = data.payload.data;
-              console.log(items);
               const transformedItems = items.flatMap((item: any) =>
                 item.coupons.map((coupon: any) => ({
                   couponId: `${item.id}-${coupon.coupon}`,

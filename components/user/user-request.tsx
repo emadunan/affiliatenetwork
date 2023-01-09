@@ -5,6 +5,8 @@ import {
   Card,
   CardActions,
   CardContent,
+  Checkbox,
+  FormGroup,
   Typography,
 } from "@mui/material";
 
@@ -14,7 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 
 interface UserRequestProps {
   username?: string;
@@ -23,8 +25,8 @@ interface UserRequestProps {
 }
 
 const UserRequest: FC<UserRequestProps> = (props) => {
-  console.log(props.userCampaigns);
-
+  const [selectedCampaign, setSelectedCampaign] = useState<any | undefined>();
+  const [availableCoupons, setAvailableCoupons] = useState<any[] | undefined>([]);
   return (
     <Card sx={{ minWidth: 200, marginTop: 8, overflow: "visible" }}>
       <Avatar
@@ -44,17 +46,27 @@ const UserRequest: FC<UserRequestProps> = (props) => {
               name="row-radio-buttons-group"
             >
               {props.userCampaigns.map((c: any) => (
-                <FormControlLabel key={c.campaignId} value={c.campaignId} control={<Radio />} label={c.campaign.title} />
+                <FormControlLabel
+                  key={c.campaignId}
+                  value={c.campaignId}
+                  control={<Radio />}
+                  label={c.campaign.title}
+                  onChange={() => setSelectedCampaign(c.campaign)}
+                />
               ))}
             </RadioGroup>
           </FormControl>
-          <Button size="small">Assign</Button>
-          <Button size="small">Decline</Button>
+        </Box>
+        <Box component="div">
+          <FormGroup className="flex flex-row">
+            {selectedCampaign?.coupons.map((coupon: any) => <FormControlLabel control={<Checkbox />} label={coupon.coupon} />)}
+            {/* <FormControlLabel control={<Checkbox />} label="Label" /> */}
+          </FormGroup>
         </Box>
       </CardContent>
       <CardActions>
         <Button size="small">Approve</Button>
-        <Button size="small">Cancel</Button>
+        <Button size="small">Decline</Button>
       </CardActions>
     </Card>
   );

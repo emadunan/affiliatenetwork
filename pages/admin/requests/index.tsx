@@ -5,11 +5,10 @@ import { useGetUsersCampaignsReqQuery } from "../../../services/camaign";
 
 const Requests: FC = () => {
   const { data, isLoading } = useGetUsersCampaignsReqQuery();
-  console.log(data);
-  
+
   return (
     <Box component="div">
-      <UserRequestsList users={data}/>
+      <UserRequestsList users={data} />
     </Box>
   );
 };

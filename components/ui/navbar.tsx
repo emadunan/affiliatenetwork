@@ -189,10 +189,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                  <MenuItem onClick={handleClickNavItem}>
-                    <Typography textAlign="center">Performance</Typography>
-                  </MenuItem>
-                )}
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Performance</Typography>
+                </MenuItem>
+              )}
 
               {session?.user.privilege === "admin" && (
                 <MenuItem onClick={handleClickNavItem}>
@@ -258,20 +258,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-                <Button
-                  onClick={handleClickNavItem}
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "harmattanB",
-                    fontSize: "1.5rem",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Performance
-                </Button>
-              )}
+              <Button
+                onClick={handleClickNavItem}
+                sx={{
+                  my: 1,
+                  color: "white",
+                  display: "block",
+                  fontFamily: "harmattanB",
+                  fontSize: "1.5rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                Performance
+              </Button>
+            )}
 
             {session?.user.privilege === "admin" && (
               <Button
@@ -322,18 +322,20 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
 
           {status === "authenticated" ? (
             <Box sx={{ flexGrow: 0 }}>
-              {session?.user.privilege === "admin" && (<IconButton
-                aria-label="notification"
-                sx={{ mr: 2 }}
-                onClick={() => router.push("/admin/requests")}
-              >
-                <StyledBadge
-                  badgeContent={numberOfPendingRequests}
-                  color="secondary"
+              {session?.user.privilege === "admin" && (
+                <IconButton
+                  aria-label="notification"
+                  sx={{ mr: 2 }}
+                  onClick={() => router.push("/admin/requests")}
                 >
-                  <NotificationsIcon />
-                </StyledBadge>
-              </IconButton>)}
+                  <StyledBadge
+                    badgeContent={numberOfPendingRequests}
+                    color="secondary"
+                  >
+                    <NotificationsIcon />
+                  </StyledBadge>
+                </IconButton>
+              )}
 
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
