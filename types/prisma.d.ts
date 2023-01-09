@@ -19,7 +19,7 @@ declare module "@prisma/client/scalar" {
   });
   export type CampaignWithUser = Prisma.CampaignGetPayload<typeof campaignWithUser>;
 
-  // 3: Define a type that includes UserCampaigns relation to `Campaign`
+  // 3: Define a type that includes UserCampaigns relation to `User`
   const userWithCampaigns = Prisma.validator<Prisma.UserArgs>()({
     include: {
       userCampaigns: {
@@ -30,5 +30,13 @@ declare module "@prisma/client/scalar" {
     }
   });
   export type UserWithCampaigns = Prisma.UserGetPayload<typeof userWithCampaigns>;
+
+  // 4: Define a type that include coupons related to `Campaign`
+  const campaignWithCoupons = Prisma.validator<Prisma.CampaignArgs>()({
+    include: {
+      coupons: true,
+    }
+  });
+  export type CampaignWithCoupons = Prisma.CampaignGetPayload<typeof campaignWithCoupons>
 
 }

@@ -51,7 +51,7 @@ model User {
 }
 
 model Campaign {
-  id                 String  @id @default(cuid())
+  id                 String   @id @default(cuid())
   network_id         String
   network_name       String
   logo               String?
@@ -66,6 +66,7 @@ model Campaign {
   desc_dos_and_donts String?
   desc_creatives     String?
   desc_website_url   String?
+  coupons            Coupon[]
 
   userCampaigns UserCampaigns[]
 }
@@ -76,6 +77,8 @@ model Coupon {
   start_date      String
   account_manager String
   ad_set          String
+  campaignId      String
+  campaign        Campaign      @relation(fields: [campaignId], references: [id])
   userCoupons     UserCoupons[]
 }
 

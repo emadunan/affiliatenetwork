@@ -1,4 +1,5 @@
 import { Campaign } from "@prisma/client";
+import { CampaignWithCoupons } from "@prisma/client/scalar";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { updateCampaignsData } from "../../../handlers/boostiny";
 
@@ -72,7 +73,7 @@ export default async function handler(
     }
 
     const transformedCampaigns = allCampaigns.map(
-      (campaign: any): Partial<Campaign> => {
+      (campaign: any): Partial<CampaignWithCoupons> => {
         return {
           network_id: campaign.id.toString(),
           network_name: "boostiny",
@@ -88,6 +89,7 @@ export default async function handler(
           desc_promotion: campaign.campaign_description.promotion,
           desc_dos_and_donts: campaign.campaign_description.dos_and_donts,
           desc_website_url: campaign.campaign_description.website_url,
+          coupons: campaign.coupons,
         };
       }
     );
