@@ -20,7 +20,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import Link from "next/link";
 
-import { useGetPendingReqCountQuery } from "../../services/admin";
+import { useGetPendingReqCountQuery } from "../../services/camaign";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {

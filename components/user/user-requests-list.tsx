@@ -12,6 +12,7 @@ const UserRequestsList: FC<UserRequestsListProps> = ({ users }) => {
       {users?.map((user) => (
         <UserRequest
           key={user.id}
+          userId={user.id}
           username={user.name}
           userImage={user.image}
           userCampaigns={user.userCampaigns}

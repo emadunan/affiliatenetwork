@@ -5,6 +5,8 @@ import { getUsersWithPendingReqCount } from "../../../../handlers/admin";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
+      console.log("REQUESTED!");
+      
       const reqsCount = await getUsersWithPendingReqCount();
 
       res.status(200).json(reqsCount);

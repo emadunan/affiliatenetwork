@@ -5,19 +5,19 @@ import { CampaignWithUser, UserWithCampaigns } from '@prisma/client/scalar';
 export const campaignApi = createApi({
   reducerPath: 'campaignApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api/campaigns' }),
-  tagTypes: ["Requested"],
+  tagTypes: ["Requested", "Approved", "Declined"],
   endpoints: (builder) => ({
     getAllCampaigns: builder.query<CampaignWithUser[], void>({
       query: () => `/`,
       providesTags: ["Requested"]
     }),
-    getUserCampaigns: builder.query<UserWithCampaigns, string|undefined>({
+    getUserCampaigns: builder.query<UserWithCampaigns, string | undefined>({
       query: (id) => `/${id}`,
       providesTags: ["Requested"]
     }),
     getUsersCampaignsReq: builder.query<any, void>({
       query: () => `/requests`,
-      providesTags: ["Requested"],
+      providesTags: ["Requested", "Approved", "Declined"],
     }),
     makeCampaignRequest: builder.mutation<void, { userId: string | undefined, campaignId: string }>({
       query: (payload) => ({
@@ -29,7 +29,33 @@ export const campaignApi = createApi({
         }
       }),
       invalidatesTags: ["Requested"]
-    })
+    }),
+    declinePendingReq: builder.mutation<void, any>({
+      query: (payload) => ({
+        url: `requests/decline`,
+        method: "PUT",
+        body: payload,
+        headers: {
+          "Content-Types": "application/json"
+        },
+      }),
+      invalidatesTags: ["Declined"]
+    }),
+    approvePendingReq: builder.mutation<void, any>({
+      query: (payload) => ({
+        url: `requests/approve`,
+        method: "PUT",
+        body: payload,
+        headers: {
+          "Content-Types": "application/json"
+        },
+      }),
+      invalidatesTags: ["Approved"]
+    }),
+    getPendingReqCount: builder.query<any, void>({
+      query: () => `requests/count`,
+      providesTags: ["Requested", "Approved", "Declined"],
+    }),
   }),
 })
 
@@ -39,5 +65,8 @@ export const {
   useGetAllCampaignsQuery,
   useMakeCampaignRequestMutation,
   useGetUserCampaignsQuery,
-  useGetUsersCampaignsReqQuery
+  useGetUsersCampaignsReqQuery,
+  useGetPendingReqCountQuery,
+  useDeclinePendingReqMutation,
+  useApprovePendingReqMutation,
 } = campaignApi;

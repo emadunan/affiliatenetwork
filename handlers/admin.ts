@@ -13,12 +13,47 @@ export async function getAllUsersWithPendingReq() {
     include: {
       userCampaigns: {
         include: {
-          campaign: true,
+          campaign: true
         },
         where: {
           status: "pending"
         },
       }
+    },
+    where: {
+      userCampaigns: {
+        some: {
+          status: "pending"
+        }
+      }
     }
   });
+}
+
+export async function declineUserCampaignReq(userId: string, campaignId: string) {
+  return await db.userCampaigns.updateMany({
+    where: {
+      AND: [
+        { userId },
+        { campaignId }
+      ],
+    },
+    data: {
+      status: "declined",
+    }
+  })
+}
+
+export async function ApproveUserCampaignReq(userId: string, campaignId: string) {
+  return await db.userCampaigns.updateMany({
+    where: {
+      AND: [
+        { userId },
+        { campaignId }
+      ],
+    },
+    data: {
+      status: "approved",
+    }
+  })
 }
