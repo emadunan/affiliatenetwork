@@ -19,6 +19,8 @@ interface CampaignTableProps {
 }
 
 const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
+  console.log(campaigns);
+  
   const { data: session } = useSession();
 
   const { data: userWithcampaigns, isLoading } = useGetUserCampaignsQuery(

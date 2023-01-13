@@ -7,8 +7,8 @@ import { useGetAllCampaignsQuery } from "../../services/camaign";
 const Campaigns: FC = () => {
   const { data: campaigns, isLoading } = useGetAllCampaignsQuery();
 
-  const [filteredCampaigns, setFilteredCampaigns] =
-    useState<CampaignWithUser[]>();
+  const [filteredCampaigns, setFilteredCampaigns] = useState<CampaignWithUser[]>();
+    // useState<CampaignWithUser[]>();
 
   useEffect(() => {
     setFilteredCampaigns(campaigns);

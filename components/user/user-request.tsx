@@ -24,7 +24,10 @@ import { cloneDeep } from "lodash";
 
 import { FC, useEffect, useState } from "react";
 
-import { useApprovePendingReqMutation, useDeclinePendingReqMutation } from "../../services/camaign";
+import {
+  useApprovePendingReqMutation,
+  useDeclinePendingReqMutation,
+} from "../../services/camaign";
 // import { CampaignWithCoupons } from "@prisma/client/scalar";
 
 // type CampaignWithCouponsPlus = CampaignWithCoupons & { checked: true | false, percent: number };
@@ -37,7 +40,6 @@ interface UserRequestProps {
 }
 
 const UserRequest: FC<UserRequestProps> = (props) => {
-
   const [setApproveReq, approveResponse] = useApprovePendingReqMutation();
   const [setDeclineReq, declineResponse] = useDeclinePendingReqMutation();
 
@@ -59,8 +61,10 @@ const UserRequest: FC<UserRequestProps> = (props) => {
 
   const handleCouponCheckChange = (couponId: string) => {
     setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState)
-      const selectedCoupon = prevStateCp.coupons.find((c: any) => c.id === couponId);
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find(
+        (c: any) => c.id === couponId
+      );
 
       selectedCoupon.checked = !selectedCoupon.checked;
       return prevStateCp;
@@ -69,8 +73,10 @@ const UserRequest: FC<UserRequestProps> = (props) => {
 
   const handleCouponPercentChange = (couponId: string, newPercent: number) => {
     setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState)
-      const selectedCoupon = prevStateCp.coupons.find((c: any) => c.id === couponId);
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find(
+        (c: any) => c.id === couponId
+      );
 
       selectedCoupon.percent = newPercent;
       return prevStateCp;
@@ -79,13 +85,20 @@ const UserRequest: FC<UserRequestProps> = (props) => {
 
   const handleApproveCampaign = () => {
     console.log(selectedCampaign);
-    setApproveReq({ userId: props.userId, campaignId: selectedCampaign.id })
-  }
+    const checkedCoupons = selectedCampaign.coupons.filter(
+      (coupon: any) => !!coupon.checked
+    );
+    setApproveReq({
+      userId: props.userId,
+      campaignId: selectedCampaign.id,
+      coupons: checkedCoupons,
+    });
+  };
 
   const handleDeclineCampaign = () => {
     console.log(selectedCampaign);
-    setDeclineReq({ userId: props.userId, campaignId: selectedCampaign.id })
-  }
+    setDeclineReq({ userId: props.userId, campaignId: selectedCampaign.id });
+  };
 
   return (
     <Card sx={{ minWidth: 200, marginTop: 8, overflow: "visible" }}>
@@ -121,31 +134,48 @@ const UserRequest: FC<UserRequestProps> = (props) => {
           <FormGroup>
             {selectedCampaign?.coupons.map((coupon: any) => (
               <Box component="div" className="flex" key={coupon.id}>
-                <FormControlLabel control={<Checkbox onChange={() => handleCouponCheckChange(coupon.id)} />} label={coupon.coupon} />
-                <FormControl sx={{ m: 1, width: '20ch' }} variant="outlined" size="small">
-                  <InputLabel htmlFor="assigned-percent">Assigned Percent</InputLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={() => handleCouponCheckChange(coupon.id)}
+                    />
+                  }
+                  label={coupon.coupon}
+                />
+                <FormControl
+                  sx={{ m: 1, width: "20ch" }}
+                  variant="outlined"
+                  size="small"
+                >
+                  <InputLabel htmlFor="assigned-percent">
+                    Assigned Percent
+                  </InputLabel>
                   <OutlinedInput
                     type="number"
                     inputProps={{ min: 10, max: 50, step: 5 }}
                     id="assigned-percent"
                     endAdornment={
-                      <InputAdornment position="end">
-                        %
-                      </InputAdornment>
+                      <InputAdornment position="end">%</InputAdornment>
                     }
                     label="Assigned Percent"
-                    onChange={(e) => handleCouponPercentChange(coupon.id, +e.target.value)
+                    onChange={(e) =>
+                      handleCouponPercentChange(coupon.id, +e.target.value)
                     }
                   />
                 </FormControl>
-              </Box>))}
+              </Box>
+            ))}
             {/* <FormControlLabel control={<Checkbox />} label="Label" /> */}
           </FormGroup>
         </Box>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleApproveCampaign}>Approve</Button>
-        <Button size="small" onClick={handleDeclineCampaign}>Decline</Button>
+        <Button size="small" onClick={handleApproveCampaign}>
+          Approve
+        </Button>
+        <Button size="small" onClick={handleDeclineCampaign}>
+          Decline
+        </Button>
       </CardActions>
     </Card>
   );

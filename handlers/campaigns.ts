@@ -8,7 +8,46 @@ export async function getAllCampaigns() {
 export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
     include: {
-      userCampaigns: true,
+      userCampaigns: {
+        include: {
+          user: {
+            include: {
+              userCoupons: {
+                include: {
+                  coupon: true,
+                }
+              }
+            }
+          }
+        }
+      },
+    }
+  });
+}
+
+export async function getCampaignsWithStatusForUser(userId: string): Promise<CampaignWithUser[]> {
+  return await db.campaign.findMany({
+    include: {
+      userCampaigns: {
+        include: {
+          user: {
+            include: {
+              userCoupons: {
+                include: {
+                  coupon: true,
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    where: {
+      userCampaigns: {
+        some: {
+          userId,
+        }
+      }
     }
   });
 }

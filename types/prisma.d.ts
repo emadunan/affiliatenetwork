@@ -6,7 +6,17 @@ declare module "@prisma/client/scalar" {
   // 1: Define a type that includes userMeta relation to `User`
   const userWithMeta = Prisma.validator<Prisma.UserArgs>()({
     include: {
-      userMeta: true
+      userMeta: true,
+      userCampaigns: {
+        include: {
+          campaign: true,
+        },
+      },
+      userCoupons: {
+        include: {
+          coupon: true,
+        }
+      }
     },
   });
   export type UserWithMeta = Prisma.UserGetPayload<typeof userWithMeta>;
@@ -14,7 +24,19 @@ declare module "@prisma/client/scalar" {
   // 2: Define a type that includes UserCampaigns relation to `Campaign`
   const campaignWithUser = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
-      userCampaigns: true,
+      userCampaigns: {
+        include: {
+          user: {
+            include: {
+              userCoupons: {
+                include: {
+                  coupon: true,
+                }
+              }
+            }
+          }
+        }
+      },
     }
   });
   export type CampaignWithUser = Prisma.CampaignGetPayload<typeof campaignWithUser>;

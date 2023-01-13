@@ -6,10 +6,23 @@ export async function addUserMeta(userData: UserMeta) {
   return await db.userMeta.create({ data: userData });
 }
 
-export async function getAllUsers() {
+export async function getAllUsers(): Promise<UserWithMeta[] | null> {
   return await db.user.findMany({
     include: {
       userMeta: true,
+      userCampaigns: {
+        where: {
+          status: "approved"
+        },
+        include: {
+          campaign: true,
+        }
+      },
+      userCoupons: {
+        include: {
+          coupon: true,
+        }
+      }
     },
     orderBy: {
       userMeta: {
@@ -26,6 +39,19 @@ export async function getOneUser(id: string): Promise<UserWithMeta | null> {
     },
     include: {
       userMeta: true,
+      userCampaigns: {
+        where: {
+          status: "approved"
+        },
+        include: {
+          campaign: true,
+        }
+      },
+      userCoupons: {
+        include: {
+          coupon: true,
+        }
+      }
     }
   });
 }

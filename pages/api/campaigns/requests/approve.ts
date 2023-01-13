@@ -5,8 +5,12 @@ import { ApproveUserCampaignReq } from "../../../../handlers/admin";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "PUT") {
     try {
-      const { userId, campaignId } = req.body;
-      const approvedReq = await ApproveUserCampaignReq(userId, campaignId);
+      const { userId, campaignId, coupons } = req.body;
+      const approvedReq = await ApproveUserCampaignReq(
+        userId,
+        campaignId,
+        coupons
+      );
       res.status(200).json("approve");
     } catch (error: unknown) {
       if (error instanceof Error) {

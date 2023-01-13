@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserWithMeta } from "@prisma/client/scalar";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, Typography } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useRouter } from "next/router";
 
@@ -28,6 +28,8 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
             <TableCell>First Name</TableCell>
             <TableCell>Last Name</TableCell>
             <TableCell>City</TableCell>
+            <TableCell>Campaigns</TableCell>
+            <TableCell>Coupons</TableCell>
             <TableCell>Last Visit</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -51,6 +53,26 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
               <TableCell>{row.userMeta?.firstName}</TableCell>
               <TableCell>{row.userMeta?.lastName}</TableCell>
               <TableCell>{row.userMeta?.city}</TableCell>
+              <TableCell>
+                {row.userCampaigns?.map((c) => (
+                  <Typography
+                    component="span"
+                    key={c.userId.concat(c.campaignId)}
+                  >
+                    {c.campaign.title},{" "}
+                  </Typography>
+                ))}
+              </TableCell>
+              <TableCell>
+                {row.userCoupons?.map((c) => (
+                  <Typography
+                    component="span"
+                    key={c.userId.concat(c.couponId)}
+                  >
+                    {c.coupon.coupon},{" "}
+                  </Typography>
+                ))}
+              </TableCell>
               <TableCell>{`${new Date(
                 row.userMeta?.last_login!
               ).toLocaleDateString()} | ${new Date(

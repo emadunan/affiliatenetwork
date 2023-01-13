@@ -204,6 +204,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                   <Typography textAlign="center">Visitors</Typography>
                 </MenuItem>
               )}
+              {session?.user.privilege === "admin" && (
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Manage</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
           <MonetizationOnIcon

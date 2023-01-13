@@ -44,8 +44,8 @@ export async function declineUserCampaignReq(userId: string, campaignId: string)
   })
 }
 
-export async function ApproveUserCampaignReq(userId: string, campaignId: string) {
-  return await db.userCampaigns.updateMany({
+export async function ApproveUserCampaignReq(userId: string, campaignId: string, coupons: any[]) {
+  await db.userCampaigns.updateMany({
     where: {
       AND: [
         { userId },
@@ -55,5 +55,15 @@ export async function ApproveUserCampaignReq(userId: string, campaignId: string)
     data: {
       status: "approved",
     }
-  })
+  });
+
+  coupons.forEach(async(coupon: any) => {
+    await db.userCoupons.create({
+      data: {
+        userId,
+        couponId: coupon.id,
+        percent: coupon.percent
+      }
+    })
+  });
 }
