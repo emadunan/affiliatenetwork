@@ -7,8 +7,8 @@ export const campaignApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api/campaigns' }),
   tagTypes: ["Requested", "Approved", "Declined"],
   endpoints: (builder) => ({
-    getAllCampaigns: builder.query<CampaignWithUser[], void>({
-      query: () => `/`,
+    getAllCampaigns: builder.query<CampaignWithUser[], string>({
+      query: (id: string) => `/all/${id}`,
       providesTags: ["Requested"]
     }),
     getUserCampaigns: builder.query<UserWithCampaigns, string | undefined>({
@@ -20,14 +20,17 @@ export const campaignApi = createApi({
       providesTags: ["Requested", "Approved", "Declined"],
     }),
     makeCampaignRequest: builder.mutation<void, { userId: string | undefined, campaignId: string }>({
-      query: (payload) => ({
-        url: `/`,
+      query: (payload) => {
+        console.log(payload);
+        
+        return {
+        url: `/all/${payload.userId}`,
         method: "PUT",
         body: payload,
         headers: {
           "Content-Type": "application/json"
         }
-      }),
+      }},
       invalidatesTags: ["Requested"]
     }),
     declinePendingReq: builder.mutation<void, any>({

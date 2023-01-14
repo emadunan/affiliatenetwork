@@ -19,8 +19,6 @@ interface CampaignTableProps {
 }
 
 const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
-  console.log(campaigns);
-  
   const { data: session } = useSession();
 
   const { data: userWithcampaigns, isLoading } = useGetUserCampaignsQuery(
@@ -31,6 +29,8 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
 
   const handleMakeRequest = (campaignId: string) => {
     const userId = session?.user.userId;
+    // console.log(userId, campaignId);
+
     setCampaignRequest({ userId, campaignId });
   };
 
@@ -92,6 +92,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             )}
             <TableCell align="center">Category</TableCell>
             <TableCell align="center">Type</TableCell>
+            <TableCell align="center">Items</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
@@ -116,6 +117,16 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               )}
               <TableCell align="center">{row.category}</TableCell>
               <TableCell align="center">{row.campaign_type}</TableCell>
+              <TableCell align="center">
+                {row.userCampaigns
+                  .find((c) => c.campaignId === row.id)
+                  ?.user.userCoupons.filter(
+                    (userCoupon) => userCoupon.coupon.campaignId === row.id
+                  )
+                  .map((el) => (
+                    <Typography component="span" key={el.couponId}>{el.coupon.coupon}, </Typography>
+                  ))}
+              </TableCell>
               {session?.user.privilege === "publisher" && (
                 <TableCell align="center">
                   {/* {row.userCampaigns?.length && 

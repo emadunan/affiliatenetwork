@@ -84,7 +84,6 @@ const UserRequest: FC<UserRequestProps> = (props) => {
   };
 
   const handleApproveCampaign = () => {
-    console.log(selectedCampaign);
     const checkedCoupons = selectedCampaign.coupons.filter(
       (coupon: any) => !!coupon.checked
     );
@@ -96,7 +95,6 @@ const UserRequest: FC<UserRequestProps> = (props) => {
   };
 
   const handleDeclineCampaign = () => {
-    console.log(selectedCampaign);
     setDeclineReq({ userId: props.userId, campaignId: selectedCampaign.id });
   };
 

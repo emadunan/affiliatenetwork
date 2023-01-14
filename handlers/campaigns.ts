@@ -25,7 +25,7 @@ export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
   });
 }
 
-export async function getCampaignsWithStatusForUser(userId: string): Promise<CampaignWithUser[]> {
+export async function getUserCampaignsWithStatus(userId: string|undefined): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
     include: {
       userCampaigns: {
