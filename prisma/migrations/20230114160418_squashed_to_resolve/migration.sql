@@ -9,7 +9,7 @@ ALTER TABLE "Coupon" ADD COLUMN     "campaignId" TEXT NOT NULL,
 ADD COLUMN     "countries" TEXT[];
 
 -- AlterTable
-ALTER TABLE "UserMeta" ALTER COLUMN "reqNumber" DROP NOT NULL;
+ALTER TABLE "UserMeta" ADD COLUMN     "reqNumber" INTEGER;
 
 -- AddForeignKey
 ALTER TABLE "Coupon" ADD CONSTRAINT "Coupon_campaignId_fkey" FOREIGN KEY ("campaignId") REFERENCES "Campaign"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
