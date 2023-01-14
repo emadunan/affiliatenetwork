@@ -137,7 +137,7 @@ model UserMeta {
   sm_telegram  String?
 
   privilege  String   @default("publisher") @db.VarChar(10)
-  reqNumber  Int
+  reqNumber  Int?
   last_login DateTime
   user       User     @relation(fields: [userId], references: [id])
   userId     String   @unique
