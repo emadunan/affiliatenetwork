@@ -124,7 +124,9 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                     (userCoupon) => userCoupon.coupon.campaignId === row.id
                   )
                   .map((el) => (
-                    <Typography component="span" key={el.couponId}>{el.coupon.coupon}, </Typography>
+                    <Typography component="span" key={el.couponId}>
+                      {el.coupon.coupon},{" "}
+                    </Typography>
                   ))}
               </TableCell>
               {session?.user.privilege === "publisher" && (

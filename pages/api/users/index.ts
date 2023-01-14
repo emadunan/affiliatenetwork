@@ -12,6 +12,8 @@ export default async function handler(
   try {
     const users = await getAllUsers();
 
+    if (!users) return res.json([]);
+
     res.status(200).json(users);
   } catch (error: unknown) {
     if (error instanceof Error) {
