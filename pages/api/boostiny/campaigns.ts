@@ -1,7 +1,7 @@
 import { Campaign } from "@prisma/client";
 import { CampaignWithCoupons } from "@prisma/client/scalar";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { updateCampaignsData } from "../../../handlers/boostiny";
+import { updateCampaignsDataMod } from "../../../handlers/boostiny";
 
 const boostinyApiKey = process.env.BOOSTINY_API_KEY as string;
 const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
@@ -94,7 +94,7 @@ export default async function handler(
       }
     );
 
-    await updateCampaignsData(transformedCampaigns);
+    await updateCampaignsDataMod(transformedCampaigns);
 
     res.status(200).json("Boostiny campaigns have been updated sucessfully");
   }
