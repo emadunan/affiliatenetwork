@@ -43,6 +43,10 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
         }
       }
 
+      // https://cdn.arabyads.com/images/arabyads-logo.png
+      // Change arabyads-logo with fallback image
+      if (campaign.logo === "https://cdn.arabyads.com/images/arabyads-logo.png") campaign.logo = "/fallback-image.png";
+
       const newCampaign = await db.campaign.create({
         data: {
           network_id: campaign.network_id!,
