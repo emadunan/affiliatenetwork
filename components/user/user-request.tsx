@@ -140,6 +140,7 @@ const UserRequest: FC<UserRequestProps> = (props) => {
 
   const handleDeclineCampaign = () => {
     setDeclineReq({ userId: props.userId, campaignId: selectedCampaign.id });
+    setSelectedCampaign(undefined);
   };
 
   return (
