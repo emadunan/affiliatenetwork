@@ -15,7 +15,6 @@ const Campaigns: FC = () => {
 
   const [filteredCampaigns, setFilteredCampaigns] =
     useState<CampaignWithUser[]>();
-  // useState<CampaignWithUser[]>();
 
   useEffect(() => {
     setFilteredCampaigns(campaigns);
@@ -28,6 +27,8 @@ const Campaigns: FC = () => {
     );
     setFilteredCampaigns(filteredResult);
   };
+
+  // PUT http://localhost:3000/api/campaigns/all/cld1ymz4q00009d0dhw43frqh 400 (Bad Request)
 
   return (
     <Box component="div" className="flex flex-col items-center justify-center">

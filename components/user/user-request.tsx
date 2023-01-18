@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -7,9 +8,11 @@ import {
   CardContent,
   Checkbox,
   FormGroup,
+  IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,12 +25,14 @@ import FormLabel from "@mui/material/FormLabel";
 
 import { cloneDeep } from "lodash";
 
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, SyntheticEvent, useEffect, useState } from "react";
 
 import {
   useApprovePendingReqMutation,
   useDeclinePendingReqMutation,
 } from "../../services/camaign";
+
+import CloseIcon from '@mui/icons-material/Close';
 // import { CampaignWithCoupons } from "@prisma/client/scalar";
 
 // type CampaignWithCouponsPlus = CampaignWithCoupons & { checked: true | false, percent: number };
@@ -40,6 +45,24 @@ interface UserRequestProps {
 }
 
 const UserRequest: FC<UserRequestProps> = (props) => {
+  // Temporarly handle Snakebar here
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+
+  // RTK Query 
   const [setApproveReq, approveResponse] = useApprovePendingReqMutation();
   const [setDeclineReq, declineResponse] = useDeclinePendingReqMutation();
 
@@ -84,14 +107,35 @@ const UserRequest: FC<UserRequestProps> = (props) => {
   };
 
   const handleApproveCampaign = () => {
-    const checkedCoupons = selectedCampaign.coupons.filter(
+    const checkedCoupons: any[] = selectedCampaign.coupons.filter(
       (coupon: any) => !!coupon.checked
     );
+
+    if (checkedCoupons.length < 1) {
+      setAlertMessage("You should select at least 1 item!")
+      setOpen(true);
+      return;
+    } 
+
+    const isPercentOutRange = checkedCoupons.find((coupon: any) => {
+      return (coupon.percent < 1) || (coupon.percent > 100);
+    });
+
+    if (isPercentOutRange) {
+      setAlertMessage("The assigned percent out of range!")
+      setOpen(true);
+      return;
+    }
+
+    console.log(checkedCoupons);
+
     setApproveReq({
       userId: props.userId,
       campaignId: selectedCampaign.id,
       coupons: checkedCoupons,
     });
+
+    setSelectedCampaign(undefined);
   };
 
   const handleDeclineCampaign = () => {
@@ -150,7 +194,7 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   </InputLabel>
                   <OutlinedInput
                     type="number"
-                    inputProps={{ min: 10, max: 50, step: 5 }}
+                    inputProps={{ min: 1, max: 100 }}
                     id="assigned-percent"
                     endAdornment={
                       <InputAdornment position="end">%</InputAdornment>
@@ -168,13 +212,22 @@ const UserRequest: FC<UserRequestProps> = (props) => {
         </Box>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleApproveCampaign}>
+        <Button size="small" onClick={handleApproveCampaign} disabled={!selectedCampaign}>
           Approve
         </Button>
-        <Button size="small" onClick={handleDeclineCampaign}>
+        <Button size="small" onClick={handleDeclineCampaign} disabled={!selectedCampaign}>
           Decline
         </Button>
       </CardActions>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };

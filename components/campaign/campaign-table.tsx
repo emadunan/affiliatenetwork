@@ -29,7 +29,6 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
 
   const handleMakeRequest = (campaignId: string) => {
     const userId = session?.user.userId;
-    // console.log(userId, campaignId);
 
     setCampaignRequest({ userId, campaignId });
   };
@@ -40,20 +39,17 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
     const userCampaignReq: any = userCampaigns.find((item) => {
       return (
         item.userId === session?.user.userId &&
-        (item.status === "pending" || item.status === "assigned")
+        (item.status === "pending") // || item.status === "approved" || item.status === "declined"
       );
     });
 
     if (userCampaignsLen && userCampaignReq) {
-      return userCampaignReq.status === "pending" ? (
+      return (
         <Box component="span" color="#BE3F3F">
-          Pending
+          {userCampaignReq.status}
         </Box>
-      ) : (
-        <Box component="span" color="#357a38">
-          Assigned
-        </Box>
-      );
+      )
+
     } else {
       return (
         <Button
@@ -92,8 +88,8 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             )}
             <TableCell align="center">Category</TableCell>
             <TableCell align="center">Type</TableCell>
-            <TableCell align="center">Items</TableCell>
-            <TableCell align="right"></TableCell>
+            {session?.user.privilege === "publisher" && <TableCell align="center">Items</TableCell>}
+            {session?.user.privilege === "publisher" && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -117,40 +113,28 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               )}
               <TableCell align="center">{row.category}</TableCell>
               <TableCell align="center">{row.campaign_type}</TableCell>
-              <TableCell align="center">
-                {row.userCampaigns
-                  .find((c) => c.campaignId === row.id)
-                  ?.user.userCoupons.filter(
-                    (userCoupon) => userCoupon.coupon.campaignId === row.id
-                  )
-                  .map((el) => (
-                    <Typography component="span" key={el.couponId}>
-                      {el.coupon.coupon},{" "}
-                    </Typography>
-                  ))}
-              </TableCell>
+
               {session?.user.privilege === "publisher" && (
                 <TableCell align="center">
-                  {/* {row.userCampaigns?.length && 
-                    row.userCampaigns.find(
-                      (item) => {
-                        console.log(item);
-                        return (item.userId === session?.user.userId) && (item.status === "pending")
-                      }
-                    ) ? (
-                    <Typography component="span" color="#BE3F3F">Pending</Typography>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      onClick={(_e) => handleMakeRequest(row.id)}
-                      disabled={userWithcampaigns?.userCampaigns.length! > 2}
-                    >
-                      Make a Request
-                    </Button>
-                  )} */}
+                  {row.userCampaigns
+                    .find((c) => c.campaignId === row.id)
+                    ?.user.userCoupons.filter(
+                      (userCoupon) => userCoupon.coupon.campaignId === row.id
+                    )
+                    .map((el) => (
+                      <Typography component="span" key={el.couponId}>
+                        {el.coupon.coupon},{" "}
+                      </Typography>
+                    ))}
+                </TableCell>
+              )}
+
+              {session?.user.privilege === "publisher" && (
+                <TableCell align="center">
                   {getReqStatus(row.userCampaigns, row.id)}
                 </TableCell>
               )}
+
             </TableRow>
           ))}
         </TableBody>
