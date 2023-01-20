@@ -30,7 +30,7 @@ import { FC, Fragment, SyntheticEvent, useEffect, useState } from "react";
 import {
   useApprovePendingReqMutation,
   useDeclinePendingReqMutation,
-} from "../../services/camaign";
+} from "../../services/campaign";
 
 import CloseIcon from '@mui/icons-material/Close';
 // import { CampaignWithCoupons } from "@prisma/client/scalar";
@@ -115,7 +115,7 @@ const UserRequest: FC<UserRequestProps> = (props) => {
       setAlertMessage("You should select at least 1 item!")
       setOpen(true);
       return;
-    } 
+    }
 
     const isPercentOutRange = checkedCoupons.find((coupon: any) => {
       return (coupon.percent < 1) || (coupon.percent > 100);
@@ -155,7 +155,6 @@ const UserRequest: FC<UserRequestProps> = (props) => {
         <Typography>{props.username}</Typography>
         <Box component="div" className="flex items-center">
           <FormControl>
-            {/* <FormLabel id="demo-row-radio-buttons-group-label">Campaigns</FormLabel> */}
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
@@ -167,7 +166,25 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   value={c.campaignId}
                   control={<Radio />}
                   label={c.campaign.title}
-                  onChange={() => setSelectedCampaign(cloneDeep(c.campaign))}
+                  onChange={async () => {
+                    // fetch coupons assigned to that specific user in this campaign
+                    console.log(props.userId, c.campaignId);
+                    
+                    const response = await fetch(`/api/campaigns/${c.campaignId}/${props.userId}`);
+                    const ids = await response.json();
+                    console.log(ids);
+
+                    const liveCanpaign = cloneDeep(c.campaign);
+                    
+                    liveCanpaign.coupons.forEach((coupon: any) => {
+                      coupon.alreadyAssigned = ids.includes(coupon.id);
+                    });
+
+                    console.log(liveCanpaign);
+                    
+                    // set state for the selected campaign
+                    setSelectedCampaign(liveCanpaign);
+                  }}
                 />
               ))}
             </RadioGroup>
@@ -181,6 +198,7 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   control={
                     <Checkbox
                       onChange={() => handleCouponCheckChange(coupon.id)}
+                      disabled={coupon.alreadyAssigned}
                     />
                   }
                   label={coupon.coupon}
@@ -190,10 +208,11 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   variant="outlined"
                   size="small"
                 >
-                  <InputLabel htmlFor="assigned-percent">
+                  <InputLabel htmlFor="assigned-percent" hidden={coupon.alreadyAssigned}>
                     Assigned Percent
                   </InputLabel>
                   <OutlinedInput
+                    hidden={coupon.alreadyAssigned}
                     type="number"
                     inputProps={{ min: 1, max: 100 }}
                     id="assigned-percent"

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { campaignApi } from './services/camaign';
+import { campaignApi } from './services/campaign';
 
 export const store = configureStore({
   reducer: {

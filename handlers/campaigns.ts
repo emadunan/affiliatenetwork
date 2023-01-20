@@ -25,7 +25,7 @@ export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
   });
 }
 
-export async function getUserCampaignsWithStatus(userId: string|undefined): Promise<CampaignWithUser[]> {
+export async function getUserCampaignsWithStatus(userId: string | undefined): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
     include: {
       userCampaigns: {
@@ -53,11 +53,38 @@ export async function getUserCampaignsWithStatus(userId: string|undefined): Prom
 }
 
 export async function assignCampaignToUser(userId: string, campaignId: string) {
-  return await db.userCampaigns.create({
-    data: {
+  return await db.userCampaigns.upsert({
+    create: {
       userId,
       campaignId,
       status: "pending",
-    }
+    },
+    update: {
+      status: "pending",
+    },
+    where: {
+      userId_campaignId: {
+        userId, campaignId
+      }
+    },
   })
+}
+
+export async function getCampaignCouponIdsForUser(userId: string, campaignId: string) {
+  const couponIds = await db.coupon.findMany({
+    where: {
+      campaignId,
+      userCoupons: {
+        some: {
+          userId,
+        }
+      }
+    },
+    select: {
+      id: true,
+    }
+  });
+
+  return couponIds.map(couponId => couponId.id);
+
 }

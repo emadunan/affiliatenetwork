@@ -3,15 +3,13 @@ import { CampaignWithUser } from "@prisma/client/scalar";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import CampaignTable from "../../components/campaign/campaign-table";
-import { useGetAllCampaignsQuery } from "../../services/camaign";
+import { useGetAllCampaignsQuery } from "../../services/campaign";
 
 const Campaigns: FC = () => {
   const { data: session } = useSession();
   const { data: campaigns, isLoading } = useGetAllCampaignsQuery(
     session?.user.userId as string
   );
-
-  console.log(session, campaigns);
 
   const [filteredCampaigns, setFilteredCampaigns] =
     useState<CampaignWithUser[]>();

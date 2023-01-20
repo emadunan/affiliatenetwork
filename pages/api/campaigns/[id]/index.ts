@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ERROR_FALLBACK_MESSAGE } from "../../../constants";
-import { getOneUserWithCampaigns } from "../../../handlers/users";
+import { ERROR_FALLBACK_MESSAGE } from "../../../../constants";
+import { getOneUserWithCampaigns } from "../../../../handlers/users";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {

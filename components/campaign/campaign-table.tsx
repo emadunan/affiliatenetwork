@@ -12,7 +12,7 @@ import { CampaignWithUser } from "@prisma/client/scalar";
 import {
   useGetUserCampaignsQuery,
   useMakeCampaignRequestMutation,
-} from "../../services/camaign";
+} from "../../services/campaign";
 
 interface CampaignTableProps {
   campaigns: CampaignWithUser[];

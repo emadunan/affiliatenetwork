@@ -35,7 +35,6 @@ export default async function handler(
   } else if (req.method === "PUT") {
     try {
       const { userId, campaignId } = req.body;
-      console.log(userId, campaignId);
 
       const result = await assignCampaignToUser(userId, campaignId);
 

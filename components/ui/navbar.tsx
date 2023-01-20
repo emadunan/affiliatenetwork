@@ -19,8 +19,11 @@ import { styled } from "@mui/material/styles";
 import { signIn, signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import Link from "next/link";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-import { useGetPendingReqCountQuery } from "../../services/camaign";
+import { useGetPendingReqCountQuery } from "../../services/campaign";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -189,16 +192,17 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                <MenuItem onClick={handleClickNavItem}>
-                  <Typography textAlign="center">Performance</Typography>
-                </MenuItem>
-              )}
+                  <MenuItem onClick={handleClickNavItem}>
+                    <Typography textAlign="center">Performance</Typography>
+                  </MenuItem>
+                )}
 
               {session?.user.privilege === "admin" && (
                 <MenuItem onClick={handleClickNavItem}>
                   <Typography textAlign="center">Users</Typography>
                 </MenuItem>
               )}
+
               {session?.user.privilege === "admin" && (
                 <MenuItem onClick={handleClickNavItem}>
                   <Typography textAlign="center">Visitors</Typography>
@@ -230,7 +234,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
           >
             <Link href={"/"}>Affiliate</Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center", alignItems: "center" }}>
             <Button
               onClick={handleClickNavItem}
               sx={{
@@ -263,65 +267,74 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Performance
-              </Button>
-            )}
+                <Button
+                  onClick={handleClickNavItem}
+                  sx={{
+                    my: 1,
+                    color: "white",
+                    display: "block",
+                    fontFamily: "harmattanB",
+                    fontSize: "1.5rem",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Performance
+                </Button>
+              )}
 
             {session?.user.privilege === "admin" && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Users
-              </Button>
+              // <Button
+              //   onClick={handleClickNavItem}
+              //   sx={{
+              //     my: 1,
+              //     color: "white",
+              //     display: "block",
+              //     fontFamily: "harmattanB",
+              //     fontSize: "1.5rem",
+              //     textTransform: "capitalize",
+              //   }}
+              // >
+              //   Users
+              // </Button>
+              <IconButton aria-label="users" onClick={() => router.push("/users")}>
+                <ManageAccountsIcon/>
+              </IconButton>
             )}
             {session?.user.privilege === "admin" && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Visitors
-              </Button>
+              // <Button
+              //   onClick={handleClickNavItem}
+              //   sx={{
+              //     my: 1,
+              //     color: "white",
+              //     display: "block",
+              //     fontFamily: "harmattanB",
+              //     fontSize: "1.5rem",
+              //     textTransform: "capitalize",
+              //   }}
+              // >
+              //   Visitors
+              // </Button>
+              <IconButton aria-label="users" onClick={() => router.push("/users/visitors")}>
+                <PeopleAltIcon/>
+              </IconButton>
             )}
             {session?.user.privilege === "admin" && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Manage
-              </Button>
+              // <Button
+              //   onClick={handleClickNavItem}
+              //   sx={{
+              //     my: 1,
+              //     color: "white",
+              //     display: "block",
+              //     fontFamily: "harmattanB",
+              //     fontSize: "1.5rem",
+              //     textTransform: "capitalize",
+              //   }}
+              // >
+              //   Manage
+              // </Button>
+              <IconButton aria-label="users" onClick={() => router.push("/manage")}>
+                <AdminPanelSettingsIcon/>
+              </IconButton>
             )}
           </Box>
 
