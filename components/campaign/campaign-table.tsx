@@ -55,7 +55,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
         <Button
           variant="outlined"
           onClick={(_e) => handleMakeRequest(campaignId)}
-          disabled={userWithcampaigns?.userCampaigns.length! > 2}
+          disabled={userWithcampaigns?.userCampaigns.length! >= userWithcampaigns?.userMeta?.reqNumber!}
         >
           Make a Request
         </Button>

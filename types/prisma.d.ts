@@ -46,7 +46,12 @@ declare module "@prisma/client/scalar" {
     include: {
       userCampaigns: {
         include: {
-          campaign: true
+          campaign: true,
+        },
+      },
+      userMeta: {
+        select: {
+          reqNumber: true,
         }
       }
     }

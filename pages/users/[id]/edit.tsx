@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import {
   Avatar,
@@ -9,8 +9,12 @@ import {
   FormControlLabel,
   FormLabel,
   InputAdornment,
+  InputLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
+  SelectChangeEvent,
   TextField,
 } from "@mui/material";
 import { useRouter } from "next/router";
@@ -38,6 +42,9 @@ const EditUser: FC = () => {
   const [city, setCity] = useState<string>();
   const [phoneNumber, setPhoneNumber] = useState<string>();
   const [whatsNumber, setWhatsNumber] = useState<string>();
+
+  const [privilege, setPrivilege] = useState<string>("publisher");
+  const [reqNumber, setReqNumber] = useState<number>();
 
   // App Category Radio Input state
   const [ws_appCategory, setWs_appCategory] = useState<string>();
@@ -91,6 +98,14 @@ const EditUser: FC = () => {
     setWhatsNumber(event.target.value);
   }
 
+  function handlePrivilegeChange(event: SelectChangeEvent<string>) {
+    setPrivilege(event.target.value);
+  }
+
+  function handleReqNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setReqNumber(+event.target.value);
+  }
+
   const handleAppCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setWs_appCategory(e.target.value);
   };
@@ -105,6 +120,9 @@ const EditUser: FC = () => {
     fetcher
   );
 
+  console.log(user);
+
+
   useEffect(() => {
     setFirstName(user?.userMeta?.firstName);
     setLastName(user?.userMeta?.lastName);
@@ -113,6 +131,8 @@ const EditUser: FC = () => {
     setPhoneNumber(user?.userMeta?.phoneNumber);
     setWhatsNumber(user?.userMeta?.whatsNumber);
     setWs_appCategory(user?.userMeta?.ws_appCategory || "");
+    setPrivilege(user?.userMeta?.privilege!);
+    setReqNumber(user?.userMeta?.reqNumber!);
   }, [user]);
 
   async function updateProfileHandler() {
@@ -124,6 +144,8 @@ const EditUser: FC = () => {
         city,
         phoneNumber,
         whatsNumber,
+        privilege,
+        reqNumber,
         companyName: companyNameInputRef.current?.value,
         websiteLink: websiteLinkInputRef.current?.value,
         ws_webSiteName: ws_webSiteNameInputRef.current?.value,
@@ -271,6 +293,38 @@ const EditUser: FC = () => {
               inputRef={websiteLinkInputRef}
               defaultValue={user.userMeta?.websiteLink}
             />
+          </Box>
+          <Box component="div" sx={{ my: 4 }}>
+            <Divider>
+              <Box component="h4">Settings & Accessability</Box>
+            </Divider>
+            <Box component="div" className="flex flex-wrap justify-around items-center">
+              <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={privilege}
+                  label="Privilege"
+                  onChange={handlePrivilegeChange}
+                >
+                  <MenuItem value="publisher">Publisher</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                </Select>
+              </FormControl>
+              {(typeof reqNumber === "number") && (
+                <TextField
+                  id="standard-basic"
+                  label="Max Requests"
+                  variant="standard"
+                  sx={{ m: 2 }}
+                  type="number"
+                  inputProps={{ min: 1, max: 30 }}
+                  value={reqNumber}
+                  onChange={handleReqNumberChange}
+                />
+              )}
+            </Box>
           </Box>
           <Box component="div" sx={{ my: 4 }}>
             <Divider>

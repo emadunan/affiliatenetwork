@@ -69,6 +69,11 @@ export async function getOneUserWithCampaigns(id: string): Promise<UserWithCampa
         where: {
           status: "pending",
         }
+      },
+      userMeta: {
+        select: {
+          reqNumber: true,
+        }
       }
     }
   });

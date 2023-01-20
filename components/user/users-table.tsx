@@ -24,13 +24,14 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell></TableCell>
-            <TableCell>E-Mail</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>City</TableCell>
-            <TableCell>Campaigns</TableCell>
-            <TableCell>Coupons</TableCell>
-            <TableCell>Last Visit</TableCell>
+            <TableCell align="center">E-Mail</TableCell>
+            <TableCell align="center">First Name</TableCell>
+            <TableCell align="center">Last Name</TableCell>
+            <TableCell align="center">City</TableCell>
+            <TableCell align="center">Max Requests</TableCell>
+            <TableCell align="center">Campaigns</TableCell>
+            <TableCell align="center">Coupons</TableCell>
+            <TableCell align="center">Last Visit</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
@@ -49,11 +50,12 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
                   src={row.image as string}
                 />
               </TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell>{row.userMeta?.firstName}</TableCell>
-              <TableCell>{row.userMeta?.lastName}</TableCell>
-              <TableCell>{row.userMeta?.city}</TableCell>
-              <TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+              <TableCell align="center">{row.userMeta?.firstName}</TableCell>
+              <TableCell align="center">{row.userMeta?.lastName}</TableCell>
+              <TableCell align="center">{row.userMeta?.city}</TableCell>
+              <TableCell align="center">{row.userMeta?.reqNumber}</TableCell>
+              <TableCell align="center">
                 {row.userCampaigns?.map((c) => (
                   <Typography
                     component="span"
@@ -63,7 +65,7 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
                   </Typography>
                 ))}
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 {row.userCoupons?.map((c) => (
                   <Typography
                     component="span"
@@ -73,7 +75,7 @@ const UsersTable: React.FC<UsersTableProps> = (props) => {
                   </Typography>
                 ))}
               </TableCell>
-              <TableCell>{`${new Date(
+              <TableCell align="center">{`${new Date(
                 row.userMeta?.last_login!
               ).toLocaleDateString()} | ${new Date(
                 row.userMeta?.last_login!

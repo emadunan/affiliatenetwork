@@ -57,24 +57,31 @@ const User: FC = () => {
           <p className="mx-4 my-2">{`City: ${user?.userMeta?.city}`}</p>
           <p className="mx-4 my-2">{`Phone Number: ${user?.userMeta?.phoneNumber}`}</p>
           <p className="mx-4 my-2">{`Whats Number: ${user?.userMeta?.whatsNumber}`}</p>
-          <p className="mx-4 my-2">{`Company Name: ${
-            user?.userMeta?.companyName || "NOT-PROVIDED"
-          }`}</p>
-          <p className="mx-4 my-2">{`Website Link: ${
-            user?.userMeta?.websiteLink || "NOT-PROVIDED"
-          }`}</p>
+          <p className="mx-4 my-2">{`Company Name: ${user?.userMeta?.companyName || "NOT-PROVIDED"
+            }`}</p>
+          <p className="mx-4 my-2">{`Website Link: ${user?.userMeta?.websiteLink || "NOT-PROVIDED"
+            }`}</p>
+        </Box>
+        <Box component="div" sx={{ my: 4 }}>
+          <Divider>
+            <Box component="h4">Settings & Accessability</Box>
+          </Divider>
+          <Box component="div" className="flex flex-wrap justify-around">
+            <p className="mx-4 my-2">{`Privilege: ${user?.userMeta?.privilege || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Max Requests: ${user?.userMeta?.reqNumber || "NOT-PROVIDED"
+              }`}</p>
+          </Box>
         </Box>
         <Box component="div" sx={{ my: 4 }}>
           <Divider>
             <Box component="h4">Website</Box>
           </Divider>
           <Box component="div" className="flex flex-wrap justify-around">
-            <p className="mx-4 my-2">{`Website Name: ${
-              user?.userMeta?.ws_webSiteName || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`App Category: ${
-              user?.userMeta?.ws_appCategory || "NOT-PROVIDED"
-            }`}</p>
+            <p className="mx-4 my-2">{`Website Name: ${user?.userMeta?.ws_webSiteName || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`App Category: ${user?.userMeta?.ws_appCategory || "NOT-PROVIDED"
+              }`}</p>
           </Box>
         </Box>
         <Box component="div" sx={{ my: 4 }}>
@@ -82,24 +89,18 @@ const User: FC = () => {
             <Box component="h4">Media Buying</Box>
           </Divider>
           <Box component="div" className="flex flex-wrap justify-around">
-            <p className="mx-4 my-2">{`Search: ${
-              user?.userMeta?.mb_search || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Social: ${
-              user?.userMeta?.mb_social || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Native: ${
-              user?.userMeta?.mb_native || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Display: ${
-              user?.userMeta?.mb_display || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Video: ${
-              user?.userMeta?.mb_video || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Others: ${
-              user?.userMeta?.mb_others || "NOT-PROVIDED"
-            }`}</p>
+            <p className="mx-4 my-2">{`Search: ${user?.userMeta?.mb_search || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Social: ${user?.userMeta?.mb_social || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Native: ${user?.userMeta?.mb_native || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Display: ${user?.userMeta?.mb_display || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Video: ${user?.userMeta?.mb_video || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Others: ${user?.userMeta?.mb_others || "NOT-PROVIDED"
+              }`}</p>
           </Box>
         </Box>
         <Box component="div" sx={{ my: 4 }}>
@@ -107,36 +108,26 @@ const User: FC = () => {
             <Box component="h4">Social</Box>
           </Divider>
           <Box component="div" className="flex flex-wrap justify-around">
-            <p className="mx-4 my-2">{`Facebook: ${
-              user?.userMeta?.sm_facebook || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Twitter: ${
-              user?.userMeta?.sm_twitter || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Instagram: ${
-              user?.userMeta?.sm_instagram || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Pinterest: ${
-              user?.userMeta?.sm_pinterest || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Youtube: ${
-              user?.userMeta?.sm_youtube || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Linkedin: ${
-              user?.userMeta?.sm_linkedin || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Whatsapp: ${
-              user?.userMeta?.sm_whatsapp || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Telegram: ${
-              user?.userMeta?.sm_telegram || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Snapchat: ${
-              user?.userMeta?.sm_snapchat || "NOT-PROVIDED"
-            }`}</p>
-            <p className="mx-4 my-2">{`Tiktok: ${
-              user?.userMeta?.sm_tiktok || "NOT-PROVIDED"
-            }`}</p>
+            <p className="mx-4 my-2">{`Facebook: ${user?.userMeta?.sm_facebook || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Twitter: ${user?.userMeta?.sm_twitter || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Instagram: ${user?.userMeta?.sm_instagram || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Pinterest: ${user?.userMeta?.sm_pinterest || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Youtube: ${user?.userMeta?.sm_youtube || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Linkedin: ${user?.userMeta?.sm_linkedin || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Whatsapp: ${user?.userMeta?.sm_whatsapp || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Telegram: ${user?.userMeta?.sm_telegram || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Snapchat: ${user?.userMeta?.sm_snapchat || "NOT-PROVIDED"
+              }`}</p>
+            <p className="mx-4 my-2">{`Tiktok: ${user?.userMeta?.sm_tiktok || "NOT-PROVIDED"
+              }`}</p>
           </Box>
         </Box>
       </div>
