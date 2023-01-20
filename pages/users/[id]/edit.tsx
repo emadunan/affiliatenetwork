@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import {
   Avatar,
@@ -31,10 +31,12 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useSession } from "next-auth/react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const EditUser: FC = () => {
+  const { data: session } = useSession()
   // Input states
   const [firstName, setFirstName] = useState<string>();
   const [lastName, setLastName] = useState<string>();
@@ -44,7 +46,7 @@ const EditUser: FC = () => {
   const [whatsNumber, setWhatsNumber] = useState<string>();
 
   const [privilege, setPrivilege] = useState<string>("publisher");
-  const [reqNumber, setReqNumber] = useState<number>();
+  const [reqNumber, setReqNumber] = useState<number>(0);
 
   // App Category Radio Input state
   const [ws_appCategory, setWs_appCategory] = useState<string>();
@@ -120,9 +122,6 @@ const EditUser: FC = () => {
     fetcher
   );
 
-  console.log(user);
-
-
   useEffect(() => {
     setFirstName(user?.userMeta?.firstName);
     setLastName(user?.userMeta?.lastName);
@@ -168,6 +167,8 @@ const EditUser: FC = () => {
         sm_tiktok: sm_tiktokInputRef.current?.value,
       },
     };
+
+    // console.log(userData);
 
     const response = await fetch(`/api/users/${user?.id}`, {
       method: "PUT",
@@ -294,38 +295,41 @@ const EditUser: FC = () => {
               defaultValue={user.userMeta?.websiteLink}
             />
           </Box>
-          <Box component="div" sx={{ my: 4 }}>
-            <Divider>
-              <Box component="h4">Settings & Accessability</Box>
-            </Divider>
-            <Box component="div" className="flex flex-wrap justify-around items-center">
-              <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={privilege}
-                  label="Privilege"
-                  onChange={handlePrivilegeChange}
-                >
-                  <MenuItem value="publisher">Publisher</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                </Select>
-              </FormControl>
-              {(typeof reqNumber === "number") && (
-                <TextField
-                  id="standard-basic"
-                  label="Max Requests"
-                  variant="standard"
-                  sx={{ m: 2 }}
-                  type="number"
-                  inputProps={{ min: 1, max: 30 }}
-                  value={reqNumber}
-                  onChange={handleReqNumberChange}
-                />
-              )}
+          {session?.user.privilege === "admin" && (
+            <Box component="div" sx={{ my: 4 }}>
+              <Divider>
+                <Box component="h4">Settings & Accessability</Box>
+              </Divider>
+              <Box component="div" className="flex flex-wrap justify-around items-center">
+                <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                  <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={privilege}
+                    label="Privilege"
+                    onChange={handlePrivilegeChange}
+                  >
+                    <MenuItem value="publisher">Publisher</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                  </Select>
+                </FormControl>
+                {(typeof reqNumber === "number") && (
+                  <TextField
+                    id="standard-basic"
+                    label="Max Requests"
+                    variant="standard"
+                    sx={{ m: 2 }}
+                    type="number"
+                    inputProps={{ min: 1, max: 30 }}
+                    value={reqNumber}
+                    onChange={handleReqNumberChange}
+                  />
+                )}
+              </Box>
             </Box>
-          </Box>
+          )}
+
           <Box component="div" sx={{ my: 4 }}>
             <Divider>
               <Box component="h4">Website</Box>
