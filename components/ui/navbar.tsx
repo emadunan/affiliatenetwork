@@ -22,6 +22,9 @@ import Link from "next/link";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import HomeIcon from '@mui/icons-material/Home';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 
 import { useGetPendingReqCountQuery } from "../../services/campaign";
 
@@ -132,9 +135,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <MonetizationOnIcon
+          {/* <MonetizationOnIcon
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
+          /> */}
           <Typography
             variant="h4"
             noWrap
@@ -235,7 +238,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             <Link href={"/"}>Affiliate</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center", alignItems: "center" }}>
-            <Button
+            {/* <Button
               onClick={handleClickNavItem}
               sx={{
                 my: 1,
@@ -247,39 +250,48 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               }}
             >
               Home
-            </Button>
+            </Button> */}
+            <IconButton aria-label="home" onClick={() => router.push("/")}>
+                <HomeIcon/>
+              </IconButton>
             {status === "authenticated" && (
-              <Button
-                onClick={handleClickNavItem}
-                sx={{
-                  my: 1,
-                  color: "white",
-                  display: "block",
-                  fontFamily: "harmattanB",
-                  fontSize: "1.5rem",
-                  textTransform: "capitalize",
-                }}
-              >
-                Campaigns
-              </Button>
+              // <Button
+              //   onClick={handleClickNavItem}
+              //   sx={{
+              //     my: 1,
+              //     color: "white",
+              //     display: "block",
+              //     fontFamily: "harmattanB",
+              //     fontSize: "1.5rem",
+              //     textTransform: "capitalize",
+              //   }}
+              // >
+              //   Campaigns
+              // </Button>
+              <IconButton aria-label="campaigns" onClick={() => router.push("/campaigns")}>
+                <RequestQuoteIcon />
+              </IconButton>
             )}
 
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-                <Button
-                  onClick={handleClickNavItem}
-                  sx={{
-                    my: 1,
-                    color: "white",
-                    display: "block",
-                    fontFamily: "harmattanB",
-                    fontSize: "1.5rem",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Performance
-                </Button>
+                // <Button
+                //   onClick={handleClickNavItem}
+                //   sx={{
+                //     my: 1,
+                //     color: "white",
+                //     display: "block",
+                //     fontFamily: "harmattanB",
+                //     fontSize: "1.5rem",
+                //     textTransform: "capitalize",
+                //   }}
+                // >
+                //   Performance
+                // </Button>
+                <IconButton aria-label="performance" onClick={() => router.push("/performance")}>
+                  <TroubleshootIcon/>
+                </IconButton>
               )}
 
             {session?.user.privilege === "admin" && (
@@ -297,7 +309,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               //   Users
               // </Button>
               <IconButton aria-label="users" onClick={() => router.push("/users")}>
-                <ManageAccountsIcon/>
+                <ManageAccountsIcon />
               </IconButton>
             )}
             {session?.user.privilege === "admin" && (
@@ -314,8 +326,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Visitors
               // </Button>
-              <IconButton aria-label="users" onClick={() => router.push("/users/visitors")}>
-                <PeopleAltIcon/>
+              <IconButton aria-label="visitors" onClick={() => router.push("/users/visitors")}>
+                <PeopleAltIcon />
               </IconButton>
             )}
             {session?.user.privilege === "admin" && (
@@ -332,8 +344,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Manage
               // </Button>
-              <IconButton aria-label="users" onClick={() => router.push("/manage")}>
-                <AdminPanelSettingsIcon/>
+              <IconButton aria-label="manage" onClick={() => router.push("/manage")}>
+                <AdminPanelSettingsIcon />
               </IconButton>
             )}
           </Box>
