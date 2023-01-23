@@ -19,9 +19,6 @@ const Manage: FC = () => {
       const result = await response.json();
       setBoostinyUpdateSpinner(false);
 
-      // newCampaigns,
-      // expiredCampaigns
-
       const htmlNode = <Fragment>
         <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
         <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>

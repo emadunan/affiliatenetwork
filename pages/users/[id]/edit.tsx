@@ -301,19 +301,21 @@ const EditUser: FC = () => {
                 <Box component="h4">Settings & Accessability</Box>
               </Divider>
               <Box component="div" className="flex flex-wrap justify-around items-center">
-                <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                  <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={privilege}
-                    label="Privilege"
-                    onChange={handlePrivilegeChange}
-                  >
-                    <MenuItem value="publisher">Publisher</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
-                  </Select>
-                </FormControl>
+                {privilege && (
+                  <FormControl variant="standard" sx={{ minWidth: 120 }}>
+                    <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={privilege}
+                      label="Privilege"
+                      onChange={handlePrivilegeChange}
+                    >
+                      <MenuItem value="admin">Admin</MenuItem>
+                      <MenuItem value="publisher">Publisher</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
                 {(typeof reqNumber === "number") && (
                   <TextField
                     id="standard-basic"
@@ -345,7 +347,7 @@ const EditUser: FC = () => {
                 inputRef={ws_webSiteNameInputRef}
                 defaultValue={user.userMeta?.ws_webSiteName}
               />
-              {ws_appCategory && (
+              {ws_appCategory !== undefined && (
                 <FormControl sx={{ my: 2 }}>
                   <FormLabel id="demo-row-radio-buttons-group-label">
                     Category
@@ -356,6 +358,7 @@ const EditUser: FC = () => {
                     name="row-radio-buttons-group"
                     value={ws_appCategory}
                     onChange={handleAppCategoryChange}
+                    defaultValue=""
                   >
                     <FormControlLabel
                       value="coupon"
