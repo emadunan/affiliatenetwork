@@ -7,35 +7,36 @@ const Manage: FC = () => {
   const [boostinyUpdateSpinner, setBoostinyUpdateSpinner] = useState(false);
   const { handleOpen, handleClose, open } = useModal();
 
-  const [content, setContent] = useState<ReactNode|undefined>();
+  const [content, setContent] = useState<ReactNode | undefined>();
 
   const onBoostinyCampaignUpdate = async () => {
-    setBoostinyUpdateSpinner(true);
-    const response = await fetch("/api/boostiny/campaigns", {
-      method: "PATCH",
-    });
+    try {
+      setBoostinyUpdateSpinner(true);
+      const response = await fetch("/api/boostiny/campaigns", {
+        method: "PATCH",
+      });      
 
-    if (!response.ok) {
+      const result = await response.json();
       setBoostinyUpdateSpinner(false);
-      console.log("Failed");
+
+      // newCampaigns,
+      // expiredCampaigns
+
+      const htmlNode = <Fragment>
+        <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
+        <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>
+      </Fragment>
+
+      // Build Modal Content
+      setContent(htmlNode);
+
+      handleOpen();
+      console.log(result);
+    } catch (error: any) {
+      setBoostinyUpdateSpinner(false);
+      setContent(<p>{error.message}</p>);
+      return handleOpen();
     }
-
-    const result = await response.json();
-    setBoostinyUpdateSpinner(false);
-
-    // newCampaigns,
-    // expiredCampaigns
-
-    const htmlNode = <Fragment>
-      <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
-      <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>
-    </Fragment>
-
-    // Build Modal Content
-    setContent(htmlNode);
-
-    handleOpen();
-    console.log(result);
   };
 
   return (
@@ -52,7 +53,7 @@ const Manage: FC = () => {
           Update
         </Button>
         {boostinyUpdateSpinner && <CircularProgress color="primary" />}
-        <BasicModal handleClose={handleClose} open={open} title={"Boostiny Update Report"} content={content || ""}/>
+        <BasicModal handleClose={handleClose} open={open} title={"Boostiny Update Report"} content={content || ""} />
       </Box>
     </Box>
   );
