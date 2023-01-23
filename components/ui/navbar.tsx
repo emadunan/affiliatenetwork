@@ -251,9 +251,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             >
               Home
             </Button> */}
-            <IconButton aria-label="home" onClick={() => router.push("/")}>
-                <HomeIcon/>
-              </IconButton>
+            <IconButton aria-label="home" className="flex flex-col" onClick={() => router.push("/")}>
+              <HomeIcon />
+              <Typography component="p">Home</Typography>
+            </IconButton>
             {status === "authenticated" && (
               // <Button
               //   onClick={handleClickNavItem}
@@ -268,8 +269,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Campaigns
               // </Button>
-              <IconButton aria-label="campaigns" onClick={() => router.push("/campaigns")}>
+              <IconButton aria-label="campaigns" className="flex flex-col" onClick={() => router.push("/campaigns")}>
                 <RequestQuoteIcon />
+                <Typography component="p">Campaigns</Typography>
               </IconButton>
             )}
 
@@ -289,8 +291,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
                 // >
                 //   Performance
                 // </Button>
-                <IconButton aria-label="performance" onClick={() => router.push("/performance")}>
-                  <TroubleshootIcon/>
+                <IconButton aria-label="performance" className="flex flex-col" onClick={() => router.push("/performance")}>
+                  <TroubleshootIcon />
+                  <Typography component="p">Performance</Typography>
                 </IconButton>
               )}
 
@@ -308,8 +311,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Users
               // </Button>
-              <IconButton aria-label="users" onClick={() => router.push("/users")}>
+              <IconButton aria-label="users" className="flex flex-col" onClick={() => router.push("/users")}>
                 <ManageAccountsIcon />
+                <Typography component="p">Users</Typography>
               </IconButton>
             )}
             {session?.user.privilege === "admin" && (
@@ -326,8 +330,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Visitors
               // </Button>
-              <IconButton aria-label="visitors" onClick={() => router.push("/users/visitors")}>
+              <IconButton aria-label="visitors" className="flex flex-col" onClick={() => router.push("/users/visitors")}>
                 <PeopleAltIcon />
+                <Typography component="p">Visitors</Typography>
               </IconButton>
             )}
             {session?.user.privilege === "admin" && (
@@ -344,8 +349,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Manage
               // </Button>
-              <IconButton aria-label="manage" onClick={() => router.push("/manage")}>
+              <IconButton aria-label="manage" className="flex flex-col" onClick={() => router.push("/manage")}>
                 <AdminPanelSettingsIcon />
+                <Typography component="p">Manage</Typography>
               </IconButton>
             )}
           </Box>

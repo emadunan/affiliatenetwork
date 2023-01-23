@@ -1,8 +1,13 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, Fragment, ReactNode, useState } from "react";
+import BasicModal from "../../components/ui/modal";
+import useModal from "../../hooks/use-modal";
 
 const Manage: FC = () => {
   const [boostinyUpdateSpinner, setBoostinyUpdateSpinner] = useState(false);
+  const { handleOpen, handleClose, open } = useModal();
+
+  const [content, setContent] = useState<ReactNode|undefined>();
 
   const onBoostinyCampaignUpdate = async () => {
     setBoostinyUpdateSpinner(true);
@@ -10,10 +15,27 @@ const Manage: FC = () => {
       method: "PATCH",
     });
 
-    if (!response.ok) return console.log("Failed");
-    const result = await response.json();
+    if (!response.ok) {
+      setBoostinyUpdateSpinner(false);
+      console.log("Failed");
+    }
 
+    const result = await response.json();
     setBoostinyUpdateSpinner(false);
+
+    // newCampaigns,
+    // expiredCampaigns
+
+    const htmlNode = <Fragment>
+      <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
+      <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>
+    </Fragment>
+
+    // Build Modal Content
+    setContent(htmlNode);
+
+    handleOpen();
+    console.log(result);
   };
 
   return (
@@ -30,6 +52,7 @@ const Manage: FC = () => {
           Update
         </Button>
         {boostinyUpdateSpinner && <CircularProgress color="primary" />}
+        <BasicModal handleClose={handleClose} open={open} title={"Boostiny Update Report"} content={content || ""}/>
       </Box>
     </Box>
   );

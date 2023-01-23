@@ -4,8 +4,16 @@ import { isTupleInArr } from "../utils";
 import { Campaign } from "@prisma/client";
 
 export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
+  // Store for all new and expired campaigns
+  const newCampaigns = [];
+  const expiredCampaigns = [];
+
   // Get all campaigns from database
-  const allDbCampaigns = await db.campaign.findMany();
+  const allDbCampaigns = await db.campaign.findMany({
+    where: {
+      expired: false,
+    }
+  });
 
   // Map returned campaigns into typles of id & network
   const allDbCampaignsT = allDbCampaigns.map((campaign): [string, string] => {
@@ -17,7 +25,7 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
   // Flag any unfound campaign as an expired
   for (const campaign of allDbCampaigns) {
     if (!isTupleInArr(allFetchedCampaignsT, [campaign.network_id!, campaign.network_name!])) {
-      const expiredCampaign = await db.campaign.updateMany({
+      await db.campaign.updateMany({
         where: {
           network_id: campaign.network_id,
           network_name: campaign.network_name,
@@ -27,8 +35,8 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
         }
       });
 
-      console.log("EXPIRED", expiredCampaign);
-      
+      console.log("EXPIRED", campaign);
+      expiredCampaigns.push(campaign);
     }
   }
 
@@ -71,10 +79,14 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
       });
 
       console.log("CREATED", newCampaign);
+      newCampaigns.push(newCampaign);
     }
   }
 
-  console.log("Done");
+  return {
+    newCampaigns,
+    expiredCampaigns,
+  }
 }
 
 export const updateCampaignsData = async (campaignsArr: any[]) => {

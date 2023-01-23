@@ -11,7 +11,12 @@ const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 // https://api.boostiny.com/publisher/performance
 // https://api.boostiny.com/publisher/link-performance
 
-type Data = string | { name: string };
+type Data =
+  | {
+    newCampaigns: Campaign[],
+    expiredCampaigns: Campaign[]
+  }
+  | { errMsg: string };
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,7 +34,7 @@ export default async function handler(
     );
 
     if (!response.ok)
-      return res.status(400).json("Couldn't fetch campaigns data!");
+      return res.status(400).json({ errMsg: "Couldn't fetch campaigns data!" });
 
     const campaigns = await response.json();
 
@@ -47,7 +52,7 @@ export default async function handler(
       }
     );
 
-    if (!response.ok) return res.status(400).json(response.statusText);
+    if (!response.ok) return res.status(400).json({errMsg: response.statusText});
 
     const result = await response.json();
 
@@ -94,8 +99,8 @@ export default async function handler(
       }
     );
 
-    await updateCampaignsDataMod(transformedCampaigns);
+    const campaignsUpdate = await updateCampaignsDataMod(transformedCampaigns);
 
-    res.status(200).json("Boostiny campaigns have been updated sucessfully");
+    res.status(200).json(campaignsUpdate);
   }
 }
