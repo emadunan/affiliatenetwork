@@ -14,15 +14,17 @@ const Manage: FC = () => {
       setBoostinyUpdateSpinner(true);
       const response = await fetch("/api/boostiny/campaigns", {
         method: "PATCH",
-      });      
+      });
 
       const result = await response.json();
       setBoostinyUpdateSpinner(false);
 
-      const htmlNode = <Fragment>
-        <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
-        <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>
-      </Fragment>
+      const htmlNode = (
+        <Fragment>
+          <Typography component="p">{`New Campaigns: ${result.newCampaigns.length}`}</Typography>
+          <Typography component="p">{`Expired Campaigns: ${result.expiredCampaigns.length}`}</Typography>
+        </Fragment>
+      );
 
       // Build Modal Content
       setContent(htmlNode);
@@ -50,7 +52,12 @@ const Manage: FC = () => {
           Update
         </Button>
         {boostinyUpdateSpinner && <CircularProgress color="primary" />}
-        <BasicModal handleClose={handleClose} open={open} title={"Boostiny Update Report"} content={content || ""} />
+        <BasicModal
+          handleClose={handleClose}
+          open={open}
+          title={"Boostiny Update Report"}
+          content={content || ""}
+        />
       </Box>
     </Box>
   );

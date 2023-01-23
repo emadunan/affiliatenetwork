@@ -13,9 +13,9 @@ const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 
 type Data =
   | {
-    newCampaigns: Campaign[],
-    expiredCampaigns: Campaign[]
-  }
+      newCampaigns: Campaign[];
+      expiredCampaigns: Campaign[];
+    }
   | { errMsg: string };
 
 export default async function handler(
@@ -52,7 +52,8 @@ export default async function handler(
       }
     );
 
-    if (!response.ok) return res.status(400).json({errMsg: response.statusText});
+    if (!response.ok)
+      return res.status(400).json({ errMsg: response.statusText });
 
     const result = await response.json();
 

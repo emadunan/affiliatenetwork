@@ -19,12 +19,12 @@ import { styled } from "@mui/material/styles";
 import { signIn, signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import Link from "next/link";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import HomeIcon from '@mui/icons-material/Home';
-import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import HomeIcon from "@mui/icons-material/Home";
+import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 
 import { useGetPendingReqCountQuery } from "../../services/campaign";
 
@@ -195,10 +195,10 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               {["admin", "publisher"].includes(
                 session?.user.privilege as string
               ) && (
-                  <MenuItem onClick={handleClickNavItem}>
-                    <Typography textAlign="center">Performance</Typography>
-                  </MenuItem>
-                )}
+                <MenuItem onClick={handleClickNavItem}>
+                  <Typography textAlign="center">Performance</Typography>
+                </MenuItem>
+              )}
 
               {session?.user.privilege === "admin" && (
                 <MenuItem onClick={handleClickNavItem}>
@@ -237,7 +237,14 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
           >
             <Link href={"/"}>Affiliate</Link>
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center", alignItems: "center" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {/* <Button
               onClick={handleClickNavItem}
               sx={{
@@ -251,7 +258,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             >
               Home
             </Button> */}
-            <IconButton aria-label="home" className="flex flex-col" onClick={() => router.push("/")}>
+            <IconButton
+              aria-label="home"
+              className="flex flex-col"
+              onClick={() => router.push("/")}
+            >
               <HomeIcon />
               <Typography component="p">Home</Typography>
             </IconButton>
@@ -269,7 +280,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Campaigns
               // </Button>
-              <IconButton aria-label="campaigns" className="flex flex-col" onClick={() => router.push("/campaigns")}>
+              <IconButton
+                aria-label="campaigns"
+                className="flex flex-col"
+                onClick={() => router.push("/campaigns")}
+              >
                 <RequestQuoteIcon />
                 <Typography component="p">Campaigns</Typography>
               </IconButton>
@@ -278,24 +293,28 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
             {["admin", "publisher"].includes(
               session?.user.privilege as string
             ) && (
-                // <Button
-                //   onClick={handleClickNavItem}
-                //   sx={{
-                //     my: 1,
-                //     color: "white",
-                //     display: "block",
-                //     fontFamily: "harmattanB",
-                //     fontSize: "1.5rem",
-                //     textTransform: "capitalize",
-                //   }}
-                // >
-                //   Performance
-                // </Button>
-                <IconButton aria-label="performance" className="flex flex-col" onClick={() => router.push("/performance")}>
-                  <TroubleshootIcon />
-                  <Typography component="p">Performance</Typography>
-                </IconButton>
-              )}
+              // <Button
+              //   onClick={handleClickNavItem}
+              //   sx={{
+              //     my: 1,
+              //     color: "white",
+              //     display: "block",
+              //     fontFamily: "harmattanB",
+              //     fontSize: "1.5rem",
+              //     textTransform: "capitalize",
+              //   }}
+              // >
+              //   Performance
+              // </Button>
+              <IconButton
+                aria-label="performance"
+                className="flex flex-col"
+                onClick={() => router.push("/performance")}
+              >
+                <TroubleshootIcon />
+                <Typography component="p">Performance</Typography>
+              </IconButton>
+            )}
 
             {session?.user.privilege === "admin" && (
               // <Button
@@ -311,7 +330,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Users
               // </Button>
-              <IconButton aria-label="users" className="flex flex-col" onClick={() => router.push("/users")}>
+              <IconButton
+                aria-label="users"
+                className="flex flex-col"
+                onClick={() => router.push("/users")}
+              >
                 <ManageAccountsIcon />
                 <Typography component="p">Users</Typography>
               </IconButton>
@@ -330,7 +353,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Visitors
               // </Button>
-              <IconButton aria-label="visitors" className="flex flex-col" onClick={() => router.push("/users/visitors")}>
+              <IconButton
+                aria-label="visitors"
+                className="flex flex-col"
+                onClick={() => router.push("/users/visitors")}
+              >
                 <PeopleAltIcon />
                 <Typography component="p">Visitors</Typography>
               </IconButton>
@@ -349,7 +376,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = (props) => {
               // >
               //   Manage
               // </Button>
-              <IconButton aria-label="manage" className="flex flex-col" onClick={() => router.push("/manage")}>
+              <IconButton
+                aria-label="manage"
+                className="flex flex-col"
+                onClick={() => router.push("/manage")}
+              >
                 <AdminPanelSettingsIcon />
                 <Typography component="p">Manage</Typography>
               </IconButton>

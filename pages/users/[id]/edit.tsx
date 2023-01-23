@@ -36,7 +36,7 @@ import { useSession } from "next-auth/react";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const EditUser: FC = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   // Input states
   const [firstName, setFirstName] = useState<string>();
   const [lastName, setLastName] = useState<string>();
@@ -300,10 +300,15 @@ const EditUser: FC = () => {
               <Divider>
                 <Box component="h4">Settings & Accessability</Box>
               </Divider>
-              <Box component="div" className="flex flex-wrap justify-around items-center">
+              <Box
+                component="div"
+                className="flex flex-wrap justify-around items-center"
+              >
                 {privilege && (
                   <FormControl variant="standard" sx={{ minWidth: 120 }}>
-                    <InputLabel id="demo-simple-select-label">Privilege</InputLabel>
+                    <InputLabel id="demo-simple-select-label">
+                      Privilege
+                    </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -316,7 +321,7 @@ const EditUser: FC = () => {
                     </Select>
                   </FormControl>
                 )}
-                {(typeof reqNumber === "number") && (
+                {typeof reqNumber === "number" && (
                   <TextField
                     id="standard-basic"
                     label="Max Requests"

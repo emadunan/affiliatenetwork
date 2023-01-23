@@ -32,7 +32,7 @@ import {
   useDeclinePendingReqMutation,
 } from "../../services/campaign";
 
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 // import { CampaignWithCoupons } from "@prisma/client/scalar";
 
 // type CampaignWithCouponsPlus = CampaignWithCoupons & { checked: true | false, percent: number };
@@ -54,15 +54,14 @@ const UserRequest: FC<UserRequestProps> = (props) => {
   };
 
   const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
     setOpen(false);
   };
 
-
-  // RTK Query 
+  // RTK Query
   const [setApproveReq, approveResponse] = useApprovePendingReqMutation();
   const [setDeclineReq, declineResponse] = useDeclinePendingReqMutation();
 
@@ -112,17 +111,17 @@ const UserRequest: FC<UserRequestProps> = (props) => {
     );
 
     if (checkedCoupons.length < 1) {
-      setAlertMessage("You should select at least 1 item!")
+      setAlertMessage("You should select at least 1 item!");
       setOpen(true);
       return;
     }
 
     const isPercentOutRange = checkedCoupons.find((coupon: any) => {
-      return (coupon.percent < 1) || (coupon.percent > 100);
+      return coupon.percent < 1 || coupon.percent > 100;
     });
 
     if (isPercentOutRange) {
-      setAlertMessage("The assigned percent out of range!")
+      setAlertMessage("The assigned percent out of range!");
       setOpen(true);
       return;
     }
@@ -169,19 +168,21 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   onChange={async () => {
                     // fetch coupons assigned to that specific user in this campaign
                     console.log(props.userId, c.campaignId);
-                    
-                    const response = await fetch(`/api/campaigns/${c.campaignId}/${props.userId}`);
+
+                    const response = await fetch(
+                      `/api/campaigns/${c.campaignId}/${props.userId}`
+                    );
                     const ids = await response.json();
                     console.log(ids);
 
                     const liveCanpaign = cloneDeep(c.campaign);
-                    
+
                     liveCanpaign.coupons.forEach((coupon: any) => {
                       coupon.alreadyAssigned = ids.includes(coupon.id);
                     });
 
                     console.log(liveCanpaign);
-                    
+
                     // set state for the selected campaign
                     setSelectedCampaign(liveCanpaign);
                   }}
@@ -208,7 +209,10 @@ const UserRequest: FC<UserRequestProps> = (props) => {
                   variant="outlined"
                   size="small"
                 >
-                  <InputLabel htmlFor="assigned-percent" hidden={coupon.alreadyAssigned}>
+                  <InputLabel
+                    htmlFor="assigned-percent"
+                    hidden={coupon.alreadyAssigned}
+                  >
                     Assigned Percent
                   </InputLabel>
                   <OutlinedInput
@@ -232,19 +236,23 @@ const UserRequest: FC<UserRequestProps> = (props) => {
         </Box>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleApproveCampaign} disabled={!selectedCampaign}>
+        <Button
+          size="small"
+          onClick={handleApproveCampaign}
+          disabled={!selectedCampaign}
+        >
           Approve
         </Button>
-        <Button size="small" onClick={handleDeclineCampaign} disabled={!selectedCampaign}>
+        <Button
+          size="small"
+          onClick={handleDeclineCampaign}
+          disabled={!selectedCampaign}
+        >
           Decline
         </Button>
       </CardActions>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
           {alertMessage}
         </Alert>
       </Snackbar>

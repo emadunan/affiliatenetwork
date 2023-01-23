@@ -38,8 +38,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
     const userCampaignsLen = userCampaigns.length;
     const userCampaignReq: any = userCampaigns.find((item) => {
       return (
-        item.userId === session?.user.userId &&
-        (item.status === "pending") // || item.status === "approved" || item.status === "declined"
+        item.userId === session?.user.userId && item.status === "pending" // || item.status === "approved" || item.status === "declined"
       );
     });
 
@@ -48,14 +47,16 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
         <Box component="span" color="#BE3F3F">
           {userCampaignReq.status}
         </Box>
-      )
-
+      );
     } else {
       return (
         <Button
           variant="outlined"
           onClick={(_e) => handleMakeRequest(campaignId)}
-          disabled={userWithcampaigns?.userCampaigns.length! >= userWithcampaigns?.userMeta?.reqNumber!}
+          disabled={
+            userWithcampaigns?.userCampaigns.length! >=
+            userWithcampaigns?.userMeta?.reqNumber!
+          }
         >
           Make a Request
         </Button>
@@ -88,8 +89,12 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             )}
             <TableCell align="center">Category</TableCell>
             <TableCell align="center">Type</TableCell>
-            {session?.user.privilege === "publisher" && <TableCell align="center">Items</TableCell>}
-            {session?.user.privilege === "publisher" && <TableCell align="right"></TableCell>}
+            {session?.user.privilege === "publisher" && (
+              <TableCell align="center">Items</TableCell>
+            )}
+            {session?.user.privilege === "publisher" && (
+              <TableCell align="right"></TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -134,7 +139,6 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                   {getReqStatus(row.userCampaigns, row.id)}
                 </TableCell>
               )}
-
             </TableRow>
           ))}
         </TableBody>
