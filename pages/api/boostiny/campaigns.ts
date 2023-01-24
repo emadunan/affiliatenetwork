@@ -1,7 +1,7 @@
 import { Campaign } from "@prisma/client";
 import { CampaignWithCoupons } from "@prisma/client/scalar";
-import type { NextApiRequest, NextApiResponse } from "next";
 import { updateCampaignsDataMod } from "../../../handlers/boostiny";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const boostinyApiKey = process.env.BOOSTINY_API_KEY as string;
 const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
