@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const currentDate = formatDate();
 
-      const response = await fetch(`${boostinyApiUrl}/publisher/performance?from=2022-01-01&to=${currentDate}`, {
+      const response = await fetch(`${boostinyApiUrl}/publisher/performance?from=2022-01-01&to=${currentDate}&campaign_name=Raneen`, {
         method: "GET",
         headers: {
           "Authorization": boostinyApiKey
