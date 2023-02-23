@@ -2,6 +2,8 @@ import { Backdrop, Box, CircularProgress, Divider, Typography } from "@mui/mater
 import { useSession } from "next-auth/react";
 import React from "react";
 import { FC, ReactNode, useEffect, useState } from "react";
+import PerformanceTable from "../../components/performance/performance-table";
+import MaterialUIPicker from "../../components/ui/date-picker";
 
 // 2023-01-26 09:10:47
 
@@ -98,18 +100,19 @@ const Performance: FC = () => {
   // Fetch data
   const { data: session } = useSession();
   const [report, setReport] = useState<any>();
-  useEffect(() => {
-    setShowSpinner(true);
-    fetch("/api/boostiny/performance").then(response => {
-      return response.json();
-    }).then(data => {
-      console.log(data.payload);
-      setReport(data.payload)
-      setShowSpinner(false);
-    })
-  }, []);
+  // useEffect(() => {
+  //   setShowSpinner(true);
+  //   fetch("/api/boostiny/performance").then(response => {
+  //     return response.json();
+  //   }).then(data => {
+  //     console.log(data.payload);
+  //     setReport(data.payload)
+  //     setShowSpinner(false);
+  //   })
+  // }, []);
   return (
     <div>
+      <MaterialUIPicker />
       {report && session?.user.privilege === "admin" && (
         <Box>
           <Typography variant="h4">Summary</Typography>
@@ -133,7 +136,8 @@ const Performance: FC = () => {
           </Box>
           <Divider />
           <Typography variant="h4">Performance</Typography>
-          {report.data.map((item: any) => <PerformanceItem item={item} />)}
+          {<PerformanceTable rows={report.data}/>}
+          {/* {report.data.map((item: any) => <PerformanceItem item={item} />)} */}
         </Box>
 
       )}
