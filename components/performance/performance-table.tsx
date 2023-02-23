@@ -77,9 +77,9 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.map((row, idx) => (
             <TableRow
-              key={row.name}
+              key={idx}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell>{row.campaign_name}</TableCell>

@@ -8,9 +8,11 @@ const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      const currentDate = formatDate();
+      const fromDate = formatDate(new Date(req.query.fromDate as string));
+      const untilDate = formatDate(new Date(req.query.untilDate as string));
 
-      const response = await fetch(`${boostinyApiUrl}/publisher/performance?from=2022-01-01&to=${currentDate}&campaign_name=Raneen`, {
+      // &campaign_name=Raneen
+      const response = await fetch(`${boostinyApiUrl}/publisher/performance?from=${fromDate}&to=${untilDate}`, {
         method: "GET",
         headers: {
           "Authorization": boostinyApiKey
