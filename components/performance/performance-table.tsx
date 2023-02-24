@@ -1,14 +1,15 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Avatar } from "@mui/material";
 
 interface PerformanceTableProps {
-  rows: any[]
+  rows: any[];
 }
 
 /*
@@ -53,13 +54,15 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
             {/* <TableCell>Customer Type</TableCell> */}
             {/* <TableCell>Order Id</TableCell> */}
 
-            <TableCell>Conversions</TableCell>
-            <TableCell>Net Conversions</TableCell>
-            <TableCell>Conversions CR</TableCell>
+            <TableCell>Publishers</TableCell>
 
-            {/* <TableCell>Revenue</TableCell>
+            {/* <TableCell>Conversions</TableCell>
+            <TableCell>Net Conversions</TableCell>
+            <TableCell>Conversions CR</TableCell> */}
+
+            <TableCell>Revenue</TableCell>
             <TableCell>Net Revenue</TableCell>
-            <TableCell>Revenue CR</TableCell> */}
+            <TableCell>Revenue CR</TableCell>
 
             <TableCell>Sales Amount</TableCell>
             <TableCell>Net Sales Amount</TableCell>
@@ -80,7 +83,7 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
           {rows.map((row, idx) => (
             <TableRow
               key={idx}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{row.campaign_name}</TableCell>
               {/* <TableCell>Country</TableCell> */}
@@ -92,6 +95,20 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               {/* <TableCell>AOV</TableCell> */}
               {/* <TableCell>Customer Type</TableCell> */}
               {/* <TableCell>Order Id</TableCell> */}
+
+              <TableCell>
+                {row.couponMeta &&
+                  row.couponMeta.userCoupons.map((el: any) => (
+                    <span className="whitespace-nowrap flex justify-center items-center">
+                      <Avatar
+                        alt={el.user.name}
+                        src={el.user.image}
+                        sx={{ width: 24, height: 24, mr: 1 }}
+                      />
+                      {el.user.name} ({el.percent}%)
+                    </span>
+                  ))}
+              </TableCell>
 
               {/* <TableCell>Conversions</TableCell>
               <TableCell>Net Conversions</TableCell>
@@ -113,7 +130,6 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               {/* <TableCell>{row.net_aov_usd}</TableCell> */}
               <TableCell>{row.aov_usd_cancellation_rate}</TableCell>
 
-
               {/* <TableCell>Month</TableCell> */}
             </TableRow>
           ))}
@@ -121,6 +137,6 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
       </Table>
     </TableContainer>
   );
-}
+};
 
 export default PerformanceTable;
