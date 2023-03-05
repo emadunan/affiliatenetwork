@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth/next";
 import { ERROR_FALLBACK_MESSAGE } from "../../../constants";
 import { getCouponWithUsers } from "../../../handlers/performance";
 import { formatDate } from "../../../utils";
@@ -12,6 +14,17 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
+      const session = await unstable_getServerSession(req, res, authOptions);
+
+      if (!session) {
+        res.status(401).json({ message: "You must be logged in." });
+        return;
+      }
+
+      const {
+        user: { privilege, userId },
+      } = session;
+
       const page = req.query.page;
       const fromDate = formatDate(new Date(req.query.fromDate as string));
       const untilDate = formatDate(new Date(req.query.untilDate as string));
@@ -32,8 +45,33 @@ export default async function handler(
       const transformedData = await Promise.all(
         result.payload.data.map(async (el: any) => {
           const elMeta = await getCouponWithUsers(el.code, el.campaign_name);
-          const transformedEl = { ...el, couponMeta: elMeta };
-          return transformedEl;
+          const currUser = elMeta?.userCoupons.find((u) => u.userId === userId);
+          if (privilege === "admin") {
+            // Add publishers data and return result
+            const transformedEl = { ...el, couponMeta: elMeta };
+            return transformedEl;
+          } else if (currUser) {
+            //
+            const transformedEl = {
+              ...el,
+              revenue: Math.floor((+el.revenue * currUser.percent) / 100) + "",
+              net_revenue:
+                Math.floor((+el.net_revenue * currUser.percent) / 100) + "",
+            };
+            return transformedEl;
+          } else {
+            for (const key in el) {
+              if (
+                Object.prototype.hasOwnProperty.call(el, key) &&
+                key !== "campaign_name" &&
+                key !== "code"
+              ) {
+                el[key] = "###";
+              }
+            }
+
+            return el;
+          }
         })
       );
 

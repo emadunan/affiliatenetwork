@@ -7,6 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Avatar } from "@mui/material";
+import { getSession, useSession } from "next-auth/react";
 
 interface PerformanceTableProps {
   rows: any[];
@@ -38,11 +39,13 @@ interface PerformanceTableProps {
 */
 
 const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
+  const { data: session } = useSession();
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Campaign Name</TableCell>
             {/* <TableCell>Country</TableCell> */}
             <TableCell>Coupon</TableCell>
@@ -54,7 +57,9 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
             {/* <TableCell>Customer Type</TableCell> */}
             {/* <TableCell>Order Id</TableCell> */}
 
-            <TableCell>Publishers</TableCell>
+            {session?.user.privilege === "admin" && (
+              <TableCell>Publishers</TableCell>
+            )}
 
             {/* <TableCell>Conversions</TableCell>
             <TableCell>Net Conversions</TableCell>
@@ -85,6 +90,13 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               key={idx}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
+              <TableCell>
+                <Avatar
+                  alt={row.campaign_name}
+                  src={row.campaign_logo}
+                  sx={{ width: 24, height: 24, mr: 1 }}
+                />
+              </TableCell>
               <TableCell>{row.campaign_name}</TableCell>
               {/* <TableCell>Country</TableCell> */}
               <TableCell>{row.code}</TableCell>
@@ -96,19 +108,24 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               {/* <TableCell>Customer Type</TableCell> */}
               {/* <TableCell>Order Id</TableCell> */}
 
-              <TableCell>
-                {row.couponMeta &&
-                  row.couponMeta.userCoupons.map((el: any) => (
-                    <span className="whitespace-nowrap flex justify-center items-center">
-                      <Avatar
-                        alt={el.user.name}
-                        src={el.user.image}
-                        sx={{ width: 24, height: 24, mr: 1 }}
-                      />
-                      {el.user.name} ({el.percent}%)
-                    </span>
-                  ))}
-              </TableCell>
+              {session?.user.privilege === "admin" && (
+                <TableCell>
+                  {row.couponMeta &&
+                    row.couponMeta.userCoupons.map((el: any) => (
+                      <span
+                        className="whitespace-nowrap flex justify-center items-center"
+                        key={el.user.userId}
+                      >
+                        <Avatar
+                          alt={el.user.name}
+                          src={el.user.image}
+                          sx={{ width: 24, height: 24, mr: 1 }}
+                        />
+                        {el.user.name} ({el.percent}%)
+                      </span>
+                    ))}
+                </TableCell>
+              )}
 
               {/* <TableCell>Conversions</TableCell>
               <TableCell>Net Conversions</TableCell>
