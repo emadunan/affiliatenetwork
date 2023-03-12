@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Avatar } from "@mui/material";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 interface PerformanceTableProps {
   rows: any[];
@@ -42,11 +42,12 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
   const { data: session } = useSession();
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
+            <TableCell>#</TableCell>
             <TableCell></TableCell>
-            <TableCell>Campaign Name</TableCell>
+            <TableCell>Campaign</TableCell>
             {/* <TableCell>Country</TableCell> */}
             <TableCell>Coupon</TableCell>
             {/* <TableCell>Adset</TableCell> */}
@@ -90,6 +91,7 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               key={idx}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
+              <TableCell>{idx+1}</TableCell>
               <TableCell>
                 <Avatar
                   alt={row.campaign_name}
@@ -131,21 +133,21 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               <TableCell>Net Conversions</TableCell>
               <TableCell>Conversions CR</TableCell> */}
 
-              <TableCell>{row.revenue}</TableCell>
-              <TableCell>{row.net_revenue}</TableCell>
-              <TableCell>{row.revenue_cancellation_rate}</TableCell>
+              <TableCell>{(+row.revenue).toFixed(2)}</TableCell>
+              <TableCell>{(+row.net_revenue).toFixed(2)}</TableCell>
+              <TableCell>{(+row.revenue_cancellation_rate).toFixed(2)}</TableCell>
 
-              <TableCell>{row.sales_amount}</TableCell>
-              <TableCell>{row.net_sales_amount}</TableCell>
-              <TableCell>{row.sales_amount_cancellation_rate}</TableCell>
+              <TableCell>{(+row.sales_amount).toFixed(2)}</TableCell>
+              <TableCell>{(+row.net_sales_amount).toFixed(2)}</TableCell>
+              <TableCell>{(+row.sales_amount_cancellation_rate).toFixed(2)}</TableCell>
 
-              <TableCell>{row.sales_amount_usd}</TableCell>
-              <TableCell>{row.net_sales_amount_usd}</TableCell>
-              <TableCell>{row.sales_amount_usd_cancellation_rate}</TableCell>
+              <TableCell>{(+row.sales_amount_usd).toFixed(2)}</TableCell>
+              <TableCell>{(+row.net_sales_amount_usd).toFixed(2)}</TableCell>
+              <TableCell>{(+row.sales_amount_usd_cancellation_rate).toFixed(2)}</TableCell>
 
-              <TableCell>{row.aov_usd}</TableCell>
+              <TableCell>{(+row.aov_usd).toFixed(2)}</TableCell>
               {/* <TableCell>{row.net_aov_usd}</TableCell> */}
-              <TableCell>{row.aov_usd_cancellation_rate}</TableCell>
+              <TableCell>{(+row.aov_usd_cancellation_rate).toFixed(2)}</TableCell>
 
               {/* <TableCell>Month</TableCell> */}
             </TableRow>

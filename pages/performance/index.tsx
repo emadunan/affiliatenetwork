@@ -1,18 +1,21 @@
 import {
+  Autocomplete,
   Backdrop,
   Box,
   Button,
   CircularProgress,
   Divider,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { FC, ReactNode, useState } from "react";
 import PerformanceTable from "../../components/performance/performance-table";
 import MaterialUIPicker from "../../components/ui/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import Pagination from "@mui/material/Pagination";
+import { useGetAllCampaignsQuery } from "../../services/campaign";
 
 // SummaryTypography Component
 interface TypographyProps {
@@ -28,6 +31,10 @@ const SummaryTypography: FC<TypographyProps> = ({ children }) => {
 };
 
 const Performance: FC = () => {
+  const { data: session } = useSession();
+
+  const [campaignLabels, setCampaignLabels] = useState<any>();
+
   // Backdrop and spinner
   const [showSpinner, setShowSpinner] = React.useState(false);
 
@@ -38,6 +45,19 @@ const Performance: FC = () => {
     dayjs(new Date().toISOString())
   );
 
+  const [campaignValue, setCampaignValue] = React.useState<string | null>(null);
+
+  // Get all campaigns
+  const { data: campaigns, isLoading } = useGetAllCampaignsQuery(
+    session?.user.userId as string
+  );
+
+  useEffect(() => {
+    const campaignsLabels = campaigns?.map((el: any) => el.title);
+    setCampaignLabels(campaignsLabels);
+  }, [campaigns]);
+
+
   const handleFromDateChange = (newValue: Dayjs | null) => {
     setFromDate(newValue);
   };
@@ -47,18 +67,18 @@ const Performance: FC = () => {
   };
 
   const handleRunReport = (page = 1) => {
-    console.log(fromDate?.toISOString(), untilDate?.toISOString());
-
     setShowSpinner(true);
+    console.log(campaignValue);
+    
     fetch(
-      `/api/boostiny/performance?page=${page}&fromDate=${fromDate?.toISOString()}&untilDate=${untilDate?.toISOString()}`
+      `/api/boostiny/performance?page=${page}&campaign_name=${campaignValue}&fromDate=${fromDate?.toISOString()}&untilDate=${untilDate?.toISOString()}`
     )
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data.payload);
-        setReport(data.payload);
+        console.log(data);
+        setReport(data);
         setShowSpinner(false);
       });
   };
@@ -68,7 +88,6 @@ const Performance: FC = () => {
   };
 
   // Fetch data
-  const { data: session } = useSession();
   const [report, setReport] = useState<any>();
 
   return (
@@ -87,6 +106,18 @@ const Performance: FC = () => {
           handleChange={handleUntilDateChange}
           value={untilDate}
         />
+        {campaignLabels && (
+          <Autocomplete
+            disablePortal
+            id="campaign-box-label"
+            value={campaignValue}
+            onChange={(_e: React.SyntheticEvent<Element, Event>, newInputValue) => setCampaignValue(newInputValue as string)}
+            options={campaignLabels}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Campaigns" />}
+          />
+
+        )}
         <Button
           variant="outlined"
           onClick={(_e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
@@ -171,7 +202,7 @@ const Performance: FC = () => {
               <Typography variant="h4" className="my-2">
                 Performance
               </Typography>
-              {report.pagination.total && (
+              {/* {report.pagination.total && (
                 <Pagination
                   count={Math.ceil(
                     report.pagination.total / report.pagination.perPage
@@ -183,8 +214,8 @@ const Performance: FC = () => {
                     handleRunReport(page)
                   }
                 />
-              )}
-              <PerformanceTable rows={report.data} />
+              )} */}
+              <PerformanceTable rows={report} />
             </Box>
           </Box>
         )}

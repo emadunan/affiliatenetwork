@@ -25,27 +25,51 @@ export default async function handler(
         user: { privilege, userId },
       } = session;
 
-      const page = req.query.page;
+      // const page = req.query.page;
       const fromDate = formatDate(new Date(req.query.fromDate as string));
       const untilDate = formatDate(new Date(req.query.untilDate as string));
+      
+      const campaign_name = req.query.campaign_name;
 
       // &campaign_name=Raneen
-      const response = await fetch(
-        `${boostinyApiUrl}/publisher/performance?page=${page}&from=${fromDate}&to=${untilDate}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: boostinyApiKey,
-          },
-        }
-      );
+      const getPerformanceReportPage = async (page = 1) => {
+        console.log(`${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`);
+        
+        const response = await fetch(
+          `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: boostinyApiKey,
+            },
+          }
+        );
 
-      const result = await response.json();
+        return await response.json();
+      }
+
+      // Get performance report for the first page
+      const result = (await getPerformanceReportPage()).payload;
+
+      // Calculate the number of pages in the performance report
+      const numberOfPages = Math.ceil(result.pagination.total / result.pagination.perPage);
+
+
+      for (let i = 2; i < numberOfPages; i++) {
+        const currPageResultData = (await getPerformanceReportPage(i)).payload.data;
+        result.data = [...result.data, ...currPageResultData]
+      }
+
+      console.log(result);
 
       const transformedData = await Promise.all(
-        result.payload.data.map(async (el: any) => {
+        result.data.map(async (el: any) => {
+          // Get meta data from database
           const elMeta = await getCouponWithUsers(el.code, el.campaign_name);
+
+          // Check if the record related to the current logged user
           const currUser = elMeta?.userCoupons.find((u) => u.userId === userId);
+
           if (privilege === "admin") {
             // Add publishers data and return result
             const transformedEl = { ...el, couponMeta: elMeta };
@@ -54,31 +78,18 @@ export default async function handler(
             //
             const transformedEl = {
               ...el,
-              revenue: Math.floor((+el.revenue * currUser.percent) / 100) + "",
+              revenue: (+el.revenue * currUser.percent) / 100 + "",
               net_revenue:
-                Math.floor((+el.net_revenue * currUser.percent) / 100) + "",
+                (+el.net_revenue * currUser.percent) / 100 + "",
             };
             return transformedEl;
-          } else {
-            for (const key in el) {
-              if (
-                Object.prototype.hasOwnProperty.call(el, key) &&
-                key !== "campaign_name" &&
-                key !== "code"
-              ) {
-                el[key] = "###";
-              }
-            }
-
-            return el;
           }
         })
       );
 
-      result.payload.data = transformedData;
-      console.log(transformedData);
+      const filteredData = transformedData.filter((el: any) => !!el);
 
-      res.status(200).json(result);
+      res.status(200).json(filteredData);
     } catch (error: unknown) {
       if (error instanceof Error) {
         return res.status(400).json(error.message);
