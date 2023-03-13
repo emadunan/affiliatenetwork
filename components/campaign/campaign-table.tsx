@@ -124,7 +124,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                   {row.userCampaigns
                     .find((c) => c.campaignId === row.id)
                     ?.user.userCoupons.filter(
-                      (userCoupon) => userCoupon.coupon.campaignId === row.id
+                      (userCoupon) => userCoupon.coupon.campaignId === row.id && userCoupon.userId === session?.user.userId
                     )
                     .map((el) => (
                       <Typography component="span" key={el.couponId}>

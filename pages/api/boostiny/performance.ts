@@ -28,13 +28,17 @@ export default async function handler(
       // const page = req.query.page;
       const fromDate = formatDate(new Date(req.query.fromDate as string));
       const untilDate = formatDate(new Date(req.query.untilDate as string));
-      
-      const campaign_name = req.query.campaign_name;
+
+      let campaign_name = req.query.campaign_name;
+
+      if (campaign_name === "null") {
+        campaign_name = '';
+      }
 
       // &campaign_name=Raneen
       const getPerformanceReportPage = async (page = 1) => {
         console.log(`${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`);
-        
+
         const response = await fetch(
           `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`,
           {

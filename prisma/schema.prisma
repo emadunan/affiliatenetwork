@@ -95,12 +95,13 @@ model UserCampaigns {
 }
 
 model UserCoupons {
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  coupon     Coupon   @relation(fields: [couponId], references: [id])
-  couponId   String
-  percent    Int
-  assignedAt DateTime @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  coupon      Coupon    @relation(fields: [couponId], references: [id])
+  couponId    String
+  percent     Int
+  assignedAt  DateTime  @default(now())
+  assignEndAt DateTime?
 
   @@id([userId, couponId])
 }

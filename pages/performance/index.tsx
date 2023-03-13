@@ -5,6 +5,7 @@ import {
   Button,
   CircularProgress,
   Divider,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,11 +17,23 @@ import MaterialUIPicker from "../../components/ui/date-picker";
 import dayjs, { Dayjs } from "dayjs";
 import Pagination from "@mui/material/Pagination";
 import { useGetAllCampaignsQuery } from "../../services/campaign";
+import MultipleSelectCheckmarks from "../../components/ui/multiple-select-checkmarks";
 
 // SummaryTypography Component
 interface TypographyProps {
   children: ReactNode;
 }
+
+const names = [
+  'sales_amount',
+  'net_sales_amount',
+  'sales_amount_cancellation_rate',
+  'sales_amount_usd',
+  'net_sales_amount_usd',
+  'sales_amount_usd_cancellation_rate',
+  'aov_usd',
+  'aov_usd_cancellation_rate',
+];
 
 const SummaryTypography: FC<TypographyProps> = ({ children }) => {
   return (
@@ -69,7 +82,7 @@ const Performance: FC = () => {
   const handleRunReport = (page = 1) => {
     setShowSpinner(true);
     console.log(campaignValue);
-    
+
     fetch(
       `/api/boostiny/performance?page=${page}&campaign_name=${campaignValue}&fromDate=${fromDate?.toISOString()}&untilDate=${untilDate?.toISOString()}`
     )
@@ -90,12 +103,31 @@ const Performance: FC = () => {
   // Fetch data
   const [report, setReport] = useState<any>();
 
+  // Handle metrics attributes status
+  const [metricName, setMetricName] = React.useState<string[]>([]);
+
+  const handleMetricsChange = (event: SelectChangeEvent<typeof metricName>) => {
+    const {
+      target: { value },
+    } = event;
+    setMetricName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );    
+  };
+
+  useEffect(() => {
+    console.log(metricName);
+
+  }, [metricName])
+
   return (
     <Box component="div">
       <Box
         component="div"
         className="flex flex-row justify-center items-center"
       >
+        <MultipleSelectCheckmarks names={names} metricName={metricName} handleMetricsChange={handleMetricsChange}/>
         <MaterialUIPicker
           label="from"
           handleChange={handleFromDateChange}
@@ -109,6 +141,7 @@ const Performance: FC = () => {
         {campaignLabels && (
           <Autocomplete
             disablePortal
+            className="mx-2"
             id="campaign-box-label"
             value={campaignValue}
             onChange={(_e: React.SyntheticEvent<Element, Event>, newInputValue) => setCampaignValue(newInputValue as string)}
@@ -119,6 +152,7 @@ const Performance: FC = () => {
 
         )}
         <Button
+          className="ml-2"
           variant="outlined"
           onClick={(_e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             handleRunReport()
@@ -215,7 +249,7 @@ const Performance: FC = () => {
                   }
                 />
               )} */}
-              <PerformanceTable rows={report} />
+              <PerformanceTable rows={report} metricName={metricName}/>
             </Box>
           </Box>
         )}

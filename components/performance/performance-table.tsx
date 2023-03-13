@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 
 interface PerformanceTableProps {
   rows: any[];
+  metricName: string[];
 }
 
 /*
@@ -38,7 +39,7 @@ interface PerformanceTableProps {
   <ItemTypography>aov_usd_cancellation_rate: {item.aov_usd_cancellation_rate}</ItemTypography>
 */
 
-const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
+const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows, metricName }) => {
   const { data: session } = useSession();
   return (
     <TableContainer component={Paper}>
@@ -70,17 +71,17 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
             <TableCell>Net Revenue</TableCell>
             <TableCell>Revenue CR</TableCell>
 
-            <TableCell>Sales Amount</TableCell>
-            <TableCell>Net Sales Amount</TableCell>
-            <TableCell>Sales Amount CR</TableCell>
+            {metricName.includes("sales_amount") && <TableCell>Sales Amount</TableCell>}
+            {metricName.includes("net_sales_amount") && <TableCell>Net Sales Amount</TableCell>}
+            {metricName.includes("sales_amount_cancellation_rate") && <TableCell>Sales Amount CR</TableCell>}
 
-            <TableCell>Sales Amount USD</TableCell>
-            <TableCell>Net Sales Amount USD</TableCell>
-            <TableCell>Sales Amount CR USD</TableCell>
+            {metricName.includes("sales_amount_usd") && <TableCell>Sales Amount USD</TableCell>}
+            {metricName.includes("net_sales_amount_usd") && <TableCell>Net Sales Amount USD</TableCell>}
+            {metricName.includes("sales_amount_usd_cancellation_rate") && <TableCell>Sales Amount CR USD</TableCell>}
 
-            <TableCell>AOV USD</TableCell>
+            {metricName.includes("aov_usd") && <TableCell>AOV USD</TableCell>}
             {/* <TableCell>Net AOV USD</TableCell> */}
-            <TableCell>AOV USD CR</TableCell>
+            {metricName.includes("aov_usd_cancellation_rate") && <TableCell>AOV USD CR</TableCell>}
 
             {/* <TableCell>Month</TableCell> */}
           </TableRow>
@@ -91,7 +92,7 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               key={idx}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell>{idx+1}</TableCell>
+              <TableCell>{idx + 1}</TableCell>
               <TableCell>
                 <Avatar
                   alt={row.campaign_name}
@@ -137,17 +138,17 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({ rows }) => {
               <TableCell>{(+row.net_revenue).toFixed(2)}</TableCell>
               <TableCell>{(+row.revenue_cancellation_rate).toFixed(2)}</TableCell>
 
-              <TableCell>{(+row.sales_amount).toFixed(2)}</TableCell>
-              <TableCell>{(+row.net_sales_amount).toFixed(2)}</TableCell>
-              <TableCell>{(+row.sales_amount_cancellation_rate).toFixed(2)}</TableCell>
+              {metricName.includes("sales_amount") && <TableCell>{(+row.sales_amount).toFixed(2)}</TableCell>}
+              {metricName.includes("net_sales_amount") && <TableCell>{(+row.net_sales_amount).toFixed(2)}</TableCell>}
+              {metricName.includes("sales_amount_cancellation_rate") && <TableCell>{(+row.sales_amount_cancellation_rate).toFixed(2)}</TableCell>}
 
-              <TableCell>{(+row.sales_amount_usd).toFixed(2)}</TableCell>
-              <TableCell>{(+row.net_sales_amount_usd).toFixed(2)}</TableCell>
-              <TableCell>{(+row.sales_amount_usd_cancellation_rate).toFixed(2)}</TableCell>
+              {metricName.includes("sales_amount_usd") && <TableCell>{(+row.sales_amount_usd).toFixed(2)}</TableCell>}
+              {metricName.includes("net_sales_amount_usd") && <TableCell>{(+row.net_sales_amount_usd).toFixed(2)}</TableCell>}
+              {metricName.includes("sales_amount_usd_cancellation_rate") && <TableCell>{(+row.sales_amount_usd_cancellation_rate).toFixed(2)}</TableCell>}
 
-              <TableCell>{(+row.aov_usd).toFixed(2)}</TableCell>
+              {metricName.includes("aov_usd") && <TableCell>{(+row.aov_usd).toFixed(2)}</TableCell>}
               {/* <TableCell>{row.net_aov_usd}</TableCell> */}
-              <TableCell>{(+row.aov_usd_cancellation_rate).toFixed(2)}</TableCell>
+              {metricName.includes("aov_usd_cancellation_rate") && <TableCell>{(+row.aov_usd_cancellation_rate).toFixed(2)}</TableCell>}
 
               {/* <TableCell>Month</TableCell> */}
             </TableRow>
