@@ -67,9 +67,7 @@ export default async function handler(
           .data;
         result.data = [...result.data, ...currPageResultData];
       }
-
-      console.log(result);
-
+      
       const transformedData = await Promise.all(
         result.data.map(async (el: any) => {
           // Get meta data from database
@@ -94,10 +92,19 @@ export default async function handler(
         })
       );
 
-      const filteredData = transformedData.filter((el: any) => !!el);
+      let filteredData;
+
+      if (transformedData) {
+        filteredData = transformedData.filter((el: any) => !!el);
+      } else {
+        filteredData = [];
+      }
 
       res.status(200).json(filteredData);
+
     } catch (error: unknown) {
+      console.log("CATCH ERROR!!!");
+      
       if (error instanceof Error) {
         return res.status(400).json(error.message);
       }

@@ -141,7 +141,7 @@ const PerformanceTable: React.FC<PerformanceTableProps> = ({
                     row.couponMeta.userCoupons.map((el: any) => (
                       <span
                         className="whitespace-nowrap flex justify-center items-center"
-                        key={el.user.userId}
+                        key={`${el.user.userId}-${idx}`}
                       >
                         <Avatar
                           alt={el.user.name}
