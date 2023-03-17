@@ -32,12 +32,14 @@ export default async function handler(
       let campaign_name = req.query.campaign_name;
 
       if (campaign_name === "null") {
-        campaign_name = '';
+        campaign_name = "";
       }
 
       // &campaign_name=Raneen
       const getPerformanceReportPage = async (page = 1) => {
-        console.log(`${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`);
+        console.log(
+          `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`
+        );
 
         const response = await fetch(
           `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`,
@@ -50,18 +52,20 @@ export default async function handler(
         );
 
         return await response.json();
-      }
+      };
 
       // Get performance report for the first page
       const result = (await getPerformanceReportPage()).payload;
 
       // Calculate the number of pages in the performance report
-      const numberOfPages = Math.ceil(result.pagination.total / result.pagination.perPage);
-
+      const numberOfPages = Math.ceil(
+        result.pagination.total / result.pagination.perPage
+      );
 
       for (let i = 2; i < numberOfPages; i++) {
-        const currPageResultData = (await getPerformanceReportPage(i)).payload.data;
-        result.data = [...result.data, ...currPageResultData]
+        const currPageResultData = (await getPerformanceReportPage(i)).payload
+          .data;
+        result.data = [...result.data, ...currPageResultData];
       }
 
       console.log(result);
@@ -83,8 +87,7 @@ export default async function handler(
             const transformedEl = {
               ...el,
               revenue: (+el.revenue * currUser.percent) / 100 + "",
-              net_revenue:
-                (+el.net_revenue * currUser.percent) / 100 + "",
+              net_revenue: (+el.net_revenue * currUser.percent) / 100 + "",
             };
             return transformedEl;
           }

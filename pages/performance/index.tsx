@@ -25,14 +25,15 @@ interface TypographyProps {
 }
 
 const names = [
-  'sales_amount',
-  'net_sales_amount',
-  'sales_amount_cancellation_rate',
-  'sales_amount_usd',
-  'net_sales_amount_usd',
-  'sales_amount_usd_cancellation_rate',
-  'aov_usd',
-  'aov_usd_cancellation_rate',
+  "net_revenue",
+  "revenue_cancellation_rate",
+  "net_sales_amount",
+  "sales_amount_cancellation_rate",
+  "sales_amount_usd",
+  "net_sales_amount_usd",
+  "sales_amount_usd_cancellation_rate",
+  "aov_usd",
+  "aov_usd_cancellation_rate",
 ];
 
 const SummaryTypography: FC<TypographyProps> = ({ children }) => {
@@ -69,7 +70,6 @@ const Performance: FC = () => {
     const campaignsLabels = campaigns?.map((el: any) => el.title);
     setCampaignLabels(campaignsLabels);
   }, [campaigns]);
-
 
   const handleFromDateChange = (newValue: Dayjs | null) => {
     setFromDate(newValue);
@@ -112,14 +112,13 @@ const Performance: FC = () => {
     } = event;
     setMetricName(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );    
+      typeof value === "string" ? value.split(",") : value
+    );
   };
 
   useEffect(() => {
     console.log(metricName);
-
-  }, [metricName])
+  }, [metricName]);
 
   return (
     <Box component="div">
@@ -127,7 +126,11 @@ const Performance: FC = () => {
         component="div"
         className="flex flex-row justify-center items-center"
       >
-        <MultipleSelectCheckmarks names={names} metricName={metricName} handleMetricsChange={handleMetricsChange}/>
+        <MultipleSelectCheckmarks
+          names={names}
+          metricName={metricName}
+          handleMetricsChange={handleMetricsChange}
+        />
         <MaterialUIPicker
           label="from"
           handleChange={handleFromDateChange}
@@ -144,12 +147,16 @@ const Performance: FC = () => {
             className="mx-2"
             id="campaign-box-label"
             value={campaignValue}
-            onChange={(_e: React.SyntheticEvent<Element, Event>, newInputValue) => setCampaignValue(newInputValue as string)}
+            onChange={(
+              _e: React.SyntheticEvent<Element, Event>,
+              newInputValue
+            ) => setCampaignValue(newInputValue as string)}
             options={campaignLabels}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Campaigns" />}
+            renderInput={(params) => (
+              <TextField {...params} label="Campaigns" />
+            )}
           />
-
         )}
         <Button
           className="ml-2"
@@ -249,7 +256,7 @@ const Performance: FC = () => {
                   }
                 />
               )} */}
-              <PerformanceTable rows={report} metricName={metricName}/>
+              <PerformanceTable rows={report} metricName={metricName} />
             </Box>
           </Box>
         )}

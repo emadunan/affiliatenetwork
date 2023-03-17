@@ -36,6 +36,10 @@ import { UserMeta } from "@prisma/client";
 
 const steps = ["Basic Info", "Traffic Sources", "Create Profile"];
 
+// RegEx for matching phone numbers
+// 0100339933
+const phoneRegEx = /^0\d{10}$/;
+
 const RegisterForm: React.FC = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -111,13 +115,17 @@ const RegisterForm: React.FC = () => {
   const sm_telegramInputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
+    // Check phone and whatsapp numbers against regex
+    const phoneCheck = phoneRegEx.test(phoneNumber);
+    const whatsCheck = phoneRegEx.test(whatsNumber);
+
     setFormIsValid(
       !!firstName &&
         !!lastName &&
         !!country &&
         !!city &&
-        !!phoneNumber &&
-        !!whatsNumber
+        phoneCheck &&
+        whatsCheck
     );
   }, [firstName, lastName, country, city, phoneNumber, whatsNumber]);
 

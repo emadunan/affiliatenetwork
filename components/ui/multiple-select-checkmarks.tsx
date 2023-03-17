@@ -1,11 +1,11 @@
-import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
+import * as React from "react";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -24,7 +24,11 @@ interface MultipleSelectCheckmarksProps {
   handleMetricsChange: (e: SelectChangeEvent<string[]>) => void;
 }
 
-const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({ names, metricName, handleMetricsChange }) => {
+const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({
+  names,
+  metricName,
+  handleMetricsChange,
+}) => {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
@@ -36,7 +40,7 @@ const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({ nam
           value={metricName}
           onChange={handleMetricsChange}
           input={<OutlinedInput label="Metrics" />}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
           {names.map((name) => (
@@ -49,6 +53,6 @@ const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({ nam
       </FormControl>
     </div>
   );
-}
+};
 
 export default MultipleSelectCheckmarks;
