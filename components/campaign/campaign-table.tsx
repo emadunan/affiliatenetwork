@@ -13,6 +13,7 @@ import {
   useGetUserCampaignsQuery,
   useMakeCampaignRequestMutation,
 } from "../../services/campaign";
+import router from "next/router";
 
 interface CampaignTableProps {
   campaigns: CampaignWithUser[];
@@ -38,7 +39,8 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
     const userCampaignsLen = userCampaigns.length;
     const userCampaignReq: any = userCampaigns.find((item) => {
       return (
-        item.userId === session?.user.userId && item.status === "pending" // || item.status === "approved" || item.status === "declined"
+        item.userId === session?.user.userId && item.status === "pending"
+        // || item.status === "approved" || item.status === "declined"
       );
     });
 
@@ -95,6 +97,9 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
             {session?.user.privilege === "publisher" && (
               <TableCell align="right"></TableCell>
             )}
+            {session?.user.privilege === "admin" && (
+              <TableCell align="center">Assign</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -139,6 +144,11 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               {session?.user.privilege === "publisher" && (
                 <TableCell align="center">
                   {getReqStatus(row.userCampaigns, row.id)}
+                </TableCell>
+              )}
+              {session?.user.privilege === "admin" && (
+                <TableCell align="center">
+                  <Button variant="outlined" onClick={() => router.push("/campaigns/assign")}>Assign</Button>
                 </TableCell>
               )}
             </TableRow>
