@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Card, CardContent, Typography } from "@mui/material";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";

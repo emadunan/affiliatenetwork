@@ -25,12 +25,14 @@ import {
 } from "../../services/campaign";
 
 interface CampaignAssignListProps {
+  direct?: boolean;
   userId: string;
   selectedCampaign: any;
   setSelectedCampaign: any;
 }
 
 const CampaignAssignList: FC<CampaignAssignListProps> = ({
+  direct,
   userId,
   selectedCampaign,
   setSelectedCampaign,
@@ -97,6 +99,10 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     }
 
     console.log(checkedCoupons);
+
+    if (direct) {
+      // Handle direct assign
+    }
 
     setApproveReq({
       userId: userId,

@@ -148,7 +148,12 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               )}
               {session?.user.privilege === "admin" && (
                 <TableCell align="center">
-                  <Button variant="outlined" onClick={() => router.push("/campaigns/assign")}>Assign</Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => router.push("/campaigns/assign")}
+                  >
+                    Assign
+                  </Button>
                 </TableCell>
               )}
             </TableRow>
