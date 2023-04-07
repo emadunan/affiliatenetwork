@@ -5,6 +5,25 @@ export async function getAllCampaigns() {
   return await db.campaign.findMany();
 }
 
+export async function getCampaignWithCoupons(id: string) {
+  return await db.campaign.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      coupons: {
+        include: {
+          userCoupons: {
+            select: {
+              userId: true,
+            }
+          }
+        }
+      }
+    }
+  })
+}
+
 export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
     include: {

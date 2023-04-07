@@ -15,6 +15,7 @@ export const campaignApi = createApi({
       query: (id) => `/${id}`,
       providesTags: ["Requested"]
     }),
+    // Handle requests from specific user
     getUsersCampaignsReq: builder.query<any, void>({
       query: () => `/requests`,
       providesTags: ["Requested", "Approved", "Declined"],

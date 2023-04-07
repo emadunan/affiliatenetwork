@@ -150,7 +150,7 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
                 <TableCell align="center">
                   <Button
                     variant="outlined"
-                    onClick={() => router.push("/campaigns/assign")}
+                    onClick={() => router.push(`/campaigns/assign/${row.id}`)}
                   >
                     Assign
                   </Button>
