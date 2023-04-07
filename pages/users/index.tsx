@@ -12,7 +12,6 @@ const Users: FC = () => {
         return response.json();
       })
       .then((users) => {
-        console.log(users);
         setUsers(users);
       });
   }, []);

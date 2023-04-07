@@ -1,9 +1,11 @@
 import { CampaignWithUser } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
+
 export async function getAllCampaigns() {
   return await db.campaign.findMany();
 }
+
 
 export async function getCampaignWithCoupons(id: string) {
   return await db.campaign.findFirst({
@@ -24,6 +26,7 @@ export async function getCampaignWithCoupons(id: string) {
   })
 }
 
+
 export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
     include: {
@@ -43,6 +46,7 @@ export async function getAllCampaignWithStatus(): Promise<CampaignWithUser[]> {
     }
   });
 }
+
 
 export async function getUserCampaignsWithStatus(userId: string | undefined): Promise<CampaignWithUser[]> {
   return await db.campaign.findMany({
@@ -71,6 +75,7 @@ export async function getUserCampaignsWithStatus(userId: string | undefined): Pr
   });
 }
 
+
 export async function assignCampaignToUser(userId: string, campaignId: string) {
   return await db.userCampaigns.upsert({
     create: {
@@ -88,6 +93,7 @@ export async function assignCampaignToUser(userId: string, campaignId: string) {
     },
   })
 }
+
 
 export async function getCampaignCouponIdsForUser(userId: string, campaignId: string) {
   const couponIds = await db.coupon.findMany({

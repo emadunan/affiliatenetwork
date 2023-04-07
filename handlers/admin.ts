@@ -44,7 +44,7 @@ export async function declineUserCampaignReq(userId: string, campaignId: string)
   })
 }
 
-export async function ApproveUserCampaignReq(userId: string, campaignId: string, coupons: any[]) {
+export async function approveUserCampaignReq(userId: string, campaignId: string, coupons: any[]) {
   await db.userCampaigns.updateMany({
     where: {
       AND: [
@@ -66,4 +66,34 @@ export async function ApproveUserCampaignReq(userId: string, campaignId: string,
       }
     })
   });
+}
+
+export async function assignCampaignToUserDirect(userId: string, campaignId: string, coupons: any[]) {
+  await db.userCampaigns.upsert({
+    create: {
+      userId,
+      campaignId,
+      status: "approved",
+    },
+    update: {
+      status: "approved",
+    },
+    where: {
+      userId_campaignId: {
+        userId, campaignId
+      }
+    },
+  });
+
+  coupons.forEach(async(coupon: any) => {
+    await db.userCoupons.create({
+      data: {
+        userId,
+        couponId: coupon.id,
+        percent: coupon.percent
+      }
+    })
+  });
+
+  return userId;
 }

@@ -21,9 +21,7 @@ export const campaignApi = createApi({
       providesTags: ["Requested", "Approved", "Declined"],
     }),
     makeCampaignRequest: builder.mutation<void, { userId: string | undefined, campaignId: string }>({
-      query: (payload) => {
-        console.log(payload);
-        
+      query: (payload) => {        
         return {
         url: `/all/${payload.userId}`,
         method: "PUT",

@@ -5,6 +5,7 @@ import CampaignAssignList from "../../../components/campaign/campaign-assign-lis
 import useCampaignAssign from "../../../hooks/use-campaign-assign";
 import React from "react";
 import { useRouter } from "next/router";
+import { cloneDeep } from "lodash";
 
 interface CampaignAssignProps { }
 
@@ -22,20 +23,53 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
       if (!response.ok) throw new Error("Failed to fetch campaign!!");
 
       const result = await response.json();
-      console.log(result);
-      
+
       setSelectedCampaign(result);
     })()
   }, [campaignId]);
+
+
+  const handleUserChange = async (userId: string, selectedCampaign: any) => {
+    console.log(selectedCampaign);
+
+    // fetch coupons assigned to that specific user in this campaign
+    console.log(userId, selectedCampaign.id);
+
+    const response = await fetch(
+      `/api/campaigns/${selectedCampaign.id}/${userId}`
+    );
+
+    const ids = await response.json();
+    console.log(ids);
+
+    const liveCampaign = cloneDeep(selectedCampaign);
+
+    liveCampaign.coupons.forEach((coupon: any) => {
+      coupon.alreadyAssigned = ids.includes(coupon.id);
+    });
+
+    console.log(liveCampaign);
+
+    // set state for the selected campaign
+    setSelectedCampaign(liveCampaign);
+  };
+
 
   const handleChangeUser = (userId: string) => {
     setUserId(userId);
   }
 
+  useEffect(() => {
+    if (userId && selectedCampaign) {
+      handleUserChange(userId, selectedCampaign);
+    }
+  }, [userId, selectedCampaign]);
+
+
   return (
     <Box component="div">
       <UserSelect userId={userId} onChangeUser={handleChangeUser} />
-      {userId && (
+      {userId && selectedCampaign && (
         <CampaignAssignList
           direct={true}
           userId={userId}

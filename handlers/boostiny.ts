@@ -35,7 +35,6 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
         }
       });
 
-      console.log("EXPIRED", campaign);
       expiredCampaigns.push(campaign);
     }
   }
@@ -78,7 +77,6 @@ export const updateCampaignsDataMod = async (campaignsArr: any[]) => {
         }
       });
 
-      console.log("CREATED", newCampaign);
       newCampaigns.push(newCampaign);
     }
   }

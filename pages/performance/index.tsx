@@ -81,7 +81,6 @@ const Performance: FC = () => {
 
   const handleRunReport = (page = 1) => {
     setShowSpinner(true);
-    console.log(campaignValue);
 
     fetch(
       `/api/boostiny/performance?page=${page}&campaign_name=${campaignValue}&fromDate=${fromDate?.toISOString()}&untilDate=${untilDate?.toISOString()}`
@@ -90,7 +89,6 @@ const Performance: FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setReport(data);
         setShowSpinner(false);
       });

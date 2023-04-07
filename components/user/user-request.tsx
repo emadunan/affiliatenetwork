@@ -27,21 +27,16 @@ const UserRequest: FC<UserRequestProps> = (props) => {
 
   const handleCampaignChange = async (campaign: any) => {
     // fetch coupons assigned to that specific user in this campaign
-    console.log(props.userId, campaign.campaignId);
-
     const response = await fetch(
       `/api/campaigns/${campaign.campaignId}/${props.userId}`
     );
     const ids = await response.json();
-    console.log(ids);
 
     const liveCampaign = cloneDeep(campaign.campaign);
 
     liveCampaign.coupons.forEach((coupon: any) => {
       coupon.alreadyAssigned = ids.includes(coupon.id);
     });
-
-    console.log(liveCampaign);
 
     // set state for the selected campaign
     setSelectedCampaign(liveCampaign);

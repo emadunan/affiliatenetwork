@@ -19,6 +19,8 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { cloneDeep } from "lodash";
 
+import { useRouter } from "next/router";
+
 import {
   useApprovePendingReqMutation,
   useDeclinePendingReqMutation,
@@ -37,6 +39,9 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
   selectedCampaign,
   setSelectedCampaign,
 }) => {
+  // Instantiate router hook
+  const router = useRouter();
+
   // Temporarly handle Snakebar here
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [open, setOpen] = useState(false);
@@ -77,7 +82,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     });
   };
 
-  const handleApproveCampaign = () => {
+  const handleApproveCampaign = async () => {
     const checkedCoupons: any[] = selectedCampaign.coupons.filter(
       (coupon: any) => !!coupon.checked
     );
@@ -96,24 +101,36 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       setAlertMessage("The assigned percent out of range!");
       setOpen(true);
       return;
-    }
+    };
 
-    console.log(checkedCoupons);
-
-    if (direct) {
-      // Handle direct assign
-    }
-
-    setApproveReq({
+    const reqData = {
       userId: userId,
       campaignId: selectedCampaign.id,
       coupons: checkedCoupons,
-    });
+    };
+
+    if (direct) {
+      // Handle direct assign
+      const response = await fetch("/api/admin/assign-direct", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqData)
+      });
+    };
+
+    // Handle requested assign
+    setApproveReq(reqData);
 
     setSelectedCampaign(undefined);
   };
 
   const handleDeclineCampaign = () => {
+    if (direct) {
+      router.push("/campaigns");
+    };
+    
     setDeclineReq({ userId: userId, campaignId: selectedCampaign.id });
     setSelectedCampaign(undefined);
   };

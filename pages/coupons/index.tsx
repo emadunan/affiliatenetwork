@@ -22,7 +22,7 @@ const Coupons: FC = () => {
         if (["admin", "publisher"].includes(privilege as string)) {
           fetch("/api/boostiny/campaigns")
             .then((response) => {
-              if (!response.ok) return console.log(response);
+              if (!response.ok) throw new Error("Failed to fetch campaigns from boostiny!!");
               return response.json();
             })
             .then((data) => {

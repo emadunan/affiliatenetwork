@@ -10,6 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Handle loading Campaigns page with users' assign data
   if (req.method === "GET") {
     const userId = req.query.id;
     const campaigns = await getAllCampaignWithStatus();
@@ -32,6 +33,8 @@ export default async function handler(
     }
 
     res.status(200).json(campaigns);
+
+    // Handle users' requests for campaigns
   } else if (req.method === "PUT") {
     try {
       const { userId, campaignId } = req.body;

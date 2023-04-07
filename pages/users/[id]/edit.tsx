@@ -168,8 +168,6 @@ const EditUser: FC = () => {
       },
     };
 
-    // console.log(userData);
-
     const response = await fetch(`/api/users/${user?.id}`, {
       method: "PUT",
       headers: {

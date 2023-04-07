@@ -37,10 +37,6 @@ export default async function handler(
 
       // &campaign_name=Raneen
       const getPerformanceReportPage = async (page = 1) => {
-        console.log(
-          `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`
-        );
-
         const response = await fetch(
           `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`,
           {
@@ -102,8 +98,6 @@ export default async function handler(
 
       res.status(200).json(filteredData);
     } catch (error: unknown) {
-      console.log("CATCH ERROR!!!");
-
       if (error instanceof Error) {
         return res.status(400).json(error.message);
       }
