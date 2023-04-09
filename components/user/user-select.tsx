@@ -6,10 +6,14 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { useGetAllUsersQuery } from "../../services/user";
 
+// onChangeUser: (x: any) => void;
+
 interface UserSelectProps {
   userId: any;
-  onChangeUser: (x: any) => void;
+  onChangeUser: (userId: string) => Promise<void>;
 }
+
+
 
 const UserSelect: React.FC<UserSelectProps> = ({ userId, onChangeUser }) => {
   const { data: users } = useGetAllUsersQuery();

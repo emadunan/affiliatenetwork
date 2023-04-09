@@ -29,7 +29,7 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
   }, [campaignId]);
 
 
-  const handleUserChange = async (userId: string, selectedCampaign: any) => {
+  const handleUserChange = async (selectedCampaign: any, setUserIdFn: any, userId: string) => {
     console.log(selectedCampaign);
 
     // fetch coupons assigned to that specific user in this campaign
@@ -51,24 +51,24 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
     console.log(liveCampaign);
 
     // set state for the selected campaign
+    setUserIdFn(userId);
     setSelectedCampaign(liveCampaign);
   };
 
+  // const handleChangeUser = (userId: string) => {
+  //   setUserId(userId);
+  // }
 
-  const handleChangeUser = (userId: string) => {
-    setUserId(userId);
-  }
-
-  useEffect(() => {
-    if (userId && selectedCampaign) {
-      handleUserChange(userId, selectedCampaign);
-    }
-  }, [userId, selectedCampaign]);
+  // useEffect(() => {
+  //   if (userId && selectedCampaign) {
+  //     handleUserChange(userId, selectedCampaign);
+  //   }
+  // }, [userId, selectedCampaign]);
 
 
   return (
     <Box component="div">
-      <UserSelect userId={userId} onChangeUser={handleChangeUser} />
+      <UserSelect userId={userId} onChangeUser={handleUserChange.bind(null, selectedCampaign, setUserId)} />
       {userId && selectedCampaign && (
         <CampaignAssignList
           direct={true}

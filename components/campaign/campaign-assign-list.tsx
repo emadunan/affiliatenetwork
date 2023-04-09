@@ -111,17 +111,20 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
     if (direct) {
       // Handle direct assign
-      const response = await fetch("/api/admin/assign-direct", {
+      await fetch("/api/admin/assign-direct", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(reqData)
       });
-    };
 
-    // Handle requested assign
-    setApproveReq(reqData);
+      router.push("/campaigns")
+      
+    } else {
+      // Handle requested assign
+      setApproveReq(reqData);
+    }
 
     setSelectedCampaign(undefined);
   };
@@ -130,7 +133,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     if (direct) {
       router.push("/campaigns");
     };
-    
+
     setDeclineReq({ userId: userId, campaignId: selectedCampaign.id });
     setSelectedCampaign(undefined);
   };
