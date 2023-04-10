@@ -1,5 +1,5 @@
 import { Campaign } from "@prisma/client";
-import { CampaignWithCoupons } from "@prisma/client/scalar";
+import { CampaignWithBoostinyCoupons } from "@prisma/client/scalar";
 import { updateCampaignsDataMod } from "../../../handlers/boostiny";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { BoostinyCampaign } from "../../../interfaces/boostiny-campaign";
@@ -14,9 +14,9 @@ const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 
 type Data =
   | {
-      newCampaigns: Campaign[];
-      expiredCampaigns: Campaign[];
-    }
+    newCampaigns: Campaign[];
+    expiredCampaigns: Campaign[];
+  }
   | { errMsg: string };
 
 export default async function handler(
@@ -80,7 +80,7 @@ export default async function handler(
     }
 
     const transformedCampaigns = allCampaigns.map(
-      (campaign: BoostinyCampaign): Partial<CampaignWithCoupons> => {
+      (campaign: BoostinyCampaign): Partial<CampaignWithBoostinyCoupons> => {
         return {
           network_id: campaign.id.toString(),
           network_name: "boostiny",
