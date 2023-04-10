@@ -30,7 +30,6 @@ const Manage: FC = () => {
       setContent(htmlNode);
 
       handleOpen();
-      
     } catch (error: any) {
       setBoostinyUpdateSpinner(false);
       setContent(<p>{error.message}</p>);

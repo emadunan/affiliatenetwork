@@ -7,7 +7,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { cloneDeep } from "lodash";
 
-interface CampaignAssignProps { }
+interface CampaignAssignProps {}
 
 const CampaignAssign: FC<CampaignAssignProps> = () => {
   const { selectedCampaign, setSelectedCampaign } = useCampaignAssign();
@@ -25,11 +25,14 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
       const result = await response.json();
 
       setSelectedCampaign(result);
-    })()
+    })();
   }, [campaignId]);
 
-
-  const handleUserChange = async (selectedCampaign: any, setUserIdFn: any, userId: string) => {
+  const handleUserChange = async (
+    selectedCampaign: any,
+    setUserIdFn: any,
+    userId: string
+  ) => {
     console.log(selectedCampaign);
 
     // fetch coupons assigned to that specific user in this campaign
@@ -55,20 +58,13 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
     setSelectedCampaign(liveCampaign);
   };
 
-  // const handleChangeUser = (userId: string) => {
-  //   setUserId(userId);
-  // }
-
-  // useEffect(() => {
-  //   if (userId && selectedCampaign) {
-  //     handleUserChange(userId, selectedCampaign);
-  //   }
-  // }, [userId, selectedCampaign]);
-
-
   return (
     <Box component="div">
-      <UserSelect userId={userId} onChangeUser={handleUserChange.bind(null, selectedCampaign, setUserId)} />
+      {selectedCampaign && <h1>{selectedCampaign.title}</h1>}
+      <UserSelect
+        userId={userId}
+        onChangeUser={handleUserChange.bind(null, selectedCampaign, setUserId)}
+      />
       {userId && selectedCampaign && (
         <CampaignAssignList
           direct={true}

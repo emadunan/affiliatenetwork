@@ -1,19 +1,14 @@
 import React, { FC, SyntheticEvent, useState } from "react";
+import ReactDOM from "react-dom";
 import {
-  Alert,
-  Avatar,
   Box,
   Button,
-  Card,
   CardActions,
-  CardContent,
   Checkbox,
   FormGroup,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Snackbar,
-  Typography,
 } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -25,6 +20,8 @@ import {
   useApprovePendingReqMutation,
   useDeclinePendingReqMutation,
 } from "../../services/campaign";
+
+import AlertMsg, { Severity } from "../ui/alert-msg";
 
 interface CampaignAssignListProps {
   direct?: boolean;
@@ -42,18 +39,22 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
   // Instantiate router hook
   const router = useRouter();
 
-  // Temporarly handle Snakebar here
+  // Handle Snakebar Alert State!
+  const [alertSeverity, setAlertSeverity] = useState<Severity>("error");
   const [alertMessage, setAlertMessage] = useState<string>("");
-  const [open, setOpen] = useState(false);
+  const [isAlertMsgOpen, setIsAlertMsgOpen] = useState(false);
 
-  const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+  const handleCloseAlertMsg = (
+    event: SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    setIsAlertMsgOpen(false);
   };
 
-  // RTK Query
+  // RTK Query AJAX calls
   const [setApproveReq, approveResponse] = useApprovePendingReqMutation();
   const [setDeclineReq, declineResponse] = useDeclinePendingReqMutation();
 
@@ -89,7 +90,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
     if (checkedCoupons.length < 1) {
       setAlertMessage("You should select at least 1 item!");
-      setOpen(true);
+      setIsAlertMsgOpen(true);
       return;
     }
 
@@ -99,9 +100,9 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
     if (isPercentOutRange) {
       setAlertMessage("The assigned percent out of range!");
-      setOpen(true);
+      setIsAlertMsgOpen(true);
       return;
-    };
+    }
 
     const reqData = {
       userId: userId,
@@ -111,28 +112,34 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
     if (direct) {
       // Handle direct assign
-      await fetch("/api/admin/assign-direct", {
+      const response = await fetch("/api/admin/assign-direct", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(reqData)
+        body: JSON.stringify(reqData),
       });
 
-      router.push("/campaigns")
-      
+      if (response.ok) {
+        setAlertSeverity("success");
+        setAlertMessage("The coupon assigned successfuly!");
+        setIsAlertMsgOpen(true);
+      }
+
+      setTimeout(() => {
+        router.replace("/campaigns");
+      }, 1000);
     } else {
       // Handle requested assign
       setApproveReq(reqData);
+      setSelectedCampaign(undefined);
     }
-
-    setSelectedCampaign(undefined);
   };
 
   const handleDeclineCampaign = () => {
     if (direct) {
       router.push("/campaigns");
-    };
+    }
 
     setDeclineReq({ userId: userId, campaignId: selectedCampaign.id });
     setSelectedCampaign(undefined);
@@ -194,11 +201,15 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
           Decline
         </Button>
       </CardActions>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+      {ReactDOM.createPortal(
+        <AlertMsg
+          open={isAlertMsgOpen}
+          handleClose={handleCloseAlertMsg}
+          alertMessage={alertMessage}
+          severity={alertSeverity}
+        />,
+        document.getElementById("alert-msg") as HTMLDivElement
+      )}
     </React.Fragment>
   );
 };

@@ -13,8 +13,6 @@ interface UserSelectProps {
   onChangeUser: (userId: string) => Promise<void>;
 }
 
-
-
 const UserSelect: React.FC<UserSelectProps> = ({ userId, onChangeUser }) => {
   const { data: users } = useGetAllUsersQuery();
 
@@ -37,12 +35,14 @@ const UserSelect: React.FC<UserSelectProps> = ({ userId, onChangeUser }) => {
             <em>None</em>
           </MenuItem>
           {users?.map((user) => (
-            <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>
+            <MenuItem key={user.id} value={user.id}>
+              {user.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
 
 export default UserSelect;
