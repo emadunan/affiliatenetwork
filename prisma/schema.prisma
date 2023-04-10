@@ -78,7 +78,7 @@ model Coupon {
   countries       String[]
   start_date      String
   account_manager String
-  ad_set          String
+  ad_set          String?
   campaignId      String
   campaign        Campaign      @relation(fields: [campaignId], references: [id])
   userCoupons     UserCoupons[]

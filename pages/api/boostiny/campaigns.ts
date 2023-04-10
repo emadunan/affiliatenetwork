@@ -2,6 +2,7 @@ import { Campaign } from "@prisma/client";
 import { CampaignWithCoupons } from "@prisma/client/scalar";
 import { updateCampaignsDataMod } from "../../../handlers/boostiny";
 import type { NextApiRequest, NextApiResponse } from "next";
+import type { BoostinyCampaign } from "../../../interfaces/boostiny-campaign";
 
 const boostinyApiKey = process.env.BOOSTINY_API_KEY as string;
 const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
@@ -40,7 +41,7 @@ export default async function handler(
 
     res.status(200).json(campaigns);
   } else if (req.method === "PATCH") {
-    let allCampaigns: any[];
+    let allCampaigns: BoostinyCampaign[];
 
     const { page } = req.query;
     const response = await fetch(
@@ -79,7 +80,7 @@ export default async function handler(
     }
 
     const transformedCampaigns = allCampaigns.map(
-      (campaign: any): Partial<CampaignWithCoupons> => {
+      (campaign: BoostinyCampaign): Partial<CampaignWithCoupons> => {
         return {
           network_id: campaign.id.toString(),
           network_name: "boostiny",
@@ -89,7 +90,7 @@ export default async function handler(
           title: campaign.name,
           title_c: campaign.name.toLowerCase(),
           category: campaign.category,
-          category_c: campaign.category.toLowerCase(),
+          category_c: campaign.category?.toLowerCase(),
           desc_description: campaign.campaign_description.description,
           desc_creatives: campaign.campaign_description.creatives,
           desc_promotion: campaign.campaign_description.promotion,

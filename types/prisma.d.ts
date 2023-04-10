@@ -61,7 +61,15 @@ declare module "@prisma/client/scalar" {
   // 4: Define a type that include coupons related to `Campaign`
   const campaignWithCoupons = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
-      coupons: true,
+      coupons: {
+        select: {
+          coupon: true,
+          countries: true,
+          start_date: true,
+          account_manager: true,
+          ad_set: true
+        }
+      },
     }
   });
   export type CampaignWithCoupons = Prisma.CampaignGetPayload<typeof campaignWithCoupons>
