@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useState } from "react";
+import React, { FC, Fragment, SyntheticEvent, useState } from "react";
 import ReactDOM from "react-dom";
 import {
   Box,
@@ -10,18 +10,19 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
+
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { cloneDeep } from "lodash";
-
 import { useRouter } from "next/router";
-
 import {
   useApprovePendingReqMutation,
   useDeclinePendingReqMutation,
 } from "../../services/campaign";
 
 import AlertMsg, { Severity } from "../ui/alert-msg";
+import DatePicker from "../ui/date-picker";
+import dayjs, { Dayjs } from "dayjs";
 
 interface CampaignAssignListProps {
   direct?: boolean;
@@ -45,7 +46,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
   const [isAlertMsgOpen, setIsAlertMsgOpen] = useState(false);
 
   const handleCloseAlertMsg = (
-    event: SyntheticEvent | Event,
+    _event: SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
@@ -67,6 +68,8 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       );
 
       selectedCoupon.checked = !selectedCoupon.checked;
+      selectedCoupon.assignedAt = dayjs(new Date().toISOString());
+      selectedCoupon.assignEndAt = null;
       return prevStateCp;
     });
   };
@@ -83,6 +86,37 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     });
   };
 
+  const handleCouponAssignedAtChange = (
+    assignedAt: Dayjs | null,
+    couponId: string | undefined
+  ) => {
+    setSelectedCampaign((prevState: any) => {
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find(
+        (c: any) => c.id === couponId
+      );
+
+      selectedCoupon.assignedAt = assignedAt;
+      return prevStateCp;
+    });
+  };
+
+  const handleCouponAssignEndAtChange = (
+    assignEndAt: Dayjs | null,
+    couponId: string | undefined
+  ) => {
+    setSelectedCampaign((prevState: any) => {
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find(
+        (c: any) => c.id === couponId
+      );
+
+      selectedCoupon.assignEndAt = assignEndAt;
+      return prevStateCp;
+    });
+  };
+
+  // Approve or Decline handlers
   const handleApproveCampaign = async () => {
     const checkedCoupons: any[] = selectedCampaign.coupons.filter(
       (coupon: any) => !!coupon.checked
@@ -122,7 +156,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
       if (response.ok) {
         setAlertSeverity("success");
-        setAlertMessage("The coupon assigned successfuly!");
+        setAlertMessage("The coupon assigned successfully!");
         setIsAlertMsgOpen(true);
       }
 
@@ -159,29 +193,49 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
               }
               label={coupon.coupon}
             />
-            <FormControl
-              sx={{ m: 1, width: "20ch" }}
-              variant="outlined"
-              size="small"
-            >
-              <InputLabel
-                htmlFor="assigned-percent"
-                hidden={coupon.alreadyAssigned}
-              >
-                Assigned Percent
-              </InputLabel>
-              <OutlinedInput
-                hidden={coupon.alreadyAssigned}
-                type="number"
-                inputProps={{ min: 1, max: 100 }}
-                id="assigned-percent"
-                endAdornment={<InputAdornment position="end">%</InputAdornment>}
-                label="Assigned Percent"
-                onChange={(e) =>
-                  handleCouponPercentChange(coupon.id, +e.target.value)
-                }
-              />
-            </FormControl>
+            {coupon.checked && (
+              <Fragment>
+                <FormControl
+                  sx={{ m: 1, width: "20ch" }}
+                  variant="outlined"
+                  size="medium"
+                >
+                  <InputLabel
+                    htmlFor="assigned-percent"
+                    hidden={coupon.alreadyAssigned}
+                  >
+                    Assigned Percent
+                  </InputLabel>
+                  <OutlinedInput
+                    hidden={coupon.alreadyAssigned}
+                    type="number"
+                    inputProps={{ min: 1, max: 100 }}
+                    id="assigned-percent"
+                    endAdornment={
+                      <InputAdornment position="end">%</InputAdornment>
+                    }
+                    label="Assigned Percent"
+                    onChange={(e) =>
+                      handleCouponPercentChange(coupon.id, +e.target.value)
+                    }
+                  />
+                </FormControl>
+                <DatePicker
+                  label="Assign From"
+                  value={coupon.assignedAt}
+                  handleChange={(assignedAt: Dayjs | null) => {
+                    handleCouponAssignedAtChange(assignedAt, coupon.id);
+                  }}
+                />
+                <DatePicker
+                  label="Assign Until"
+                  value={coupon.assignEndAt}
+                  handleChange={(assignEndAt: Dayjs | null) => {
+                    handleCouponAssignEndAtChange(assignEndAt, coupon.id);
+                  }}
+                />
+              </Fragment>
+            )}
           </Box>
         ))}
       </FormGroup>

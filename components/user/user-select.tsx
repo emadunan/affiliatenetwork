@@ -6,8 +6,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { useGetAllUsersQuery } from "../../services/user";
 
-// onChangeUser: (x: any) => void;
-
 interface UserSelectProps {
   userId: any;
   onChangeUser: (userId: string) => Promise<void>;
@@ -21,7 +19,7 @@ const UserSelect: React.FC<UserSelectProps> = ({ userId, onChangeUser }) => {
   };
 
   return (
-    <div>
+    <div className="text-center">
       <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="user-select-label">User</InputLabel>
         <Select

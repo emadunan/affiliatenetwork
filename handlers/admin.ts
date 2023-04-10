@@ -62,7 +62,9 @@ export async function approveUserCampaignReq(userId: string, campaignId: string,
       data: {
         userId,
         couponId: coupon.id,
-        percent: coupon.percent
+        percent: coupon.percent,
+        assignedAt: coupon.assignedAt,
+        assignEndAt: coupon.assignEndAt,
       }
     })
   });
@@ -90,7 +92,9 @@ export async function assignCampaignToUserDirect(userId: string, campaignId: str
       data: {
         userId,
         couponId: coupon.id,
-        percent: coupon.percent
+        percent: coupon.percent,
+        assignedAt: coupon.assignedAt,
+        assignEndAt: coupon.assignEndAt,
       }
     })
   });

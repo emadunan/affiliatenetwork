@@ -60,7 +60,9 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
 
   return (
     <Box component="div">
-      {selectedCampaign && <h1>{selectedCampaign.title}</h1>}
+      {selectedCampaign && (
+        <h1 className="text-center">{selectedCampaign.title}</h1>
+      )}
       <UserSelect
         userId={userId}
         onChangeUser={handleUserChange.bind(null, selectedCampaign, setUserId)}

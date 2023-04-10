@@ -1,5 +1,5 @@
 import * as React from "react";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -9,7 +9,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 interface MaterialUIPickerProps {
   label: string;
   value: Dayjs | null;
-  handleChange: (newValue: Dayjs | null) => void;
+  handleChange: (x: Dayjs | null) => void;
 }
 
 const MaterialUIPicker: React.FC<MaterialUIPickerProps> = ({
@@ -17,14 +17,6 @@ const MaterialUIPicker: React.FC<MaterialUIPickerProps> = ({
   value,
   handleChange,
 }) => {
-  // const [value, setValue] = React.useState<Dayjs | null>(
-  //   dayjs(ddate),
-  // );
-
-  // const handleChange = (newValue: Dayjs | null) => {
-  //   setValue(newValue);
-  // };
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack spacing={3} className="m-2">
