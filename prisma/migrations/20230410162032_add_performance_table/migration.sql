@@ -1,0 +1,30 @@
+-- CreateTable
+CREATE TABLE "Performance" (
+    "id" TEXT NOT NULL,
+    "full_count" TEXT NOT NULL,
+    "campaign_name" TEXT NOT NULL,
+    "campaign_id" TEXT NOT NULL,
+    "campaign_logo" TEXT NOT NULL,
+    "automation" TEXT NOT NULL,
+    "last_updated_at" TIMESTAMP(3) NOT NULL,
+    "last_fetched_at" TIMESTAMP(3) NOT NULL,
+    "code" TEXT NOT NULL,
+    "code_id" TEXT NOT NULL,
+    "orders" TEXT NOT NULL,
+    "net_orders" TEXT NOT NULL,
+    "orders_cancellation_rate" TEXT NOT NULL,
+    "revenue" TEXT NOT NULL,
+    "net_revenue" TEXT NOT NULL,
+    "revenue_cancellation_rate" TEXT NOT NULL,
+    "sales_amount" TEXT NOT NULL,
+    "net_sales_amount" TEXT NOT NULL,
+    "sales_amount_cancellation_rate" TEXT NOT NULL,
+    "sales_amount_usd" TEXT NOT NULL,
+    "net_sales_amount_usd" TEXT NOT NULL,
+    "sales_amount_usd_cancellation_rate" TEXT NOT NULL,
+    "aov_usd" TEXT NOT NULL,
+    "net_aov_usd" TEXT NOT NULL,
+    "aov_usd_cancellation_rate" TEXT NOT NULL,
+
+    CONSTRAINT "Performance_pkey" PRIMARY KEY ("id")
+);
