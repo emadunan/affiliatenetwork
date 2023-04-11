@@ -6,6 +6,7 @@ import useCampaignAssign from "../../../hooks/use-campaign-assign";
 import React from "react";
 import { useRouter } from "next/router";
 import { cloneDeep } from "lodash";
+import { SelectedCampaign } from "../../../interfaces/selected-campaign";
 
 interface CampaignAssignProps {}
 
@@ -26,36 +27,36 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
 
       setSelectedCampaign(result);
     })();
-  }, [campaignId]);
+  }, [campaignId, setSelectedCampaign]);
 
   const handleUserChange = async (
-    selectedCampaign: any,
-    setUserIdFn: any,
+    selectedCampaign: SelectedCampaign | undefined,
     userId: string
   ) => {
-    console.log(selectedCampaign);
+    // Check selected campaign is defined!
+    if (selectedCampaign) {
+      // fetch coupons assigned to that specific user in this campaign
+      console.log(userId, selectedCampaign.id);
 
-    // fetch coupons assigned to that specific user in this campaign
-    console.log(userId, selectedCampaign.id);
+      const response = await fetch(
+        `/api/campaigns/${selectedCampaign.id}/${userId}`
+      );
 
-    const response = await fetch(
-      `/api/campaigns/${selectedCampaign.id}/${userId}`
-    );
+      const ids = await response.json();
+      console.log(ids);
 
-    const ids = await response.json();
-    console.log(ids);
+      const liveCampaign = cloneDeep(selectedCampaign);
 
-    const liveCampaign = cloneDeep(selectedCampaign);
+      liveCampaign.coupons.forEach((coupon) => {
+        coupon.alreadyAssigned = ids.includes(coupon.id);
+      });
 
-    liveCampaign.coupons.forEach((coupon: any) => {
-      coupon.alreadyAssigned = ids.includes(coupon.id);
-    });
+      console.log(liveCampaign);
 
-    console.log(liveCampaign);
-
-    // set state for the selected campaign
-    setUserIdFn(userId);
-    setSelectedCampaign(liveCampaign);
+      // set state for the selected campaign
+      setUserId(userId);
+      setSelectedCampaign(liveCampaign);
+    }
   };
 
   return (
@@ -65,7 +66,7 @@ const CampaignAssign: FC<CampaignAssignProps> = () => {
       )}
       <UserSelect
         userId={userId}
-        onChangeUser={handleUserChange.bind(null, selectedCampaign, setUserId)}
+        onChangeUser={handleUserChange.bind(null, selectedCampaign)}
       />
       {userId && selectedCampaign && (
         <CampaignAssignList

@@ -1,23 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../../api/auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 import { ERROR_FALLBACK_MESSAGE } from "../../../constants";
 import { getCouponWithUsers } from "../../../handlers/performance";
 import { formatDate } from "../../../utils";
+import {
+  BoostinyPerformanceReport,
+  BoostinyPerformanceRecord,
+} from "../../../interfaces/boostiny-performance-report";
 
 const boostinyApiKey = process.env.BOOSTINY_API_KEY as string;
 const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 
+type Data = (BoostinyPerformanceRecord | undefined)[] | string;
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
     try {
-      const session = await unstable_getServerSession(req, res, authOptions);
+      const session = await getServerSession(req, res, authOptions);
 
       if (!session) {
-        res.status(401).json({ message: "You must be logged in." });
+        res.status(401).json("You must be logged in.");
         return;
       }
 
@@ -25,7 +31,7 @@ export default async function handler(
         user: { privilege, userId },
       } = session;
 
-      // const page = req.query.page;
+      // Extract filtering criteria from query params;
       const fromDate = formatDate(new Date(req.query.fromDate as string));
       const untilDate = formatDate(new Date(req.query.untilDate as string));
 
@@ -35,8 +41,10 @@ export default async function handler(
         campaign_name = "";
       }
 
-      // &campaign_name=Raneen
-      const getPerformanceReportPage = async (page = 1) => {
+      // AJAX Call for Boostiny Performance report
+      const getPerformanceReportPage = async (
+        page = 1
+      ): Promise<BoostinyPerformanceReport> => {
         const response = await fetch(
           `${boostinyApiUrl}/publisher/performance?page=${page}&campaign_name=${campaign_name}&from=${fromDate}&to=${untilDate}`,
           {
@@ -47,25 +55,32 @@ export default async function handler(
           }
         );
 
-        return await response.json();
+        const result = await response.json();
+
+        // Extract data from payload and return them
+        // Look at Boostiny API documentation 👇
+        //https://developers.boostiny.com/#/operations/get-publisher-performance
+        return result.payload;
       };
 
       // Get performance report for the first page
-      const result = (await getPerformanceReportPage()).payload;
+      const result = await getPerformanceReportPage();
 
       // Calculate the number of pages in the performance report
       const numberOfPages = Math.ceil(
         result.pagination.total / result.pagination.perPage
       );
 
+      // Make an AJAX Call for every page returned in the pagination of the first page
       for (let i = 2; i < numberOfPages; i++) {
-        const currPageResultData = (await getPerformanceReportPage(i)).payload
-          .data;
+        const currPageResult = await getPerformanceReportPage(i);
+        const currPageResultData = currPageResult.data;
         result.data = [...result.data, ...currPageResultData];
       }
 
+      // Compine performance report records with the internal database to form unified report
       const transformedData = await Promise.all(
-        result.data.map(async (el: any) => {
+        result.data.map(async (el: BoostinyPerformanceRecord) => {
           // Get meta data from database
           const elMeta = await getCouponWithUsers(el.code, el.campaign_name);
 
@@ -77,7 +92,7 @@ export default async function handler(
             const transformedEl = { ...el, couponMeta: elMeta };
             return transformedEl;
           } else if (currUser) {
-            //
+            // Recalculate the user revenue and net-revenue according to the percent assigned to him
             const transformedEl = {
               ...el,
               revenue: (+el.revenue * currUser.percent) / 100 + "",
@@ -88,10 +103,11 @@ export default async function handler(
         })
       );
 
-      let filteredData;
+      // Remove any null or undefined values
+      let filteredData: (BoostinyPerformanceRecord | undefined)[];
 
       if (transformedData) {
-        filteredData = transformedData.filter((el: any) => !!el);
+        filteredData = transformedData.filter((el) => !!el);
       } else {
         filteredData = [];
       }

@@ -255,15 +255,12 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
           Decline
         </Button>
       </CardActions>
-      {ReactDOM.createPortal(
-        <AlertMsg
-          open={isAlertMsgOpen}
-          handleClose={handleCloseAlertMsg}
-          alertMessage={alertMessage}
-          severity={alertSeverity}
-        />,
-        document.getElementById("alert-msg") as HTMLDivElement
-      )}
+      <AlertMsg
+        open={isAlertMsgOpen}
+        handleClose={handleCloseAlertMsg}
+        alertMessage={alertMessage}
+        severity={alertSeverity}
+      />
     </React.Fragment>
   );
 };

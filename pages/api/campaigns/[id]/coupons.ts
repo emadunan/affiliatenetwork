@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getCampaignWithCoupons } from "../../../../handlers/campaigns";
 import { ERROR_FALLBACK_MESSAGE } from "../../../../constants";
+import { CampaignWithItsUserCoupons } from "@prisma/client/scalar";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+type Data = CampaignWithItsUserCoupons | null | string;
+
+async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
     try {
       const { id } = req.query;

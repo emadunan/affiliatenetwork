@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent } from "react";
+import ReactDOM from "react-dom";
 
 import { Alert, Snackbar } from "@mui/material";
 
@@ -17,12 +18,13 @@ const AlertMsg: FC<AlertMsgProps> = ({
   open,
   handleClose,
 }) => {
-  return (
+  return ReactDOM.createPortal(
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
         {alertMessage}
       </Alert>
-    </Snackbar>
+    </Snackbar>,
+    document.getElementById("alert-msg") as HTMLDivElement
   );
 };
 

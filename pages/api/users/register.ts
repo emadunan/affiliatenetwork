@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ERROR_FALLBACK_MESSAGE } from "../../../constants";
 import { addUserMeta } from "../../../handlers/users";
+import { UserMeta } from "@prisma/client";
 
-type Data = string | any;
+type Data = string | UserMeta;
 
 export default async function handler(
   req: NextApiRequest,

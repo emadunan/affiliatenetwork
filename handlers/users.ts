@@ -2,7 +2,7 @@ import { User, UserMeta } from "@prisma/client";
 import { UserWithCampaigns, UserWithMeta } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
-export async function addUserMeta(userData: UserMeta) { 
+export async function addUserMeta(userData: UserMeta): Promise<UserMeta> { 
   return await db.userMeta.create({ data: userData });
 }
 

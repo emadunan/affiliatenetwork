@@ -42,7 +42,6 @@ const Coupons: FC = () => {
               );
 
               setCoupons(transformedItems);
-              //const coupons = data.map((item: any) => )
             });
         } else {
           router.replace("/users/register");

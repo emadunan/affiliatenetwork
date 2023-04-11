@@ -86,6 +86,11 @@ const Performance: FC = () => {
       `/api/boostiny/performance?page=${page}&campaign_name=${campaignValue}&fromDate=${fromDate?.toISOString()}&untilDate=${untilDate?.toISOString()}`
     )
       .then((response) => {
+        if (!response.ok) {
+          console.log("Failed to fetch data from boosiny's API!!");
+          setShowSpinner(false);
+        }
+
         return response.json();
       })
       .then((data) => {

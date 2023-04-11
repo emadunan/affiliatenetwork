@@ -3,7 +3,7 @@ declare module "@prisma/client/scalar" {
   import { Prisma } from '@prisma/client';
 
 
-  // 1: Define a type that includes userMeta relation to `User`
+  // A type that includes userMeta relation to `User`
   const userWithMeta = Prisma.validator<Prisma.UserArgs>()({
     include: {
       userMeta: true,
@@ -21,7 +21,7 @@ declare module "@prisma/client/scalar" {
   });
   export type UserWithMeta = Prisma.UserGetPayload<typeof userWithMeta>;
 
-  // 2: Define a type that includes UserCampaigns relation to `Campaign`
+  // A type that includes UserCampaigns relation to `Campaign`
   const campaignWithUser = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
       userCampaigns: {
@@ -41,7 +41,7 @@ declare module "@prisma/client/scalar" {
   });
   export type CampaignWithUser = Prisma.CampaignGetPayload<typeof campaignWithUser>;
 
-  // 3: Define a type that includes UserCampaigns relation to `User`
+  // A type that includes UserCampaigns relation to `User`
   const userWithCampaigns = Prisma.validator<Prisma.UserArgs>()({
     include: {
       userCampaigns: {
@@ -58,7 +58,7 @@ declare module "@prisma/client/scalar" {
   });
   export type UserWithCampaigns = Prisma.UserGetPayload<typeof userWithCampaigns>;
 
-  // 4: Define a type that include coupons related to `Campaign`
+  // A type that include coupons related to `Campaign`
   const campaignWithCoupons = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
       coupons: true,
@@ -66,7 +66,7 @@ declare module "@prisma/client/scalar" {
   });
   export type CampaignWithCoupons = Prisma.CampaignGetPayload<typeof campaignWithCoupons>
 
-  // 5: Define a type that include coupons related to `Campaign`
+  // A type that include coupons related to `Campaign`
   const campaignWithBoostinyCoupons = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
       coupons: {
@@ -81,5 +81,21 @@ declare module "@prisma/client/scalar" {
     }
   });
   export type CampaignWithBoostinyCoupons = Prisma.CampaignGetPayload<typeof campaignWithBoostinyCoupons>
+
+  const campaignWithItsUserCoupons = Prisma.validator<Prisma.CampaignArgs>()({
+    include: {
+      coupons: {
+        include: {
+          userCoupons: {
+            select: {
+              userId: true,
+            }
+          }
+        }
+      }
+    }
+  });
+
+  export type CampaignWithItsUserCoupons = Prisma.CampaignGetPayload<typeof campaignWithItsUserCoupons>
 
 }

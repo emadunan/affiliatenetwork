@@ -14,9 +14,9 @@ const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 
 type Data =
   | {
-    newCampaigns: Campaign[];
-    expiredCampaigns: Campaign[];
-  }
+      newCampaigns: Campaign[];
+      expiredCampaigns: Campaign[];
+    }
   | { errMsg: string };
 
 export default async function handler(
