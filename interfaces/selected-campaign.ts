@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface SelectedCoupon {
   id: string;
   coupon: string;
@@ -6,6 +8,8 @@ export interface SelectedCoupon {
   account_manager: string;
   ad_set?: string;
   campaignId: string;
+  assignedAt: Dayjs | null;
+  assignEndAt: Dayjs | null;
 
   alreadyAssigned: boolean;
   checked: boolean;

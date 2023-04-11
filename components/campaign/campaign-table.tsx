@@ -8,7 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Avatar, Button, Typography, Box } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { CampaignWithUser } from "@prisma/client/scalar";
+import {
+  CampaignWithUser,
+  UserCampaignWithCoupons,
+} from "@prisma/client/scalar";
 import {
   useGetUserCampaignsQuery,
   useMakeCampaignRequestMutation,
@@ -35,13 +38,13 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
   };
 
   // Evaluate campaign against the current user request state and return the appropriate element
-  const getReqStatus = (userCampaigns: any[], campaignId: string) => {
+  const getReqStatus = (
+    userCampaigns: UserCampaignWithCoupons[],
+    campaignId: string
+  ) => {
     const userCampaignsLen = userCampaigns.length;
-    const userCampaignReq: any = userCampaigns.find((item) => {
-      return (
-        item.userId === session?.user.userId && item.status === "pending"
-        // || item.status === "approved" || item.status === "declined"
-      );
+    const userCampaignReq = userCampaigns.find((item) => {
+      return item.userId === session?.user.userId && item.status === "pending";
     });
 
     if (userCampaignsLen && userCampaignReq) {

@@ -2,6 +2,7 @@ import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { FC, Fragment, ReactNode, useState } from "react";
 import BasicModal from "../../components/ui/modal";
 import useModal from "../../hooks/use-modal";
+import { ERROR_FALLBACK_MESSAGE } from "../../constants";
 
 const Manage: FC = () => {
   const [boostinyUpdateSpinner, setBoostinyUpdateSpinner] = useState(false);
@@ -30,9 +31,15 @@ const Manage: FC = () => {
       setContent(htmlNode);
 
       handleOpen();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setBoostinyUpdateSpinner(false);
-      setContent(<p>{error.message}</p>);
+
+      if (error instanceof Error) {
+        setContent(<p>{error.message}</p>);
+      } else {
+        setContent(<p>{ERROR_FALLBACK_MESSAGE}</p>);
+      }
+
       return handleOpen();
     }
   };

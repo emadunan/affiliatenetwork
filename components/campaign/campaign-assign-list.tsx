@@ -1,5 +1,4 @@
 import React, { FC, Fragment, SyntheticEvent, useState } from "react";
-import ReactDOM from "react-dom";
 import {
   Box,
   Button,
@@ -23,12 +22,18 @@ import {
 import AlertMsg, { Severity } from "../ui/alert-msg";
 import DatePicker from "../ui/date-picker";
 import dayjs, { Dayjs } from "dayjs";
+import {
+  SelectedCampaign,
+  SelectedCoupon,
+} from "../../interfaces/selected-campaign";
 
 interface CampaignAssignListProps {
   direct?: boolean;
   userId: string;
-  selectedCampaign: any;
-  setSelectedCampaign: any;
+  selectedCampaign: SelectedCampaign | undefined;
+  setSelectedCampaign: React.Dispatch<
+    React.SetStateAction<SelectedCampaign | undefined>
+  >;
 }
 
 const CampaignAssignList: FC<CampaignAssignListProps> = ({
@@ -61,27 +66,38 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
   // Handlers
   const handleCouponCheckChange = (couponId: string) => {
-    setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState);
-      const selectedCoupon = prevStateCp.coupons.find(
-        (c: any) => c.id === couponId
-      );
+    setSelectedCampaign((prevState) => {
+      // Ensure previous state is defined before manipulating it
+      if (!prevState) return prevState;
 
-      selectedCoupon.checked = !selectedCoupon.checked;
-      selectedCoupon.assignedAt = dayjs(new Date().toISOString());
-      selectedCoupon.assignEndAt = null;
+      // Make deep copy from the coupons and find the checked one by id
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find((c) => c.id === couponId);
+
+      // Swap the check state for the selected coupon and update dates
+      if (selectedCoupon) {
+        selectedCoupon.checked = !selectedCoupon.checked;
+        selectedCoupon.assignedAt = dayjs(new Date().toISOString());
+        selectedCoupon.assignEndAt = null;
+      }
+
       return prevStateCp;
     });
   };
 
   const handleCouponPercentChange = (couponId: string, newPercent: number) => {
-    setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState);
-      const selectedCoupon = prevStateCp.coupons.find(
-        (c: any) => c.id === couponId
-      );
+    setSelectedCampaign((prevState) => {
+      // Ensure previous state is defined before manipulating it
+      if (!prevState) return prevState;
 
-      selectedCoupon.percent = newPercent;
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find((c) => c.id === couponId);
+
+      // Update percent for the selected coupon
+      if (selectedCoupon) {
+        selectedCoupon.percent = newPercent;
+      }
+
       return prevStateCp;
     });
   };
@@ -90,13 +106,18 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     assignedAt: Dayjs | null,
     couponId: string | undefined
   ) => {
-    setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState);
-      const selectedCoupon = prevStateCp.coupons.find(
-        (c: any) => c.id === couponId
-      );
+    setSelectedCampaign((prevState) => {
+      // Ensure previous state is defined before manipulating it
+      if (!prevState) return prevState;
 
-      selectedCoupon.assignedAt = assignedAt;
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find((c) => c.id === couponId);
+
+      // Update assignedAt date for the selected coupon
+      if (selectedCoupon) {
+        selectedCoupon.assignedAt = assignedAt;
+      }
+
       return prevStateCp;
     });
   };
@@ -105,21 +126,26 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     assignEndAt: Dayjs | null,
     couponId: string | undefined
   ) => {
-    setSelectedCampaign((prevState: any) => {
-      const prevStateCp = cloneDeep(prevState);
-      const selectedCoupon = prevStateCp.coupons.find(
-        (c: any) => c.id === couponId
-      );
+    setSelectedCampaign((prevState) => {
+      // Ensure previous state is defined before manipulating it
+      if (!prevState) return prevState;
 
-      selectedCoupon.assignEndAt = assignEndAt;
+      const prevStateCp = cloneDeep(prevState);
+      const selectedCoupon = prevStateCp.coupons.find((c) => c.id === couponId);
+
+      // Update assignEndAt date for the selected coupon
+      if (selectedCoupon) {
+        selectedCoupon.assignEndAt = assignEndAt;
+      }
+
       return prevStateCp;
     });
   };
 
   // Approve or Decline handlers
   const handleApproveCampaign = async () => {
-    const checkedCoupons: any[] = selectedCampaign.coupons.filter(
-      (coupon: any) => !!coupon.checked
+    const checkedCoupons: SelectedCoupon[] = selectedCampaign!.coupons.filter(
+      (coupon) => !!coupon.checked
     );
 
     if (checkedCoupons.length < 1) {
@@ -128,7 +154,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       return;
     }
 
-    const isPercentOutRange = checkedCoupons.find((coupon: any) => {
+    const isPercentOutRange = checkedCoupons.find((coupon) => {
       return coupon.percent < 1 || coupon.percent > 100;
     });
 
@@ -140,7 +166,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
 
     const reqData = {
       userId: userId,
-      campaignId: selectedCampaign.id,
+      campaignId: selectedCampaign!.id,
       coupons: checkedCoupons,
     };
 
@@ -175,14 +201,14 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       router.push("/campaigns");
     }
 
-    setDeclineReq({ userId: userId, campaignId: selectedCampaign.id });
+    setDeclineReq({ userId: userId, campaignId: selectedCampaign!.id });
     setSelectedCampaign(undefined);
   };
 
   return (
     <React.Fragment>
       <FormGroup>
-        {selectedCampaign?.coupons.map((coupon: any) => (
+        {selectedCampaign?.coupons.map((coupon) => (
           <Box component="div" className="flex" key={coupon.id}>
             <FormControlLabel
               control={

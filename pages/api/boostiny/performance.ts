@@ -12,7 +12,7 @@ import {
 const boostinyApiKey = process.env.BOOSTINY_API_KEY as string;
 const boostinyApiUrl = process.env.BOOSTINY_API_URL as string;
 
-type Data = (BoostinyPerformanceRecord | undefined)[] | string;
+type Data = BoostinyPerformanceReport | string;
 
 export default async function handler(
   req: NextApiRequest,
@@ -80,7 +80,10 @@ export default async function handler(
 
       // Compine performance report records with the internal database to form unified report
       const transformedData = await Promise.all(
-        result.data.map(async (el: BoostinyPerformanceRecord) => {
+        result.data.map(async (el: BoostinyPerformanceRecord | undefined) => {
+          // Check if the performance record is undefined
+          if (!el) return;
+
           // Get meta data from database
           const elMeta = await getCouponWithUsers(el.code, el.campaign_name);
 
@@ -112,7 +115,9 @@ export default async function handler(
         filteredData = [];
       }
 
-      res.status(200).json(filteredData);
+      const transformedResult = { ...result, data: filteredData };
+
+      res.status(200).json(transformedResult);
     } catch (error: unknown) {
       if (error instanceof Error) {
         return res.status(400).json(error.message);

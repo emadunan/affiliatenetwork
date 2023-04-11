@@ -19,6 +19,8 @@ import Pagination from "@mui/material/Pagination";
 import { useGetAllCampaignsQuery } from "../../services/campaign";
 import MultipleSelectCheckmarks from "../../components/ui/multiple-select-checkmarks";
 
+import { BoostinyPerformanceReport } from "../../interfaces/boostiny-performance-report";
+
 // SummaryTypography Component
 interface TypographyProps {
   children: ReactNode;
@@ -47,7 +49,7 @@ const SummaryTypography: FC<TypographyProps> = ({ children }) => {
 const Performance: FC = () => {
   const { data: session } = useSession();
 
-  const [campaignLabels, setCampaignLabels] = useState<any>();
+  const [campaignLabels, setCampaignLabels] = useState<string[] | undefined>();
 
   // Backdrop and spinner
   const [showSpinner, setShowSpinner] = React.useState(false);
@@ -67,7 +69,7 @@ const Performance: FC = () => {
   );
 
   useEffect(() => {
-    const campaignsLabels = campaigns?.map((el: any) => el.title);
+    const campaignsLabels = campaigns?.map((el) => el.title);
     setCampaignLabels(campaignsLabels);
   }, [campaigns]);
 
@@ -94,6 +96,8 @@ const Performance: FC = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
+
         setReport(data);
         setShowSpinner(false);
       });
@@ -104,7 +108,7 @@ const Performance: FC = () => {
   };
 
   // Fetch data
-  const [report, setReport] = useState<any>();
+  const [report, setReport] = useState<BoostinyPerformanceReport>();
 
   // Handle metrics attributes status
   const [metricName, setMetricName] = React.useState<string[]>([]);
@@ -259,7 +263,7 @@ const Performance: FC = () => {
                   }
                 />
               )} */}
-              <PerformanceTable rows={report} metricName={metricName} />
+              <PerformanceTable rows={report.data} metricName={metricName} />
             </Box>
           </Box>
         )}

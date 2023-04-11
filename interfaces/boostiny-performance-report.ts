@@ -51,6 +51,6 @@ export type BoostinyPerformanceRecord = {
 
 export interface BoostinyPerformanceReport {
   summary: BoostinyPerformanceSummary;
-  data: BoostinyPerformanceRecord[];
+  data: (BoostinyPerformanceRecord | undefined)[];
   pagination: BoostinyPerformancePagination;
 }
