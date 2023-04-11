@@ -1,3 +1,5 @@
+import { Coupon, User, UserCoupons } from "@prisma/client";
+
 export type BoostinyPerformanceSummary = {
   full_count: string;
   orders: string;
@@ -47,7 +49,10 @@ export type BoostinyPerformanceRecord = {
   aov_usd: string;
   net_aov_usd: string;
   aov_usd_cancellation_rate: string;
+  couponMeta?: CouponMeta;
 }
+
+export type CouponMeta = (Coupon & { userCoupons: (UserCoupons & { user: User; })[] }) | null;
 
 export interface BoostinyPerformanceReport {
   summary: BoostinyPerformanceSummary;

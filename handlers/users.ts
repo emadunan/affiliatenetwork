@@ -6,6 +6,20 @@ export async function addUserMeta(userData: UserMeta): Promise<UserMeta> {
   return await db.userMeta.create({ data: userData });
 }
 
+db.user.findFirst({
+  include: {
+    userCampaigns: {
+      include: {
+        campaign: {
+          include: {
+            coupons: true
+          }
+        }
+      }
+    }
+  }
+})
+
 export async function getAllUsers(): Promise<UserWithMeta[] | null> {
   return await db.user.findMany({
     include: {

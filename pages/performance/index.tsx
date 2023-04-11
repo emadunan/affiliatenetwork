@@ -15,7 +15,6 @@ import { FC, ReactNode, useState } from "react";
 import PerformanceTable from "../../components/performance/performance-table";
 import MaterialUIPicker from "../../components/ui/date-picker";
 import dayjs, { Dayjs } from "dayjs";
-import Pagination from "@mui/material/Pagination";
 import { useGetAllCampaignsQuery } from "../../services/campaign";
 import MultipleSelectCheckmarks from "../../components/ui/multiple-select-checkmarks";
 
@@ -96,8 +95,6 @@ const Performance: FC = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-
         setReport(data);
         setShowSpinner(false);
       });
@@ -122,10 +119,6 @@ const Performance: FC = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
-  useEffect(() => {
-    console.log(metricName);
-  }, [metricName]);
 
   return (
     <Box component="div">

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CampaignWithUser, UserWithCampaigns } from '@prisma/client/scalar';
+import { CampaignWithUser, UserWithCampaigns, UserWzCampaignsWzCoupons } from '@prisma/client/scalar';
 
 // Define a service using a base URL and expected endpoints
 export const campaignApi = createApi({
@@ -16,7 +16,7 @@ export const campaignApi = createApi({
       providesTags: ["Requested"]
     }),
     // Handle requests from specific user
-    getUsersCampaignsReq: builder.query<any, void>({
+    getUsersCampaignsReq: builder.query<UserWzCampaignsWzCoupons[], void>({
       query: () => `/requests`,
       providesTags: ["Requested", "Approved", "Declined"],
     }),

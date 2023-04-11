@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ERROR_FALLBACK_MESSAGE } from "../../../../constants";
 import { getUsersWithCampaigns } from "../../../../handlers/users";
+import { UserWzCampaignsWzCoupons } from "@prisma/client/scalar";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+type Data = UserWzCampaignsWzCoupons[] | string;
+
+async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
     try {
       const usersWithPendingReq = await getUsersWithCampaigns();

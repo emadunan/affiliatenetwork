@@ -1,9 +1,10 @@
 import { Box } from "@mui/material";
 import { FC } from "react";
 import UserRequest from "./user-request";
+import { UserWzCampaignsWzCoupons } from "@prisma/client/scalar";
 
 interface UserRequestsListProps {
-  users?: any[];
+  users?: UserWzCampaignsWzCoupons[];
 }
 
 const UserRequestsList: FC<UserRequestsListProps> = ({ users }) => {
@@ -13,8 +14,8 @@ const UserRequestsList: FC<UserRequestsListProps> = ({ users }) => {
         <UserRequest
           key={user.id}
           userId={user.id}
-          username={user.name}
-          userImage={user.image}
+          username={user.name!}
+          userImage={user.image!}
           userCampaigns={user.userCampaigns}
         />
       ))}

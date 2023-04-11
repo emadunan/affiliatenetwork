@@ -93,6 +93,7 @@ export default async function handler(
           if (privilege === "admin") {
             // Add publishers data and return result
             const transformedEl = { ...el, couponMeta: elMeta };
+
             return transformedEl;
           } else if (currUser) {
             // Recalculate the user revenue and net-revenue according to the percent assigned to him

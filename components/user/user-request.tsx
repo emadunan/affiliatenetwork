@@ -10,31 +10,32 @@ import { cloneDeep } from "lodash";
 import { FC } from "react";
 import useCampaignAssign from "../../hooks/use-campaign-assign";
 import CampaignAssignList from "../campaign/campaign-assign-list";
-
-// import { CampaignWithCoupons } from "@prisma/client/scalar";
-// type CampaignWithCouponsPlus = CampaignWithCoupons & { checked: true | false, percent: number };
+import { UserCampaignWzCampaignWzCoupons } from "@prisma/client/scalar";
+import { SelectedCampaign } from "../../interfaces/selected-campaign";
 
 interface UserRequestProps {
   userId: string;
   username?: string;
   userImage?: string;
-  userCampaigns?: any;
+  userCampaigns?: UserCampaignWzCampaignWzCoupons[];
 }
 
 const UserRequest: FC<UserRequestProps> = (props) => {
   // Use Hook to hande campaign status
   const { selectedCampaign, setSelectedCampaign } = useCampaignAssign();
 
-  const handleCampaignChange = async (campaign: any) => {
+  const handleCampaignChange = async (
+    userCampaign: UserCampaignWzCampaignWzCoupons
+  ) => {
     // fetch coupons assigned to that specific user in this campaign
     const response = await fetch(
-      `/api/campaigns/${campaign.campaignId}/${props.userId}`
+      `/api/campaigns/${userCampaign.campaignId}/${props.userId}`
     );
     const ids = await response.json();
 
-    const liveCampaign = cloneDeep(campaign.campaign);
+    const liveCampaign: SelectedCampaign = cloneDeep(userCampaign.campaign);
 
-    liveCampaign.coupons.forEach((coupon: any) => {
+    liveCampaign.coupons.forEach((coupon) => {
       coupon.alreadyAssigned = ids.includes(coupon.id);
     });
 
@@ -59,13 +60,13 @@ const UserRequest: FC<UserRequestProps> = (props) => {
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
             >
-              {props.userCampaigns.map((campaign: any) => (
+              {props.userCampaigns!.map((userCampaign) => (
                 <FormControlLabel
-                  key={campaign.campaignId}
-                  value={campaign.campaignId}
+                  key={userCampaign.campaignId}
+                  value={userCampaign.campaignId}
                   control={<Radio />}
-                  label={campaign.campaign.title}
-                  onChange={() => handleCampaignChange(campaign)}
+                  label={userCampaign.campaign.title}
+                  onChange={() => handleCampaignChange(userCampaign)}
                 />
               ))}
             </RadioGroup>

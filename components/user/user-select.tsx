@@ -7,7 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useGetAllUsersQuery } from "../../services/user";
 
 interface UserSelectProps {
-  userId: any;
+  userId: string;
   onChangeUser: (userId: string) => Promise<void>;
 }
 
