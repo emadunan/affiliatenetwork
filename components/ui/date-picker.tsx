@@ -8,7 +8,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 interface MaterialUIPickerProps {
   label: string;
-  value: Dayjs | null;
+  value: Dayjs | null | undefined;
   handleChange: (x: Dayjs | null) => void;
 }
 

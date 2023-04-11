@@ -155,6 +155,8 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
     }
 
     const isPercentOutRange = checkedCoupons.find((coupon) => {
+      if (!coupon.percent) return;
+
       return coupon.percent < 1 || coupon.percent > 100;
     });
 
