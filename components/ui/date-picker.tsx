@@ -22,7 +22,7 @@ const MaterialUIPicker: React.FC<MaterialUIPickerProps> = ({
       <Stack spacing={3} className="m-2">
         <DesktopDatePicker
           label={label}
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={value}
           onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}

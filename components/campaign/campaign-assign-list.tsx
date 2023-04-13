@@ -154,14 +154,34 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       return;
     }
 
+    // Check that evey checked coupons have a percent in the range between 1 and 100
     const isPercentOutRange = checkedCoupons.find((coupon) => {
-      if (!coupon.percent) return;
+      if (!coupon.percent) return true;
 
       return coupon.percent < 1 || coupon.percent > 100;
     });
 
     if (isPercentOutRange) {
       setAlertMessage("The assigned percent out of range!");
+      setIsAlertMsgOpen(true);
+      return;
+    }
+
+    // TODO: Ensure that the AssignedAt date is always before the AssignEndAt date
+    const isInvalidAssignDates = checkedCoupons.find((coupon) => {
+      if (!coupon.assignedAt) {
+        return true;
+      } else if (coupon.assignedAt && !coupon.assignEndAt) {
+        return false;
+      } else if (coupon.assignedAt > coupon.assignEndAt!) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    if (isInvalidAssignDates) {
+      setAlertMessage("Invalid assignation dates!");
       setIsAlertMsgOpen(true);
       return;
     }
