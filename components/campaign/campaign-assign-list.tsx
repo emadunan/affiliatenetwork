@@ -167,7 +167,7 @@ const CampaignAssignList: FC<CampaignAssignListProps> = ({
       return;
     }
 
-    // TODO: Ensure that the AssignedAt date is always before the AssignEndAt date
+    // Ensure that the AssignedAt date is always before the AssignEndAt date
     const isInvalidAssignDates = checkedCoupons.find((coupon) => {
       if (!coupon.assignedAt) {
         return true;
