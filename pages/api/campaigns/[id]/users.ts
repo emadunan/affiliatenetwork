@@ -1,16 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getCampaignWithCoupons } from "../../../../handlers/campaigns";
+import { getCampaignWzUsersWzCoupons } from "../../../../handlers/campaigns";
 import { ERROR_FALLBACK_MESSAGE } from "../../../../constants";
-import { CampaignWzCouponsWzUserId } from "@prisma/client/scalar";
+import { CampaignWzUserWzCoupons } from "@prisma/client/scalar";
 
-type Data = CampaignWzCouponsWzUserId | null | string;
+type Data = CampaignWzUserWzCoupons | null | string;
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
     try {
       const { id } = req.query;
 
-      const campaign = await getCampaignWithCoupons(id as string);
+      const campaign = await getCampaignWzUsersWzCoupons(id as string);
       res.status(200).json(campaign);
     } catch (error: unknown) {
       // Handle most error cases

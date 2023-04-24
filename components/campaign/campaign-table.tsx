@@ -17,6 +17,7 @@ import {
   useMakeCampaignRequestMutation,
 } from "../../services/campaign";
 import router from "next/router";
+import Link from "next/link";
 
 interface CampaignTableProps {
   campaigns: CampaignWithUser[];
@@ -117,7 +118,9 @@ const CampaignTable: React.FC<CampaignTableProps> = ({ campaigns }) => {
               <TableCell align="center">
                 <Avatar alt={row.title} src={row.logo || ""} />
               </TableCell>
-              <TableCell align="center">{row.title}</TableCell>
+              <TableCell align="center">
+                <Link href={`campaigns/${row.id}`}>{row.title}</Link>
+              </TableCell>
               {session?.user.privilege === "admin" && (
                 <TableCell align="center">{row.campaign_manager}</TableCell>
               )}

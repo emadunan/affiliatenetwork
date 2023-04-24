@@ -125,7 +125,7 @@ declare module "@prisma/client/scalar" {
   export type CampaignWithBoostinyCoupons = Prisma.CampaignGetPayload<typeof campaignWithBoostinyCoupons>
 
   //
-  const campaignWithItsUserCoupons = Prisma.validator<Prisma.CampaignArgs>()({
+  const campaignWzCouponsWzUserId = Prisma.validator<Prisma.CampaignArgs>()({
     include: {
       coupons: {
         include: {
@@ -139,6 +139,25 @@ declare module "@prisma/client/scalar" {
     }
   });
 
-  export type CampaignWithItsUserCoupons = Prisma.CampaignGetPayload<typeof campaignWithItsUserCoupons>
+  export type CampaignWzCouponsWzUserId = Prisma.CampaignGetPayload<typeof campaignWzCouponsWzUserId>
 
+  const campaignWzUserWzCoupons = Prisma.validator<Prisma.CampaignArgs>()({
+    include: {
+      userCampaigns: {
+        include: {
+          user: {
+            include: {
+              userCoupons: {
+                include: {
+                  coupon: true,
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+  export type CampaignWzUserWzCoupons = Prisma.CampaignGetPayload<typeof campaignWzUserWzCoupons>
 }

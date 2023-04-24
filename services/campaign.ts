@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CampaignWithUser, UserWithCampaigns, UserWzCampaignsWzCoupons } from '@prisma/client/scalar';
+import { CampaignWithUser, CampaignWzUserWzCoupons, UserWithCampaigns, UserWzCampaignsWzCoupons } from '@prisma/client/scalar';
 
 // Define a service using a base URL and expected endpoints
 export const campaignApi = createApi({
@@ -9,11 +9,15 @@ export const campaignApi = createApi({
   endpoints: (builder) => ({
     getAllCampaigns: builder.query<CampaignWithUser[], string>({
       query: (id: string) => `/all/${id}`,
-      providesTags: ["Requested"]
+      providesTags: ["Requested", "Approved", "Declined"],
+    }),
+    getOneCampaign: builder.query<CampaignWzUserWzCoupons, string>({
+      query: (id: string) => `${id}/users`,
+      providesTags: ["Requested", "Approved", "Declined"],
     }),
     getUserCampaigns: builder.query<UserWithCampaigns, string | undefined>({
       query: (id) => `/${id}`,
-      providesTags: ["Requested"]
+      providesTags: ["Requested", "Approved", "Declined"],
     }),
     // Handle requests from specific user
     getUsersCampaignsReq: builder.query<UserWzCampaignsWzCoupons[], void>({
@@ -71,4 +75,5 @@ export const {
   useGetPendingReqCountQuery,
   useDeclinePendingReqMutation,
   useApprovePendingReqMutation,
+  useGetOneCampaignQuery,
 } = campaignApi;

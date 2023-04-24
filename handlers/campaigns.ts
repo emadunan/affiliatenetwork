@@ -1,4 +1,4 @@
-import { CampaignWithUser } from "@prisma/client/scalar";
+import { CampaignWithUser, CampaignWzUserWzCoupons } from "@prisma/client/scalar";
 import db from "../lib/prismadb";
 
 
@@ -18,6 +18,30 @@ export async function getCampaignWithCoupons(id: string) {
           userCoupons: {
             select: {
               userId: true,
+            }
+          }
+        }
+      }
+    }
+  })
+}
+
+
+export async function getCampaignWzUsersWzCoupons(campaignId: string): Promise<CampaignWzUserWzCoupons | null> {
+  return await db.campaign.findFirst({
+    where: {
+      id: campaignId,
+    },
+    include: {
+      userCampaigns: {
+        include: {
+          user: {
+            include: {
+              userCoupons: {
+                include: {
+                  coupon: true,
+                }
+              }
             }
           }
         }
