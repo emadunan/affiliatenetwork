@@ -52,6 +52,10 @@ export type BoostinyPerformanceRecord = {
   couponMeta?: CouponMeta;
 }
 
+export type BoostinyPerformanceItem = {
+  
+}
+
 export type CouponMeta = (Coupon & { userCoupons: (UserCoupons & { user: User; })[] }) | null;
 
 export interface BoostinyPerformanceReport {

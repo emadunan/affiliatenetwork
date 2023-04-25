@@ -44,6 +44,28 @@ const Manage: FC = () => {
     }
   };
 
+  const handleUploadPerformance = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.files !== null) {
+      console.log(event.target.files[0]);
+
+      const bodyFormData = new FormData();
+      bodyFormData.append("csv_file", event.target.files[0]);
+
+      const response = await fetch("/api/admin/upload-performance", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "multipart/form-data;boundary=SOME_BOUNDARY",
+        },
+        body: bodyFormData,
+      });
+
+      const result = await response.json();
+      console.log(result);
+    }
+  };
+
   return (
     <Box component="div" className="flex items-center justify-center">
       <Box component="div" className="flex">
@@ -56,6 +78,16 @@ const Manage: FC = () => {
           sx={{ mx: "1rem" }}
         >
           Update
+        </Button>
+        <Button variant="outlined" component="label">
+          Upload Performance File
+          <input
+            hidden
+            accept="csv/*"
+            multiple
+            type="file"
+            onChange={handleUploadPerformance}
+          />
         </Button>
         {boostinyUpdateSpinner && <CircularProgress color="primary" />}
         <BasicModal

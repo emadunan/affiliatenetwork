@@ -25,9 +25,9 @@ const CampaignDetail: React.FC = () => {
     }
   };
 
-  const currUserCoupons = campaign?.userCampaigns.find(
-    (user) => user.userId === session?.user.userId
-  )?.user.userCoupons.filter(uc => uc.coupon.campaignId === campaignId);
+  const currUserCoupons = campaign?.userCampaigns
+    .find((user) => user.userId === session?.user.userId)
+    ?.user.userCoupons.filter((uc) => uc.coupon.campaignId === campaignId);
 
   return (
     <div>
@@ -50,7 +50,9 @@ const CampaignDetail: React.FC = () => {
         alignItems="flex-end"
       >
         <Typography>{campaign?.category}</Typography>
-        {campaign?.userCampaigns.find(uc => uc.userId === session?.user.userId)?.status !== "pending" ? (
+        {campaign?.userCampaigns.find(
+          (uc) => uc.userId === session?.user.userId
+        )?.status !== "pending" ? (
           <Button variant="outlined" onClick={handleMakeRequest} sx={{ mb: 1 }}>
             Make a Request
           </Button>
